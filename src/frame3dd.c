@@ -126,7 +126,7 @@ void assemble_K(
 
 		if (debug) {
 			res = sprintf(stiffness_fn,"k_%03d",i);
-			save_dmatrix(12,12,k,stiffness_fn,0);
+			save_dmatrix(stiffness_fn,k,1,12,1,12,0, "w");
 		}
 
 		for ( l=1; l <= 12; l++ ) {
@@ -191,7 +191,7 @@ void elastic_K(
 	k[12][6] = k[6][12]  = (2.-Ksy)*E*Iz / ( Le*(1.+Ksy) );
 
 #ifdef MATRIX_DEBUG
-	save_dmatrix ( 12, 12, k, "ke", 0 ); /* element elastic stiffness matrix */
+	save_dmatrix ( "ke", k, 1,12, 1,12, 0, "w" ); /* element elastic stiffness matrix */
 #endif
 
 	atma(t1,t2,t3,t4,t5,t6,t7,t8,t9, k, r[n1],r[n2]);	/* globalize */
@@ -211,7 +211,7 @@ void elastic_K(
 					fprintf(stderr," ... k[%d][%d] = %15.6e   ",j,i,k[j][i] ); 
 					fprintf(stderr," ... relative error = %e \n",  fabs(k[i][j]/k[j][i]-1.0) ); 
 					fprintf(stderr," ... element matrix saved in file 'kt'\n");
-					save_dmatrix ( 12, 12, k, "kt", 0 ); 
+					save_dmatrix ( "kt", k, 1,12, 1,12, 0, "w" ); 
 				}
 
 				k[i][j] = k[j][i] = 0.5 * ( k[i][j] + k[j][i] );
@@ -219,7 +219,7 @@ void elastic_K(
 		}
 	}
 #ifdef MATRIX_DEBUG
-	save_dmatrix ( 12, 12, k, "ket", 0 );   /* transformed element matx */
+	save_dmatrix ( "ket", k, 1,12, 1,12, 0, "w" ); /* transformed element matx */
 #endif
 }
 
@@ -281,7 +281,7 @@ void geometric_K(
 	kg[12][6] = kg[6][12]  = -T*L*(1.0/30.0+Ksy/6.0+Ksy*Ksy/12.0)/Dsy;
 
 #ifdef MATRIX_DEBUG
-	save_dmatrix ( 12, 12, kg, "kg", 0 ); /* element geom. stiffness matrix */
+	save_dmatrix ( "kg", kg, 1,12, 1,12, 0, "w" ); /* element geom. stiffness matrix */
 #endif
 
 	atma(t1,t2,t3,t4,t5,t6,t7,t8,t9, kg, r[n1],r[n2]);	/* globalize */
@@ -301,7 +301,7 @@ void geometric_K(
 					fprintf(stderr," ... kg[%d][%d] = %15.6e   ",j,i,kg[j][i] ); 
 					fprintf(stderr," ... relative error = %e \n",  fabs(kg[i][j]/kg[j][i]-1.0) ); 
 					fprintf(stderr," ... element matrix saved in file 'kg'\n");
-					save_dmatrix ( 12, 12, kg, "kg", 0 ); 
+					save_dmatrix ( "kg", kg, 1,12, 1,12, 0, "w" ); 
 				}
 
 				kg[i][j] = kg[j][i] = 0.5 * ( kg[i][j] + kg[j][i] );
@@ -310,7 +310,7 @@ void geometric_K(
 	}
 
 #ifdef MATRIX_DEBUG
-	save_dmatrix ( 12, 12, kg, "kgt", 0 );   /* transformed element matx */
+	save_dmatrix ( "kgt", kg, 1,12, 1,12, 0, "w" );   /* transformed element matx */
 #endif
 
 	/* add geometric stiffness matrix to elastic stiffness matrix ... */
@@ -691,7 +691,7 @@ void assemble_M(
 
 		if (debug) {
 			res = sprintf(mass_fn,"m_%03d",i);
-			save_dmatrix(12,12, m, mass_fn, 0);
+			save_dmatrix(mass_fn, m, 1,12, 1,12, 0, "w");
 		}
 
 		for ( l=1; l <= 12; l++ ) {
@@ -814,7 +814,7 @@ void consistent_M(
 	for (i=7; i<=9; i++)	m[i][i] += 0.5*EMs;
 
 #ifdef MATRIX_DEBUG
-	save_dmatrix ( 12, 12, m, "mo", 0 );	/* element mass matrix */
+	save_dmatrix ( "mo", m, 1,12, 1,12, 0, "w" ); /* element mass matrix */
 #endif
 
 	atma(t1,t2,t3,t4,t5,t6,t7,t8,t9, m, r[n1],r[n2]);	/* globalize */
@@ -835,7 +835,7 @@ void consistent_M(
 					fprintf(stderr," ... m[%d][%d] = %15.6e   ",j,i,m[j][i] ); 
 					fprintf(stderr," ... relative error = %e \n",  fabs(m[i][j]/m[j][i]-1.0) ); 
 					fprintf(stderr," ... element matrix saved in file 'mc'\n");
-					save_dmatrix ( 12, 12, m, "mc", 0 ); 
+					save_dmatrix ( "mc", m, 1,12, 1,12, 0, "w" ); 
 				}
 
 				m[i][j] = m[j][i] = 0.5 * ( m[i][j] + m[j][i] );
@@ -844,7 +844,7 @@ void consistent_M(
 	}
 
 #ifdef MATRIX_DEBUG
-	save_dmatrix ( 12, 12, m, "mt", 0 );	/* transformed matrix */
+	save_dmatrix ( "mt", m, 1,12, 1,12, 0, "w" );/* transformed matrix */
 #endif
 }
 

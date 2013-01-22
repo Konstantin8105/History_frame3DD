@@ -1,3 +1,6 @@
+*Tue Jan  22 2013 <.> 0.02100105
+- NRutil.c --- change definition of save_ functions
+
 *Thu Dec  6 20:02:21 EST 2012 <.> 0.02100105
 - frame3dd_io.c --- improve handling of input data when nM=0 is omitted.
 - frame3dd_io.c --- improve handling of missing flags in command line args
