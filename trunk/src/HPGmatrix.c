@@ -909,7 +909,7 @@ void Legendre( int order, float *t, int n, float **P, float **Pp, float **Ppp )
 {
 	int k,p;
 
-// save_vector( n, t, "t.dat");
+// save_vector( "t.dat", t, 1,n, "w" );
 
 	for (p=1; p <= n; p++) {
 

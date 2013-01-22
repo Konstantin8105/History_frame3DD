@@ -420,7 +420,7 @@ For compilation/installation, see README.txt.
 					shear, geom, Q, debug );
 
 #ifdef MATRIX_DEBUG
-		save_dmatrix ( DoF, DoF, K, "Ku", 0 ); // unloaded stiffness matrix
+		save_dmatrix ( "Ku", K, 1,DoF, 1,DoF, 0, "w" ); // unloaded stiffness matrix
 #endif
 
 		/* first apply temperature loads only, if there are any ... */
@@ -535,7 +535,7 @@ For compilation/installation, see README.txt.
 		// if ( geom )	free_dmatrix(Ks, 1, DoF, 1, DoF );
 
 		if ( write_matrix )	/* write static stiffness matrix */
-			save_ut_dmatrix ( DoF, K, "Ks" );
+			save_ut_dmatrix ( "Ks", K, DoF, "w" );
 
 		/*  display RMS equilibrium error */
 		if ( verbose && ok >= 0 ) evaluate ( error, rms_resid, tol, geom );
@@ -602,7 +602,7 @@ For compilation/installation, see README.txt.
 				lump, debug );
 
 #ifdef MATRIX_DEBUG
-		save_dmatrix ( DoF, DoF, M, "Mf", 0 );	/* free mass matrix */
+		save_dmatrix ( "Mf", M, 1,DoF, 1,DoF, 0, "w" ); /* free mass matrix */
 #endif
 
 		for (j=1; j<=DoF; j++) { /*  compute traceK and traceM */
@@ -621,8 +621,8 @@ For compilation/installation, see README.txt.
 		}
 
 		if ( write_matrix ) {	/* write Kd and Md matrices */
-			save_ut_dmatrix ( DoF, K, "Kd" );/* dynamic stff matx */
-			save_ut_dmatrix ( DoF, M, "Md" );/* dynamic mass matx */
+			save_ut_dmatrix ( "Kd", K, DoF, "w" );/* dynamic stff matx */
+			save_ut_dmatrix ( "Md", M, DoF, "w" );/* dynamic mass matx */
 		}
 
 		if ( anlyz ) {	/* subspace or stodola methods */
@@ -688,8 +688,8 @@ For compilation/installation, see README.txt.
 			if ( verbose ) 
 				fprintf(stdout,"   dynamic condensation of K and M complete\n");
 		}
-		save_dmatrix(Cdof, Cdof, Kc, "Kc", 0 );
-		save_dmatrix(Cdof, Cdof, Mc, "Mc", 0 );
+		save_dmatrix("Kc", Kc, 1,Cdof, 1,Cdof, 0, "w" );
+		save_dmatrix("Mc", Mc, 1,Cdof, 1,Cdof, 0, "w" );
 
 		free_dmatrix(Kc, 1,Cdof,1,Cdof );
 		free_dmatrix(Mc, 1,Cdof,1,Cdof );
