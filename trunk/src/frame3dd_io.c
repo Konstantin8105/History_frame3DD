@@ -2767,7 +2767,8 @@ void static_mesh(
 	float	x1, y1, z1,	/* coordinates of node n1		*/
 		x2, y2, z2;	/* coordinates of node n2		*/
 	int	j=0, m=0,
-		X=0, Y=0, Z=0;
+		X=0, Y=0, Z=0,
+		lw = 1;		/*  line width of deformed mesh		*/
 	time_t  now;		/* modern time variable type		*/
 
 	(void) time(&now);
@@ -2949,15 +2950,15 @@ void static_mesh(
 
 	fprintf(fpm,"%c plot '%s' u 2:3 t 'undeformed mesh' w lp ",
 								D2, meshpath);
-	if (!anlyz) fprintf(fpm,"lw 2 lt 1 pt 6 \n");
-	else fprintf(fpm,"lw 1 lt 5 pt 6, '%s' u 1:2 t 'load case %d of %d' w l lw 2 lt 3\n", meshfl, lc, nL );
+	if (!anlyz) fprintf(fpm,"lw %d lt 1 pt 6 \n", lw );
+	else fprintf(fpm,"lw 1 lt 5 pt 6, '%s' u 1:2 t 'load case %d of %d' w l lw %d lt 3\n", meshfl, lc, nL, lw );
 
 	// 3D plot command
 
 	fprintf(fpm,"%c splot '%s' u 2:3:4 t 'load case %d of %d' w lp ",
 							D3, meshpath, lc, nL );
-	if (!anlyz) fprintf(fpm," lw 2 lt 1 pt 6 \n");
-	else fprintf(fpm," lw 1 lt 5 pt 6, '%s' u 1:2:3 t 'load case %d of %d' w l lw 2 lt 3\n",meshfl, lc, nL );
+	if (!anlyz) fprintf(fpm," lw %d lt 1 pt 6 \n", lw );
+	else fprintf(fpm," lw 1 lt 5 pt 6, '%s' u 1:2:3 t 'load case %d of %d' w l lw %d lt 3\n",meshfl, lc, nL, lw );
 
 	if (lc < nL)	fprintf(fpm,"pause -1\n");
 
@@ -2986,6 +2987,7 @@ void modal_mesh(
 	double *v;		/* a mode-shape vector */
 
 	int	i, j, m,n, X=0, Y=0, Z=0;
+	int	lw = 1;		/*  line thickness of deformed mesh	*/
 	char	D2='#', D3 = '#',	/* indicate 2D or 3D frame	*/
 		modefl[FILENMAX],
 		errMsg[MAXL];
@@ -3069,15 +3071,15 @@ void modal_mesh(
 		// 2D plot command
 
 		fprintf(fpm,"%c plot '%s' u 2:3 t 'undeformed mesh' w l ", D2, meshpath );
-		if (!anlyz) fprintf(fpm," lw 2 lt 1 \n");
-		else fprintf(fpm," lw 1 lt 5 , '%s' u 1:2 t 'mode-shape %d' w l lw 2 lt 3\n", modefl, m );
+		if (!anlyz) fprintf(fpm," lw %d lt 1 \n", lw );
+		else fprintf(fpm," lw 1 lt 5 , '%s' u 1:2 t 'mode-shape %d' w l lw %d lt 3\n", modefl, m, lw );
 
 		// 3D plot command 
 
 		fprintf(fpm,"%c splot '%s' u 2:3:4 t 'undeformed mesh' w l ",
 								D3, meshpath);
-		if (!anlyz) fprintf(fpm," lw 2 lt 1 \n");
-		else fprintf(fpm," lw 1 lt 5 , '%s' u 1:2:3 t 'mode-shape %d' w l lw 2 lt 3\n", modefl, m );
+		if (!anlyz) fprintf(fpm," lw %d lt 1 \n", lw );
+		else fprintf(fpm," lw 1 lt 5 , '%s' u 1:2:3 t 'mode-shape %d' w l lw %d lt 3\n", modefl, m, lw );
 
 		fclose(fpm);
 
@@ -3125,7 +3127,8 @@ void animate(
 
 	int	fr, i,j, m,n, X=0, Y=0, Z=0, c, CYCLES=3,
 		frame_number = 0,
-		total_frames;	/* total number of frames in animation */
+		lw = 1,		/*  line thickness of deformed mesh	*/
+		total_frames;	/* total number of frames in animation	*/
 
 	char	D2 = '#', D3 = '#',	/* indicate 2D or 3D frame	*/
 		Movie = '#',	/* use '#' for no-movie  -OR-  ' ' for movie */
@@ -3233,14 +3236,14 @@ void animate(
 	    sprintf(framefl,"%s-%02d-f-%03d.ps", modepath, m, fr  );
 
 	    fprintf(fpm,"%c plot '%s' u 2:3 w l lw 1 lt 5, ", D2,meshpath );
-	    fprintf(fpm," '%s' u 1:2 w l lw 2 lt 3 ; \n", modefl );
+	    fprintf(fpm," '%s' u 1:2 w l lw %d lt 3 ; \n", modefl, lw );
 	    if ( pan != 0.0 )
 	     fprintf(fpm,"%c set view %7.2f, %7.2f, %5.3f # pan = %f\n", D3,
 		rot_x_init + pan*(rot_x_final-rot_x_init)*frame_number/total_frames,
 		rot_z_init + pan*(rot_z_final-rot_z_init)*frame_number/total_frames,
 		zoom_init + pan*(zoom_final-zoom_init)*frame_number/total_frames, pan );
 	    fprintf(fpm,"%c splot '%s' u 2:3:4 w l lw 1 lt 5, ",D3,meshpath);
-            fprintf(fpm," '%s' u 1:2:3 w l lw 2 lt 3;", modefl );
+            fprintf(fpm," '%s' u 1:2:3 w l lw %d lt 3;", modefl, lw );
 
 	    if ( fr==0 && c==1 )	fprintf(fpm,"  pause 1.5 \n");
 	    else			fprintf(fpm,"  pause 0.05 \n");
@@ -3255,14 +3258,14 @@ void animate(
 	    sprintf(framefl,"%s-%02d-f-%03d.ps", modepath, m, fr  );
 
 	    fprintf(fpm,"%c plot '%s' u 2:3 w l lw 1 lt 5, ", D2,meshpath );
-	    fprintf(fpm," '%s' u 1:2 w l lw 2 lt 3; \n", modefl );
+	    fprintf(fpm," '%s' u 1:2 w l lw %d lt 3; \n", modefl, lw );
 	    if ( pan != 0.0 )
 	     fprintf(fpm,"%c set view %7.2f, %7.2f, %5.3f # pan = %f\n", D3,
 		rot_x_init + pan*(rot_x_final-rot_x_init)*frame_number/total_frames,
 		rot_z_init + pan*(rot_z_final-rot_z_init)*frame_number/total_frames,
 		zoom_init + pan*(zoom_final-zoom_init)*frame_number/total_frames, pan );
 	    fprintf(fpm,"%c splot '%s' u 2:3:4 w l lw 1 lt 5, ",D3,meshpath);
-	    fprintf(fpm," '%s' u 1:2:3 w l lw 2 lt 3;", modefl );
+	    fprintf(fpm," '%s' u 1:2:3 w l lw %d lt 3;", modefl, lw );
 	    fprintf(fpm,"  pause 0.05 \n");
 	    fprintf(fpm,"%c  load 'saveplot';\n",Movie);
 	    fprintf(fpm,"%c  !mv my-plot.ps %s\n", Movie, framefl );
@@ -3273,9 +3276,9 @@ void animate(
 
 	 sprintf(modefl,"%s-%02d.%03d", modepath, m, fr  );
 
-	 fprintf(fpm,"%c plot '%s' u 2:3 w l lw 2 lt 5, ", D2, meshpath );
+	 fprintf(fpm,"%c plot '%s' u 2:3 w l lw %d lt 5, ", D2, meshpath, lw );
 	 fprintf(fpm," '%s' u 1:2 w l lw 3 lt 3 \n", modefl );
-	 fprintf(fpm,"%c splot '%s' u 2:3:4 w l lw 2 lt 5, ",D3,meshpath);
+	 fprintf(fpm,"%c splot '%s' u 2:3:4 w l lw %d lt 5, ",D3,meshpath, lw );
 	 fprintf(fpm," '%s' u 1:2:3 w l lw 3 lt 3 \n", modefl );
 
 	 i++;
