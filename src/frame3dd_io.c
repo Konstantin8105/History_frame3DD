@@ -2841,6 +2841,7 @@ void static_mesh(
 
 		ch = 'a'; 
 
+		fprintf( fpm, "\n# element %5d \n", m );
 		if ( dx == -1.0 ) {
 			cubic_bent_beam ( fpm,
 				J1[m],J2[m], xyz, L[m],p[m], D, exagg_static );
@@ -3035,8 +3036,10 @@ void modal_mesh(
 
 		fprintf(fpm,"#      X-dsp       Y-dsp       Z-dsp\n\n");
 
-		for(n=1; n<=nE; n++)
+		for(n=1; n<=nE; n++) {
+			fprintf( fpm, "\n# element %5d \n", n );
 			cubic_bent_beam ( fpm, J1[n], J2[n], xyz, L[n], p[n], v, exagg_modal );
+		}
 
 		fclose(fpm);
 
@@ -3312,9 +3315,10 @@ void animate(
 
 	    fprintf(fpm,"#      X-dsp       Y-dsp       Z-dsp\n\n");
 
-	    for (n=1; n<=nE; n++)
-
+	    for (n=1; n<=nE; n++) {
+		fprintf( fpm, "\n# element %5d \n", n );
 		cubic_bent_beam ( fpm, J1[n], J2[n], xyz, L[n], p[n], v, ex );
+	    }
 
 	    fclose(fpm);
 	  }
@@ -3395,7 +3399,11 @@ void cubic_bent_beam(
 
 	lu_dcmp ( A, 4, b, 0, 1, &pd );		/* solve for cubic coef's */
 
-	for ( s = u1; fabs(s) <= 1.01*fabs(L+u7); s += (L+u7-u1) / 10.0 ) {
+	// debug ... if deformed mesh exageration is too big, some elements
+	// may not be plotted.  
+	//fprintf( fpm, "# u1=%e  L+u7=%e, dx = %e \n",
+	//				u1, fabs(L+u7), fabs(L+u7-u1)/10.0); 
+	for ( s = u1; fabs(s) <= 1.01*fabs(L+u7); s += fabs(L+u7-u1) / 10.0 ) {
 
 			/* deformed shape in local coordinates */
 		v = a[1] + a[2]*s + a[3]*s*s + a[4]*s*s*s;
