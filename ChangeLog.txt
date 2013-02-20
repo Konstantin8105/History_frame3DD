@@ -1,4 +1,10 @@
 *Wed Feb 20 2013 <.> 0.02100105
+- sourceforge upgrade ...  svn switch --relocate
+https://frame3dd.svn.sourceforge.net/svnroot/frame3dd
+https://svn.code.sf.net/p/frame3dd/code/
+
+
+*Wed Feb 20 2013 <.> 0.02100105
 - frame3dd_io.c and user-manual.html - update gnuplot to version 4.6 
 
 *Mon Feb 11 2013 <.> 0.02100105
