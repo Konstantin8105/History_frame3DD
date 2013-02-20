@@ -2932,6 +2932,7 @@ void static_mesh(
 
 	 fprintf(fpm,"%c set parametric\n", D3 );
 	 fprintf(fpm,"%c set view 60, 70, 1 \n", D3 );
+	 fprintf(fpm,"%c set view equal xyz \n", D3 );
 	 fprintf(fpm,"%c set nokey\n", D3 );
 	 fprintf(fpm,"%c set xlabel 'x'\n", D3 );
 	 fprintf(fpm,"%c set ylabel 'y'\n", D3 );
@@ -3196,7 +3197,7 @@ void animate(
 			y_min-0.1*Dxyz, y_max+0.1*Dxyz );
 	   fprintf(fpm,"set zrange [ %lf : %lf ] \n",
 			z_min-0.1*Dxyz, z_max+0.1*Dxyz );
-	   fprintf(fpm,"# set tickslevel 0 \n"); // requires Gnuplot >= 4.6
+	   fprintf(fpm,"set xyplane 0 \n"); // requires Gnuplot >= 4.6
 
 /*
  *	   if ( x_min != x_max )
