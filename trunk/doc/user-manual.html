@@ -995,8 +995,6 @@ Adding these features would require editing the matlab inteface function, frame_
 </p>
 
 <p>
-Running Frame3DD on Linux (binary install) using MATLAB, calling function repeatedly with different inputs causes incorrect results. Seems to be based on file read/write speed, as putting a 0.5 second pause in the code fixes the problem.
-Symptoms are especially obvious for optimization runs,
 If you plan to run <b>frame_3dd.m</b> repeatedly, and in quick succession,
 (for example as part of a structural optimization, using Matlab's fmincon function), remove the IOdata_out.m file after each run if <b>frame_3dd.m</b> 
 to prevent asynchronous over-writing of the file, 
