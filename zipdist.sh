@@ -61,7 +61,7 @@ zip -r Frame3DD_$(echo $VERSION).zip Frame3DD/*
 #cp Frame3DD_$(date +%Y%m%d).zip Frame3DD_$(date +%Y%m%d)_osx567.zip
 #cp Frame3DD_$(date +%Y%m%d).zip Frame3DD_$(date +%Y%m%d)_win32.zip
 
-cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_DukeOIT.zip
+cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)-DukeOIT.zip
 cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_linux.zip
 cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_osx34.zip
 cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_osx567.zip
@@ -130,9 +130,9 @@ rm -rf Frame3DD
 
 # To upload distribution files to sourceforge.net ...
 #
-# rsync -uav *.zip hpgavin,frame3dd@frs.sourceforge.net:/home/frs/project/f/fr/frame3dd/frame3dd/0.20100105/.
+# rsync -uav Frame3DD*_*.zip hpgavin,frame3dd@frs.sourceforge.net:/home/frs/project/f/fr/frame3dd/frame3dd/0.20100105/.
 #
-# rsync -uav *.bz2  hpgavin,frame3dd@frs.sourceforge.net:/home/frs/project/f/fr/frame3dd/frame3dd/0.20100105/.
+##rsync -uav *.bz2  hpgavin,frame3dd@frs.sourceforge.net:/home/frs/project/f/fr/frame3dd/frame3dd/0.20100105/.
 
 # ----------------------------------------------------------- zipdist.sh
 # Henri P. Gavin  2009.10.20

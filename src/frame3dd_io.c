@@ -387,9 +387,14 @@ void read_frame_element_data (
 	float *Ax, float *Asy, float *Asz,
 	float *Jx, float *Iy, float *Iz, float *E, float *G, float *p, float *d
 ){
-	int	n1, n2, i, b;
+	int	n1, n2, i, n, b;
+	int	*epn, epn0;	/*  vector of elements per node */
 	int	sfrv=0;		/* *scanf return value */
 	char	errMsg[MAXL];
+
+	epn = ivector(1,nN);
+
+	for (n=1;n<=nN;n++)	epn[n] = 0;
 
 	for (i=1;i<=nE;i++) {		/* read frame element properties */
 		sfrv=fscanf(fp, "%d", &b );
@@ -400,6 +405,9 @@ void read_frame_element_data (
 		    exit(51);
 		}
 		sfrv=fscanf(fp, "%d %d", &J1[b], &J2[b] );
+
+		epn[J1[b]] += 1;	epn[J2[b]] += 1;
+		
 		if (sfrv != 2) sferr("node numbers in frame element data");
 		if ( J1[b] <= 0 || J1[b] > nN || J2[b] <= 0 || J2[b] > nN ) {
 		    sprintf(errMsg,"\n  error in frame element property data: node number out of range  \n Frame element number: %d \n", b);
@@ -484,6 +492,18 @@ void read_frame_element_data (
 		   exit(61);
 		}
 	}
+
+	for ( n=1; n<=nN; n++ ) {
+	 if ( epn[n] == 0 ) {
+		sprintf(errMsg,"node or frame element property data:\n     node number %3d is unconnected. \n", n);
+		sferr(errMsg);
+		epn0 += 1;
+	 }
+	}	
+
+	free_ivector(epn,1,nN);
+
+	if ( epn0 > 0 )	exit(42);
 
 	return;
 }

@@ -1,3 +1,6 @@
+*Wed Mar 6 2013 <.> 0.02100105
+- add error check on input data for unconnected nodes, with output error code 42
+
 *Wed Feb 20 2013 <.> 0.02100105
 - sourceforge upgrade ...  svn switch --relocate
 https://frame3dd.svn.sourceforge.net/svnroot/frame3dd
