@@ -388,7 +388,7 @@ void read_frame_element_data (
 	float *Jx, float *Iy, float *Iz, float *E, float *G, float *p, float *d
 ){
 	int	n1, n2, i, n, b;
-	int	*epn, epn0;	/*  vector of elements per node */
+	int	*epn, epn0=0;	/*  vector of elements per node */
 	int	sfrv=0;		/* *scanf return value */
 	char	errMsg[MAXL];
 
