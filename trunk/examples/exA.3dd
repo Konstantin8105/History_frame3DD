@@ -1,7 +1,7 @@
 Example A: linear static analysis of a 2D truss with support settlement (kips,in) 
 
 # node data ...
-13				# number of nodes 
+12				# number of nodes 
 #.node  x       y       z       r                 units: inches
 
  1	0.0	0.0	0.0	0.0
