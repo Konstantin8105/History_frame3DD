@@ -93,6 +93,8 @@ ERRORMSG -  write a diagnostic error message in color
 -----------------------------------------------------------------------------*/
 void errorMsg ( const char *errString )
 {
+	fprintf(stderr,"\n\n");
+	fflush(stderr);
 #if ANSI_SYS
 	color(1); color(41); color(37);
 #endif
