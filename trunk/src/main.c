@@ -589,7 +589,7 @@ For compilation/installation, see README.txt.
 
 	if (nM > 0) { /* carry out modal analysis */
 
-		if ( verbose ) fprintf(stdout,"\n\n Modal Analysis ...\n");
+		if(verbose & anlyz) fprintf(stdout,"\n\n Modal Analysis ...\n");
 
 		nM_calc = (nM+8)<(2*nM) ? nM+8 : 2*nM;		/* Bathe */
 

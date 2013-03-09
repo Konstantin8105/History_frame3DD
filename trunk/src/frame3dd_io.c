@@ -383,12 +383,12 @@ void read_frame_element_data (
 	FILE *fp,
 	int nN, int nE, vec3 *xyz, float *r,
 	double *L, double *Le,
-	int *J1, int *J2,
+	int *N1, int *N2,
 	float *Ax, float *Asy, float *Asz,
 	float *Jx, float *Iy, float *Iz, float *E, float *G, float *p, float *d
 ){
 	int	n1, n2, i, n, b;
-	int	*epn, epn0=0;	/*  vector of elements per node */
+	int	*epn, epn0=0;	/* vector of elements per node */
 	int	sfrv=0;		/* *scanf return value */
 	char	errMsg[MAXL];
 
@@ -404,12 +404,12 @@ void read_frame_element_data (
 		    errorMsg(errMsg);
 		    exit(51);
 		}
-		sfrv=fscanf(fp, "%d %d", &J1[b], &J2[b] );
+	      	sfrv=fscanf(fp, "%d %d", &N1[b], &N2[b] );
 
-		epn[J1[b]] += 1;	epn[J2[b]] += 1;
-		
+		epn[N1[b]] += 1;        epn[N2[b]] += 1;
+
 		if (sfrv != 2) sferr("node numbers in frame element data");
-		if ( J1[b] <= 0 || J1[b] > nN || J2[b] <= 0 || J2[b] > nN ) {
+		if ( N1[b] <= 0 || N1[b] > nN || N2[b] <= 0 || N2[b] > nN ) {
 		    sprintf(errMsg,"\n  error in frame element property data: node number out of range  \n Frame element number: %d \n", b);
 		    errorMsg(errMsg);
 		    exit(52);
@@ -467,8 +467,8 @@ void read_frame_element_data (
 	}
 
 	for (b=1;b<=nE;b++) {		/* calculate frame element lengths */
-		n1 = J1[b];
-		n2 = J2[b];
+		n1 = N1[b];
+		n2 = N2[b];
 
 #define SQ(X) ((X)*(X))
 		L[b] =	SQ( xyz[n2].x - xyz[n1].x ) +
@@ -480,13 +480,13 @@ void read_frame_element_data (
 		Le[b] = L[b] - r[n1] - r[n2];
 		if ( n1 == n2 || L[b] == 0.0 ) {
 		   sprintf(errMsg,
-			" Frame elements must start and stop at different nodes\n  frame element %d  J1= %d J2= %d L= %e\n   Perhaps frame element number %d has not been specified.\n  or perhaps the Input Data file is missing expected data.\n",
+			" Frame elements must start and stop at different nodes\n  frame element %d  N1= %d N2= %d L= %e\n   Perhaps frame element number %d has not been specified.\n  or perhaps the Input Data file is missing expected data.\n",
 		   b, n1,n2, L[b], i );
 		   errorMsg(errMsg);
 		   exit(60);
 		}
 		if ( Le[b] <= 0.0 ) {
-		   sprintf(errMsg, " Node  radii are too large.\n  frame element %d  J1= %d J2= %d L= %e \n  r1= %e r2= %e Le= %e \n",
+		   sprintf(errMsg, " Node  radii are too large.\n  frame element %d  N1= %d N2= %d L= %e \n  r1= %e r2= %e Le= %e \n",
 		   b, n1,n2, L[b], r[n1], r[n2], Le[b] );
 		   errorMsg(errMsg);
 		   exit(61);
@@ -495,15 +495,15 @@ void read_frame_element_data (
 
 	for ( n=1; n<=nN; n++ ) {
 	 if ( epn[n] == 0 ) {
-		sprintf(errMsg,"node or frame element property data:\n     node number %3d is unconnected. \n", n);
-		sferr(errMsg);
-		epn0 += 1;
+	  sprintf(errMsg,"node or frame element property data:\n     node number %3d is unconnected. \n", n);
+	  sferr(errMsg);
+	  epn0 += 1;
 	 }
-	}	
+	}
 
 	free_ivector(epn,1,nN);
 
-	if ( epn0 > 0 )	exit(42);
+	if ( epn0 > 0 ) exit(42);
 
 	return;
 }
@@ -2772,7 +2772,7 @@ void static_mesh(
 		char infcpath[], char meshpath[], char plotpath[],
 		char *title, int nN, int nE, int nL, int lc, int DoF,
 		vec3 *xyz, double *L,
-		int *J1, int *J2, float *p, double *D, 
+		int *N1, int *N2, float *p, double *D, 
 		double exagg_static, int D3_flag, int anlyz, float dx
 ){
 	FILE	*fpif=NULL, *fpm=NULL;
@@ -2786,104 +2786,12 @@ void static_mesh(
 		n1, n2;		/* node numbers			*/
 	float	x1, y1, z1,	/* coordinates of node n1		*/
 		x2, y2, z2;	/* coordinates of node n2		*/
-	int	j=0, m=0,
+	int	j=0, m=0, n=0,
 		X=0, Y=0, Z=0,
 		lw = 1;		/*  line width of deformed mesh		*/
 	time_t  now;		/* modern time variable type		*/
 
 	(void) time(&now);
-
-	// write undeformed mesh data
-
-	if (lc == 1) {
-	 // open the undeformed mesh data file for writing
-	 if ((fpm = fopen (meshpath, "w")) == NULL) {
-		sprintf (errMsg,"\n  error: cannot open meshpath: %s\n", meshpath );
-		errorMsg(errMsg);
-		exit(21);
-	 }
-
-	 fprintf(fpm,"# FRAME3DD ANALYSIS RESULTS  http://frame3dd.sf.net/");
-	 fprintf(fpm," VERSION %s \n", VERSION);
-	 fprintf(fpm,"# %s\n", title );
-	 fprintf(fpm,"# %s", ctime(&now) );
-	 fprintf(fpm,"# U N D E F O R M E D   M E S H   D A T A   (global coordinates)\n");
-	 fprintf(fpm,"# Node        X            Y            Z \n");
-
-	 for (m=1; m<=nE; m++) {
-		j = J1[m];	// i = 6*(j-1);
-		fprintf (fpm,"%5d %12.4e %12.4e %12.4e \n",
-					j , xyz[j].x , xyz[j].y , xyz[j].z );
-		j = J2[m];	// i = 6*(j-1);
-		fprintf (fpm,"%5d %12.4e %12.4e %12.4e",
-					j , xyz[j].x , xyz[j].y , xyz[j].z );
-		fprintf (fpm,"\n\n\n");
-	 }
-	 fclose(fpm);
-	}
-
-	// write deformed mesh data
-
-	if (!anlyz) exagg_static = 0.0;
-
-	// file name for deformed mesh data for load case "lc" 
-	sprintf( meshfl, "%sf.%03d", meshpath, lc );
-
-	// open the deformed mesh data file for writing 
-	if ((fpm = fopen (meshfl, "w")) == NULL) {
-		sprintf (errMsg,"\n  error: cannot open meshpath: %s\n", meshfl );
-		errorMsg(errMsg);
-		exit(22);
-	}
-
-	fprintf(fpm,"# FRAME3DD ANALYSIS RESULTS  http://frame3dd.sf.net/");
-	fprintf(fpm," VERSION %s \n", VERSION);
-	fprintf(fpm,"# %s\n", title );
-	fprintf(fpm,"# L O A D  C A S E   %d  of   %d \n", lc, nL );
-	fprintf(fpm,"# %s", ctime(&now) );
-	fprintf(fpm,"# D E F O R M E D   M E S H   D A T A ");
-	fprintf(fpm,"  deflection exaggeration: %.1f\n", exagg_static );
-	fprintf(fpm,"#       X-dsp        Y-dsp        Z-dsp\n");
-
-	// file name for internal force data for load case "lc" 
-	sprintf( fnif, "%s%02d", infcpath, lc );
-	
-	// open the interior force data file for reading 
-	if ( dx > 0 ) {
-	 if ((fpif = fopen (fnif, "r")) == NULL) {
-          sprintf (errMsg,"\nERROR: cannot open interior force data file '%s'\n",fnif);
-	  errorMsg(errMsg);
-          exit(20);
-	 }
-	}
-
-	for (m=1; m<=nE; m++) {
-
-		ch = 'a'; 
-
-		fprintf( fpm, "\n# element %5d \n", m );
-		if ( dx == -1.0 ) {
-			cubic_bent_beam ( fpm,
-				J1[m],J2[m], xyz, L[m],p[m], D, exagg_static );
-		} else {
-			while ( ch != '@' )	ch = getc(fpif);
-			sfrv=fscanf(fpif,"%d %d %d %f %f %f %f %f %f %d",
-			 &frel, &n1, &n2, &x1, &y1, &z1, &x2, &y2, &z2, &nx);
-			if (sfrv != 10) sferr(fnif);
-			if ( frel != m || J1[m] != n1 || J2[m] != n2 ) {
-			 fprintf(stderr," error in static_mesh parsing\n");
-			 fprintf(stderr,"  frel = %d; m = %d; nx = %d \n", frel,m,nx );
-			}
-			/* debugging ... check mesh data 
-			printf("  frel = %3d; m = %3d; n1 =%4d; n2 = %4d; nx = %3d L = %f \n", frel,m,n1,n2,nx,L[m] );
-			*/
-			while ( ch != '~' )	ch = getc(fpif);
-			force_bent_beam ( fpm, fpif, fnif, nx, 
-				J1[m],J2[m], xyz, L[m],p[m], D, exagg_static );
-		}
-	}
-	if ( dx != -1.0 ) fclose(fpif);
-	fclose(fpm);
 
 	// write gnuplot plotting script commands
 
@@ -2898,7 +2806,7 @@ void static_mesh(
 		D3 = '#'; D2 = ' ';
 	}
 
-	if (lc == 1) {	// open plotting script file for writing
+	if (lc <= 1) {	// open plotting script file for writing
 	    if ((fpm = fopen (plotpath, "w")) == NULL) {
 		sprintf (errMsg,"\n  error: cannot open plot file: %s\n", plotpath);
 		errorMsg(errMsg);
@@ -2912,9 +2820,12 @@ void static_mesh(
 	    }
 	}
 
+	// file name for deformed mesh data for load case "lc" 
+	if ( lc >= 1 && anlyz )	sprintf( meshfl, "%sf.%03d", meshpath, lc );
+
 	// write header, plot-setup cmds, node label, and element label data
 
-	if (lc == 1) {	
+	if (lc <= 1) {	// header & node number & element number labels
 
 	 fprintf(fpm,"# FRAME3DD ANALYSIS RESULTS  http://frame3dd.sf.net/");
 	 fprintf(fpm," VERSION %s \n", VERSION);
@@ -2940,7 +2851,7 @@ void static_mesh(
 
 	 fprintf(fpm,"# ELEMENT NUMBER LABELS\n");
 	 for (m=1; m<=nE; m++) {
-		n1 = J1[m];	n2 = J2[m];
+		n1 = N1[m];	n2 = N2[m];
 		mx = 0.5 * ( xyz[n1].x + xyz[n2].x );
 		my = 0.5 * ( xyz[n1].y + xyz[n2].y );
 		mz = 0.5 * ( xyz[n1].z + xyz[n2].z );
@@ -2965,8 +2876,12 @@ void static_mesh(
 
 	fprintf(fpm,"set title \"%s\\n", title );
 	fprintf(fpm,"analysis file: %s ", IN_file );
-	fprintf(fpm,"  deflection exaggeration: %.1f ", exagg_static );
-	fprintf(fpm,"  load case %d of %d \"\n", lc, nL );
+	if ( anlyz ) {
+		fprintf(fpm,"  deflection exaggeration: %.1f ", exagg_static );
+		fprintf(fpm,"  load case %d of %d \"\n", lc, nL );
+	} else {
+		fprintf(fpm,"  data check only \"\n");
+	}
 
 	// 2D plot command
 
@@ -2982,7 +2897,99 @@ void static_mesh(
 	if (!anlyz) fprintf(fpm," lw %d lt 1 pt 6 \n", lw );
 	else fprintf(fpm," lw 1 lt 5 pt 6, '%s' u 1:2:3 t 'load case %d of %d' w l lw %d lt 3\n",meshfl, lc, nL, lw );
 
-	if (lc < nL)	fprintf(fpm,"pause -1\n");
+	if ( lc < nL && anlyz )	fprintf(fpm,"pause -1\n");
+
+	fclose(fpm);
+
+	// write undeformed mesh data
+
+	if (lc <= 1) {
+	 // open the undeformed mesh data file for writing
+	 if ((fpm = fopen (meshpath, "w")) == NULL) {
+		sprintf (errMsg,"\n  error: cannot open meshpath: %s\n", meshpath );
+		errorMsg(errMsg);
+		exit(21);
+	 }
+
+	 fprintf(fpm,"# FRAME3DD ANALYSIS RESULTS  http://frame3dd.sf.net/");
+	 fprintf(fpm," VERSION %s \n", VERSION);
+	 fprintf(fpm,"# %s\n", title );
+	 fprintf(fpm,"# %s", ctime(&now) );
+	 fprintf(fpm,"# U N D E F O R M E D   M E S H   D A T A   (global coordinates)\n");
+	 fprintf(fpm,"# Node        X            Y            Z \n");
+
+	 for (m=1; m<=nE; m++) {
+		n = N1[m];	// i = 6*(n-1);
+		fprintf (fpm,"%5d %12.4e %12.4e %12.4e \n",
+					n , xyz[n].x , xyz[n].y , xyz[n].z );
+		n = N2[m];	// i = 6*(n-1);
+		fprintf (fpm,"%5d %12.4e %12.4e %12.4e",
+					n , xyz[n].x , xyz[n].y , xyz[n].z );
+		fprintf (fpm,"\n\n\n");
+	 }
+	 fclose(fpm);
+	}
+
+	if (!anlyz) return; 	// no deformed mesh
+
+	// write deformed mesh data
+
+	// open the deformed mesh data file for writing 
+	if ((fpm = fopen (meshfl, "w")) == NULL) {
+		sprintf (errMsg,"\n  error: cannot open meshpath: %s\n", meshfl );
+		errorMsg(errMsg);
+		exit(22);
+	}
+
+	fprintf(fpm,"# FRAME3DD ANALYSIS RESULTS  http://frame3dd.sf.net/");
+	fprintf(fpm," VERSION %s \n", VERSION);
+	fprintf(fpm,"# %s\n", title );
+	fprintf(fpm,"# L O A D  C A S E   %d  of   %d \n", lc, nL );
+	fprintf(fpm,"# %s", ctime(&now) );
+	fprintf(fpm,"# D E F O R M E D   M E S H   D A T A ");
+	fprintf(fpm,"  deflection exaggeration: %.1f\n", exagg_static );
+	fprintf(fpm,"#       X-dsp        Y-dsp        Z-dsp\n");
+	
+	// open the interior force data file for reading 
+	if ( dx > 0.0 && anlyz ) {
+	 // file name for internal force data for load case "lc" 
+	 sprintf( fnif, "%s%02d", infcpath, lc );
+	 if ((fpif = fopen (fnif, "r")) == NULL) {
+          sprintf (errMsg,"\nERROR: cannot open interior force data file '%s'\n",fnif);
+	  errorMsg(errMsg);
+          exit(20);
+	 }
+	}
+
+	for (m=1; m<=nE; m++) {	// write deformed shape data for each element
+
+		ch = 'a'; 
+
+		fprintf( fpm, "\n# element %5d \n", m );
+		if ( dx < 0.0 && anlyz ) {
+			cubic_bent_beam ( fpm,
+				N1[m],N2[m], xyz, L[m],p[m], D, exagg_static );
+		} 
+		if ( dx > 0.0 && anlyz ) {
+			while ( ch != '@' )	ch = getc(fpif);
+			sfrv=fscanf(fpif,"%d %d %d %f %f %f %f %f %f %d",
+			 &frel, &n1, &n2, &x1, &y1, &z1, &x2, &y2, &z2, &nx);
+			if (sfrv != 10) sferr(fnif);
+			if ( frel != m || N1[m] != n1 || N2[m] != n2 ) {
+			 fprintf(stderr," error in static_mesh parsing\n");
+			 fprintf(stderr,"  frel = %d; m = %d; nx = %d \n", frel,m,nx );
+			}
+			/* debugging ... check mesh data 
+			printf("  frel = %3d; m = %3d; n1 =%4d; n2 = %4d; nx = %3d L = %f \n", frel,m,n1,n2,nx,L[m] );
+			*/
+			while ( ch != '~' )	ch = getc(fpif);
+			force_bent_beam ( fpm, fpif, fnif, nx, 
+				N1[m],N2[m], xyz, L[m],p[m], D, exagg_static );
+		}
+
+	}
+
+	if ( dx > 0.0 && anlyz ) fclose(fpif);
 
 	fclose(fpm);
 
