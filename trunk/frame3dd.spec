@@ -8,7 +8,7 @@ Summary:	Structural analysis of 2D/3D frames
 
 # This version number is filled in automatically when you run 'scons dist'.
 # You should update it in the 'SConstruct' file, rather than here.
-Version:	0.20100105
+Version:	0.20130318
 
 # Use release 0.* so that other users can do patch releases with a higher number
 # and still have the update occur automatically.
@@ -66,14 +66,20 @@ rm -rf %{buildroot}
 #
 # ChangeLog is now maintained in ChangeLog.txt. Make your changes there.
 #
+*Mon 17 Mar 2013 <john.pye@anu.edu.au> 0.20130317
+- Update SCons build for renamed files eg HPGmatrix.c
+
+*Sat Mar 9 2013 <.> 0.02100105
+- frame3dd_io.c - fix bug in writing undeformed mesh with data check only
+
 *Wed Mar 6 2013 <.> 0.02100105
 - add error check on input data for unconnected nodes, with output error code 42
 
 *Wed Feb 20 2013 <.> 0.02100105
-- sourceforge upgrade ...  svn switch --relocate
-https://frame3dd.svn.sourceforge.net/svnroot/frame3dd
-https://svn.code.sf.net/p/frame3dd/code/
-
+- sourceforge upgrade:
+- svn switch --relocate
+- ... https://frame3dd.svn.sourceforge.net/svnroot/frame3dd
+- ... https://svn.code.sf.net/p/frame3dd/code/
 
 *Wed Feb 20 2013 <.> 0.02100105
 - frame3dd_io.c and user-manual.html - update gnuplot to version 4.6 
@@ -100,8 +106,7 @@ compatibility with gnuplot versions earlier than 4.6
 - fix broken links to ansicon ...  http://adoxa.3eeweb.com/ansicon/
 
 *Tue Nov  6 2012 Henri Gavin <.> 0.20100105
-- add reference to Wai-Fah Chen's text on Structural Stability in the section
-of user-manual.html on second-order analysis.
+- add reference to Wai-Fah Chen's text on Structural Stability in the section of user-manual.html on second-order analysis.
 
 *Fri Nov  2 2012 Henri Gavin <.> 0.20100105
 - small edits to comments in main.c
@@ -115,12 +120,7 @@ of user-manual.html on second-order analysis.
 - Improving documentation on numerical details.
 
 *Wed Oct 24 2012 Henri Gavin <.> 0.20100105
-- Investigated Powell-Symmetric-Broyden update of secant stiffness matrix. 
-This quasi-Newton method does not seem to help very much.  In fact, in all
-tests convergence with the Powell-Symmetric-Broyden update is slower.  In some
-cases the solution does not converge.   So, Frame3DD is sticking with the
-standard full secant update method.   A function for Powell-Symmetric-Broyden
-updating is now in HPGmatrix.c, for possible future use.  
+- Investigated Powell-Symmetric-Broyden update of secant stiffness matrix. This quasi-Newton method does not seem to help very much.  In fact, in all tests convergence with the Powell-Symmetric-Broyden update is slower.  In some cases the solution does not converge.   So, Frame3DD is sticking with the standard full secant update method.   A function for Powell-Symmetric-Broyden updating is now in HPGmatrix.c, for possible future use.  
 
 *Fri Oct 19 2012 Henri Gavin <.> 0.20100105
 - Terms (1,1), (7,7), (1,7) and (7,1) of Kg should be zero!
@@ -140,9 +140,7 @@ Frame3DD now passes the "patch" test.
 *Tue Oct  2 2012 Henri Gavin <.> 0.20100105
 - delete: matrix.c hpgUtils.c nrutil.c  (matrix.c and hpgUtls.c were GPL)
 - add:   HPGmatrix.c HPGutil.c NRutil.c (none of these are GPL)
-- new functions in HPGmatrix.c for solving partitioned systems of equations.
-via LDL' decomposition.   These functions will be used in a forthcoming change
-in order to compute reaction forces directly from the equilibrium matrices.
+- new functions in HPGmatrix.c for solving partitioned systems of equations via LDL' decomposition.   These functions will be used in a forthcoming change in order to compute reaction forces directly from the equilibrium matrices.
 - this update is the first in a sequence of re-writes of Frame3DD.
 
 *Wed Sep  5 2012 Henri Gavin <.> 0.20100105
@@ -157,11 +155,8 @@ http://rhin.crai.archi.fr/rld/plugin_details.php?id=1008
 - fresh build of Frame3DD for linux, OS X, and Win32
 
 *Mon May 28 2012 Henri Gavin <.> 0.20100105
-- bug fix : allowable number of of interioir point forces, nP, is ten times the
-number of frame elements, nE.    The input data error message was triggered if
-nP > nE.   It has been changed to check if nP > 10*nE.   
-updated : frame3dd_io.c  and  user-manual.html
-(Thanks to Humberto Hassey.)
+- bug fix : allowable number of of interioir point forces, nP, is ten times the number of frame elements, nE. The input data error message was triggered if nP > nE. It has been changed to check if nP > 10*nE.   
+- updated : frame3dd_io.c  and  user-manual.html (Thanks to Humberto Hassey.)
 
 *Mon Apr 09 2012 Henri Gavin <.> 0.20100105
 - change of terminology: "joint" to "node" throughout documentation and code
@@ -718,7 +713,5 @@ and doc/user-manual.html to reflect change in name. The URL has not changed.
 
 * Fri Jan 01 1993 Henri Gavin <.> 19930101
 - initiation of program at the University of Michigan
-
-
 
 

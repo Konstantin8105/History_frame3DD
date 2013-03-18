@@ -3,6 +3,10 @@
 # zipdist.sh
 # assemble .ZIP files for Frame3dd executable and source distribution release
 
+# NOTE: this version number should preferably be synchronised with the version
+# number in file 'SConstruct'. Note the alternative packaging instructions in 
+# the file 'PACKAGING.txt' which builds DEB, RPM and EXE packages, but nothing
+# for Mac users :-( 
 export VERSION=20100105
 echo $VERSION
 
