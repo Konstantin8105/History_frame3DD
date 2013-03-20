@@ -65,7 +65,7 @@ zip -r Frame3DD_$(echo $VERSION).zip Frame3DD/*
 #cp Frame3DD_$(date +%Y%m%d).zip Frame3DD_$(date +%Y%m%d)_osx567.zip
 #cp Frame3DD_$(date +%Y%m%d).zip Frame3DD_$(date +%Y%m%d)_win32.zip
 
-cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)-DukeOIT.zip
+cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_DukeOIT.zip
 cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_linux.zip
 cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_osx34.zip
 cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_osx567.zip
