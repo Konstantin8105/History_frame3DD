@@ -1,3 +1,6 @@
+*Mon 20 Mar 2013 <john.pye@anu.edu.au> 0.20130317
+- Small edit to user-manual (John Pye email)
+
 *Mon 17 Mar 2013 <john.pye@anu.edu.au> 0.20130317
 - Update SCons build for renamed files eg HPGmatrix.c
 
