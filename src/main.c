@@ -486,7 +486,8 @@ For compilation/installation, see README.txt.
 */
 
 		/* quasi Newton-Raphson iteration for geometric nonlinearity */
-		ok = 0; iter = 0; error = 1.0;	/* re-initialize */
+		ok = 0; iter = 0;	/* re-initialize */
+		if (geom) error = 1.0; else error = tol;
 		while ( geom && error > tol && iter < 500 && ok >= 0) {
 
 			++iter;
