@@ -112,8 +112,8 @@ Example B: a pyramid-shaped frame --- static and dynamic analysis (N,mm,ton)
 
 0                               # frame elements with extra mass
 
-6				# number of modes to animate
- 1  2  3  4 5 6 		# modes to animate
+6				# number of modes to animate, nA
+ 1  2  3  4 5 6 		# modes to animate - omit of nA == 0
 2                               # pan rate during animation
 
 

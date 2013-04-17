@@ -111,8 +111,8 @@ Example I: a triangular tower  (kip,in)
 
 0                               # frame elements with extra mass
 
-4                               # number of modes to animate
- 1  2  3  4                     # modes to animate
+4                               # number of modes to animate, nA
+ 1  2  3  4                     # modes to animate, omit if nA == 0
 1                               # pan rate during animation
 
 

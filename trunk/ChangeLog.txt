@@ -1,38 +1,44 @@
+*Wed Apr 17 14:27:47 EDT 2013 Henri Gavin <hpgavin> 0.20130317
+- bug preventing matrix condensation calculations found and fixed
+- more verbose run-time output to help find input data problems in
+condensation data
+- if the number of animated modes, omit the line with the list of modes to anmimate, nA, is set to 0 (zero).
+ 
 *Mon 20 Mar 2013 <john.pye@anu.edu.au> 0.20130317
 - Small edit to user-manual (John Pye email)
 
 *Mon 17 Mar 2013 <john.pye@anu.edu.au> 0.20130317
 - Update SCons build for renamed files eg HPGmatrix.c
 
-*Sat Mar 9 2013 <.> 0.02100105
+*Sat Mar 9 2013 Henri Gavin <.> 0.02100105
 - frame3dd_io.c - fix bug in writing undeformed mesh with data check only
 
-*Wed Mar 6 2013 <.> 0.02100105
+*Wed Mar 6 2013 Henri Gavin <.> 0.02100105
 - add error check on input data for unconnected nodes, with output error code 42
 
-*Wed Feb 20 2013 <.> 0.02100105
+*Wed Feb 20 2013 Henri Gavin <.> 0.02100105
 - sourceforge upgrade:
 - svn switch --relocate
 - ... https://frame3dd.svn.sourceforge.net/svnroot/frame3dd
 - ... https://svn.code.sf.net/p/frame3dd/code/
 
-*Wed Feb 20 2013 <.> 0.02100105
+*Wed Feb 20 2013 Henri Gavin <.> 0.02100105
 - frame3dd_io.c and user-manual.html - update gnuplot to version 4.6 
 
-*Mon Feb 11 2013 <.> 0.02100105
+*Mon Feb 11 2013 Henri Gavin <.> 0.02100105
 - frame3dd_io.c --- add comment in plot data files for element numbers
 
-*Sat Feb 8 2013 <.> 0.02100105
+*Sat Feb 8 2013 Henri Gavin <.> 0.02100105
 - frame3dd_io.c --- add variable for gnuplot line width
 
-*Tue Jan  22 2013 <.> 0.02100105
+*Tue Jan  22 2013 Henri Gavin <.> 0.02100105
 - NRutil.c --- change definition of save_ functions
 
-*Thu Dec  6 20:02:21 EST 2012 <.> 0.02100105
+*Thu Dec  6 20:02:21 EST 2012 Henri Gavin <.> 0.02100105
 - frame3dd_io.c --- improve handling of input data when nM=0 is omitted.
 - frame3dd_io.c --- improve handling of missing flags in command line args
 
-*Mon Nov 26 22:35:36 EST 2012 <.> 0.20100105
+*Mon Nov 26 22:35:36 EST 2012 Henri Gavin <.> 0.20100105
 - add fixed end forces to reaction forces in frame3dd.c function add_feF().
 - comment-out "set tickslevel 0" in frame3dd_io.c function animate() for
 compatibility with gnuplot versions earlier than 4.6

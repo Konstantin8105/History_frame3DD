@@ -84,7 +84,8 @@ void parse_options (
 	*shear_flag = *geom_flag  = *anlyz_flag = *lump_flag = *modal_flag = -1;
 	*exagg_flag = *tol_flag = *shift_flag = -1.0;
 	*D3_flag = 0;
-	*pan_flag = *condense_flag = 0.0;
+	*pan_flag = -1.0;
+	*condense_flag = -1;
 	*write_matrix = 0;
 	*axial_sign = 1;
 	*debug = 0; *verbose = 1;
@@ -212,8 +213,8 @@ void parse_options (
 				break;
 			case 'p':		/* pan rate	*/
 				*pan_flag = atof(optarg);
-				if (*pan_flag == 0.0) {
-				 errorMsg("\n frame3dd command-line error: argument to -p option should be a number.\n");
+				if (*pan_flag < 0.0) {
+				 errorMsg("\n frame3dd command-line error: argument to -p option should be a positive number.\n");
 				 exit(9);
 				}
 				break;
@@ -1603,15 +1604,19 @@ void read_mass_data (
 	if (nA > 20)
 	  fprintf(stderr," nA = %d, only 20 or fewer modes may be animated\n", nA );
 	for ( m = 0; m < 20; m++ )	anim[m] = 0;
-	for ( m = 0; m < nA; m++ ) {
+	for ( m = 1; m < nA; m++ ) {
 		sfrv=fscanf ( fp, "%d", &anim[m] );
 		if (sfrv != 1) sferr("mode number in mode animation data");
 	}
 
 	sfrv=fscanf ( fp, "%f", pan );
 	if (sfrv != 1) sferr("pan value in mode animation data");
-	if ( pan_flag != -0.0 )	*pan = pan_flag;
+	if ( pan_flag != -1.0 )	*pan = pan_flag;
 
+	if ( verbose ) {
+		fprintf(stdout," pan rate ");
+		dots(stdout,43); fprintf(stdout," %8.3f\n", *pan);
+	}
 
 	strcpy(base_file,OUT_file);	
 	while ( base_file[len++] != '\0' )
@@ -1653,12 +1658,16 @@ void read_condensation_data (
 
 	if ( (sfrv=fscanf ( fp, "%d", Cmethod )) != 1 )   {
 		*Cmethod = *nC = *Cdof = 0;
+		if ( verbose )
+			fprintf(stdout," missing matrix condensation data \n");
 		return;
 	}
 
 	if ( condense_flag != -1 )	*Cmethod = condense_flag;
 
 	if ( *Cmethod <= 0 )  {
+		if ( verbose )
+			fprintf(stdout," Cmethod = %d : no matrix condensation \n", *Cmethod );
 		*Cmethod = *nC = *Cdof = 0;
 		return;
 	}
@@ -1674,6 +1683,8 @@ void read_condensation_data (
 
 	if ( (sfrv=fscanf ( fp, "%d", nC )) != 1 )  {
 		*Cmethod = *nC = *Cdof = 0;
+		if ( verbose )
+			fprintf(stdout," missing matrix condensation data \n");
 		return;
 	}
 
@@ -1717,7 +1728,8 @@ void read_condensation_data (
 
 	for (i=1; i<= *Cdof; i++) {
 	 sfrv=fscanf( fp, "%d", &m[i] );
-	 if (sfrv != 1) sferr("mode number in condensation data");
+	 if (sfrv != 1 && *Cmethod == 3)
+		sferr("mode number in condensation data");
 	 if ( (m[i] < 0 || m[i] > nM) && *Cmethod == 3 ) {
 	  sprintf(errMsg,"\n  error in matrix condensation data: \n  m[%d] = %d \n The condensed mode number must be between   1 and %d (modes).\n", 
 	  i, m[i], nM );
@@ -3196,7 +3208,7 @@ void animate(
 		errorMsg(errMsg);
 		exit(26);
 	}
-	i = 0;
+	i = 1;
 	while ( (m = anim[i]) != 0 && i < 20) {
 	 if ( i==0 ) {
 
@@ -3318,7 +3330,7 @@ void animate(
 
 	v = dvector(1,DoF);
 
-	i = 0;
+	i = 1;
 	while ( (m = anim[i]) != 0 ) {
 	  for ( fr=0; fr<=frames; fr++ ) {
 

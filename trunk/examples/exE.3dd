@@ -94,8 +94,8 @@ Example E: a three dimensional structure showing lateral-torsional dynamic modes
 
 0				# number of frame elements with extra mass
 
-4                               # number of modes to animate
- 1  2  3  4                     # modes to animate
+4                               # number of modes to animate, nA
+ 1  2  3  4                     # modes to animate, omit if nA == 0
 0                               # don't pan during animation
 
 2    # Condensation Method:   0= none   1= static   2= Guyan   3= Dynamic

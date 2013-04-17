@@ -160,6 +160,6 @@
   
 # animation data ...
 4						# number of modes to be animated
-  1 2 3 4  # list of modes to be animated, sorted by increasing freq 
+  1 2 3 4  # list of modes to be animated, sorted by increasing freq
 0                                           # 1: pan during animation; 0: don't
 

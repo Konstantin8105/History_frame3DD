@@ -105,7 +105,7 @@ Example G: a building with a set-back  (in,kip)
 0                               # number of nodes with extra mass or inertia
 0                               # number of elements with extra mass 
 
-4                               # number of modes to animate
- 1  2  3  4                     # modes to animate
-2                               # pan rate during animation
+4                               # number of modes to animate, nA
+ 1  2  3  4                     # modes to animate, omit of nA == 0
+2.0                             # pan rate during animation
 

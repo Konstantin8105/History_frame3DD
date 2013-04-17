@@ -99,8 +99,8 @@ Example D: dynamic properties of an un-restrained frame with a triangular sectio
 0                       # number of elements with extra mass
 
 5                               # number of modes to animate
- 1  7  9  11  12                # modes to animate
-2                               # pan rate during animation
+ 1  7  9  11  12                # modes to animate, omit list of nA == 0
+2.0                             # pan rate during animation
 
 
 

@@ -208,8 +208,8 @@ Example F: a seismically-isolated building model (units: N, mm, ton)
 
 0			# number of frame elements with extra mass
 
-5                               # number of modes to animate
- 1  2  5  9  12                 # modes to animate
+5                               # number of modes to animate, nA
+ 1  2  5  9  12                 # modes to animate, omit if nA == 0
 1.5                             # pan rate during animation
 
 

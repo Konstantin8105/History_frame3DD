@@ -967,7 +967,7 @@ void guyan(
 		}
 	}
 
-	invAB(Drr, Drc, N-n, n, invDrrDrc, &ok, verbose); /* inv(Drr) * Drc */
+	invAB(Drr, Drc, N-n, n, invDrrDrc, &ok, verbose ); /* inv(Drr) * Drc */
 
 	/* coordinate transformation matrix	*/	
 	for (i=1; i<=n; i++) {

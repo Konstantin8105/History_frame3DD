@@ -673,19 +673,19 @@ For compilation/installation, see README.txt.
 		if ( m[1] > 0 && nM > 0 )	Cfreq = f[m[1]];
 
 		if ( Cmethod == 1 ) {	/* static condensation only	*/
-			condense(K, DoF, c, Cdof, Kc, verbose );
+			condense(K, DoF, c, Cdof, Kc, 0 );
 			if ( verbose )
 				fprintf(stdout,"   static condensation of K complete\n");
 		}
 		if ( Cmethod == 2 ) {
-			guyan(M, K, DoF, c, Cdof, Mc,Kc, Cfreq, verbose );
+			guyan(M, K, DoF, c, Cdof, Mc,Kc, Cfreq, 0 );
 			if ( verbose ) {
 				fprintf(stdout,"   Guyan condensation of K and M complete");
 				fprintf(stdout," ... dynamics matched at %f Hz.\n", Cfreq );
 			}
 		}
 		if ( Cmethod == 3 && nM > 0 ) {
-			dyn_conden(M,K, DoF, r, c, Cdof, Mc,Kc, V,f, m, verbose );
+			dyn_conden(M,K, DoF, r, c, Cdof, Mc,Kc, V,f, m, 0 );
 			if ( verbose ) 
 				fprintf(stdout,"   dynamic condensation of K and M complete\n");
 		}
