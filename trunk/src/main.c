@@ -152,7 +152,7 @@ For compilation/installation, see README.txt.
 		lump=1,		// 1: lumped, 0: consistent mass matrix
 		iter=0,		// number of iterations	
 		ok=1,		// number of (-ve) diag. terms of L D L'
-		anim[20],	// the modes to be animated
+		anim[32],	// the modes to be animated
 		Cdof=0,		// number of condensed degrees o freedom
 		Cmethod=0,	// matrix condensation method
 		*c=NULL,	// vector of DoF's to condense

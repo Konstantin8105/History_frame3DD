@@ -1604,7 +1604,7 @@ void read_mass_data (
 	if (nA > 20)
 	  fprintf(stderr," nA = %d, only 20 or fewer modes may be animated\n", nA );
 	for ( m = 0; m < 20; m++ )	anim[m] = 0;
-	for ( m = 1; m < nA; m++ ) {
+	for ( m = 1; m <= nA; m++ ) {
 		sfrv=fscanf ( fp, "%d", &anim[m] );
 		if (sfrv != 1) sferr("mode number in mode animation data");
 	}
