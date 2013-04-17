@@ -100,8 +100,8 @@ Example J: tesseract  (N, mm, ton)
 0                # number of nodes with extra mass or inertia
 0                # number of frame elements with extra mass
 
-8                               # number of modes to animate
- 7  10  12  13 15  18  20  22   # modes to animate
+8                               # number of modes to animate, nA
+ 7  10  12  13 15  18  20  22   # modes to animate, omit of nA == 0
 3                               # pan during animation
 
 

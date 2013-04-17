@@ -965,8 +965,8 @@ Example H: a pedestrian ramp  (kip, in)
 294		0.026
 295		0.026
 
-5                               # number of modes to animate
- 1  2  3  4  5                 # modes to animate
+5                               # number of modes to animate, nA
+ 1  2  3  4  5                 # modes to animate, omit if nA == 0
 1                              # pan during animation
 
 
