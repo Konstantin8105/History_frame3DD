@@ -1959,22 +1959,22 @@ In this example, the <i>x</i>-axis increment, <i>dx</i>, has a length of 10 mm.
 <img src="img/InternalForces.png" align="center" border="0"><br>
 
 <p>
-The header information for each frame element contains the element number
-(column B),
-the element's end nodes (columns C and D), the end node coordinates
-(columns E - J),
-and the number of <i>x</i>-axis increments for the frame element
-(column K).   
+The header information for each frame element contains the element number (column B),
+the element's end nodes (columns C and D), the end node coordinates (columns E - J),
+and the number of <i>x</i>-axis increments for the frame element (column K).   
+The header also includes a listing of the maximum and minimum internal forces and modments and the maximum and minimum element displacements.  
 The data for this part of the header information is preceded with a '@' character, to facilitate parsing of this data file.  
 The last header character prior to the the internal force data is a '~' character, again to facilitate parsing of the data. 
-In the figure above, <i>nx</i> is 181 (K,10), indicating
-that the following element data 
-is tabulated at 181 increments along the local <i>x</i>-axis.  
+In the figure above, <i>nx</i> is 181 (K,10), indicating that the following element data is tabulated at 181 increments along the local <i>x</i>-axis.  
 </p>
 
 <p>
-The data in this file is sufficient to plot the undeformed mesh, 
-the deformed mesh, and plots of internal forces, torisons, and moments
+The computation of internal element forces is consistent with linear elastic analysis.   
+Internal forces and displacements will have some error if geoemetric stiffness effects are significant, and are included in the analysis.
+</p>
+
+<p>
+The data in this file is sufficient to plot the undeformed mesh, the deformed mesh, and plots of internal forces, torisons, and moments
 super-imposed upon the structural mesh.
 </p>
 
@@ -1982,8 +1982,7 @@ super-imposed upon the structural mesh.
 The sign convention for internal forces and transverse displacements is as follows:
 <ul>
 <li> Positive internal axial force (Nx) is tensile.
-<li> Positive internal shear forces (Vy and Vz) are in the positive <i>y</i> and <i>z</i>
-directions on positive <i>x</i> surfaces.
+<li> Positive internal shear forces (Vy and Vz) are in the positive <i>y</i> and <i>z</i> directions on positive <i>x</i> surfaces.
 <li> Positive internal torsion (Tx) is counter-clockwise about the positive <i>x</i>-axis.  
 <li> Positive bending moments (My and Mz) produce positive curvature bending deformation in the <i>x-z</i> and <i>x-y</i> planes.  
 <li> Positive transverse displacements (Dy and Dz) are in the positive <i>y</i>

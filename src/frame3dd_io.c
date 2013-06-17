@@ -2379,6 +2379,16 @@ void write_internal_forces (
 		*Dx, *Dy, *Dz,	/* frame el. displ. in local x,y,z, dir's */
 		*Rx;		/* twist rotation about the local x-axis */
 
+	double	maxNx, maxVy, maxVz, 	/*  maximum internal forces	*/
+		maxTx, maxMy, maxMz,	/*  maximum internal moments	*/
+		maxDx, maxDy, maxDz,	/*  maximum element displacements  */
+		maxRx;			/*  maximum element torsion	*/
+
+	double	minNx, minVy, minVz, 	/*  minimum internal forces	*/
+		minTx, minMy, minMz,	/*  minimum internal moments	*/
+		minDx, minDy, minDz,	/*  minimum element displacements  */
+		minRx;			/*  minimum element torsion	*/
+
 	int	n, m,		/* frame element number			*/
 		cU=0, cW=0, cP=0, /* counters for U, W, and P loads	*/
 		i, nx,		/* number of sections alont x axis	*/
@@ -2435,6 +2445,7 @@ void write_internal_forces (
 		Dy = dvector(0,nx);
 		Dz = dvector(0,nx);
 
+
 	// the local x-axis for frame element "m" starts at 0 and ends at L[m]
 		for (i=0; i<nx; i++)	x[i] = i*dx;	
 		x[nx] = L[m];		
@@ -2442,9 +2453,8 @@ void write_internal_forces (
 
 	// write header information for each frame element
 
-		fprintf(fpif,"#\tElmnt\tJ1\tJ2\t\tX1\t\tY1\t\tZ1\t\tX2\t\tY2\t\tZ2\tnx\n");
+		fprintf(fpif,"#\tElmnt\tN1\tN2        \tX1        \tY1        \tZ1        \tX2        \tY2        \tZ2\tnx\n");
 		fprintf(fpif,"# @\t%5d\t%5d\t%5d\t%14.6e\t%14.6e\t%14.6e\t%14.6e\t%14.6e\t%14.6e\t%5d\n",m, n1, n2, xyz[n1].x, xyz[n1].y, xyz[n1].z, xyz[n2].x, xyz[n2].y, xyz[n2].z, nx+1 );
-		fprintf(fpif,"#.x\t\t\tNx\t\tVy\t\tVz\t\tTx\t\tMy\t\tMz\t\tDx\t\tDy\t\tDz\t\tRx\t~\n");
 
 	// find interior axial force, shear forces, torsion and bending moments
 
@@ -2588,12 +2598,12 @@ void write_internal_forces (
 
 
 		// rotations and displacements for frame element "m" at (x=0)
-		Dx[0] =  u1;	// displacement in  local x dir  at node J1
-		Dy[0] =  u2;	// displacement in  local y dir  at node J1
-		Dz[0] =  u3;	// displacement in  local z dir  at node J1
-		Rx[0] =  u4;	// rotationin about local x axis at node J1
-		Sy[0] =  u6;	// slope in  local y  direction  at node J1
-		Sz[0] = -u5;	// slope in  local z  direction  at node J1
+		Dx[0] =  u1;	// displacement in  local x dir  at node N1
+		Dy[0] =  u2;	// displacement in  local y dir  at node N1
+		Dz[0] =  u3;	// displacement in  local z dir  at node N1
+		Rx[0] =  u4;	// rotationin about local x axis at node N1
+		Sy[0] =  u6;	// slope in  local y  direction  at node N1
+		Sz[0] = -u5;	// slope in  local z  direction  at node N1
 
 		// axial displacement along frame element "m"
 		dx_ = dx;
@@ -2648,8 +2658,49 @@ void write_internal_forces (
 			Dz[i] -= (Dz[nx]-u9) * i/nx;
 		}
 
+	// initialize the maximum and minimum element forces and displacements 
+		maxNx = minNx = Nx[0]; maxVy = minVy = Vy[0]; maxVz = minVz = Vz[0];  	//  maximum internal forces
+		maxTx = minTx = Tx[0]; maxMy = minMy = My[0]; maxMz = minMz = Mz[0]; 	//  maximum internal moments
+		maxDx = minDx = Dx[0]; maxDy = minDy = Dy[0]; maxDz = minDz = Dz[0]; 	//  maximum element displacements
+		maxRx =	minRx = Rx[0];							//  maximum element torsional rotation
+
+	// find maximum and minimum internal element forces
+		for (i=1; i<=nx; i++) {
+			maxNx = (Nx[i] > maxNx) ? Nx[i] : maxNx;
+			minNx = (Nx[i] < minNx) ? Nx[i] : minNx;
+			maxVy = (Vy[i] > maxVy) ? Vy[i] : maxVy;
+			minVy = (Vy[i] < minVy) ? Vy[i] : minVy;
+			maxVz = (Vz[i] > maxVz) ? Vz[i] : maxVz;
+			minVz = (Vz[i] < minVz) ? Vz[i] : minVz;
+
+			maxTx = (Tx[i] > maxTx) ? Tx[i] : maxTx;
+			minTx = (Tx[i] < minTx) ? Tx[i] : minTx;
+			maxMy = (My[i] > maxMy) ? My[i] : maxMy;
+			minMy = (My[i] < minMy) ? My[i] : minMy;
+			maxMz = (Mz[i] > maxMz) ? Mz[i] : maxMz;
+			minMz = (Mz[i] < minMz) ? Mz[i] : minMz;
+		}
+
+	// find maximum and minimum internal element displacements
+		for (i=1; i<=nx; i++) {
+			maxDx = (Dx[i] > maxDx) ? Dx[i] : maxDx;
+			minDx = (Dx[i] < minDx) ? Dx[i] : minDx;
+			maxDy = (Dy[i] > maxDy) ? Dy[i] : maxDy;
+			minDy = (Dy[i] < minDy) ? Dy[i] : minDy;
+			maxDz = (Dz[i] > maxDz) ? Dz[i] : maxDz;
+			minDz = (Dz[i] < minDz) ? Dz[i] : minDz;
+			maxRx = (Rx[i] > maxRx) ? Rx[i] : maxRx;
+			minRx = (Rx[i] < minRx) ? Rx[i] : minRx;
+		}
+
+	// write max and min element forces to the internal frame element force output data file
+		fprintf(fpif,"#                \tNx        \tVy        \tVz        \tTx        \tMy        \tMz        \tDx        \tDy        \tDz         \tRx\t*\n");
+		fprintf(fpif,"# MAXIMUM\t%14.6e\t%14.6e\t%14.6e\t%14.6e\t%14.6e\t%14.6e\t%14.6e\t%14.6e\t%14.6e\t%14.6e\n", maxNx,maxVy,maxVz,maxTx,maxMy,maxMz,maxDx,maxDy,maxDz,maxRx );
+		fprintf(fpif,"# MINIMUM\t%14.6e\t%14.6e\t%14.6e\t%14.6e\t%14.6e\t%14.6e\t%14.6e\t%14.6e\t%14.6e\t%14.6e\n", minNx,minVy,minVz,minTx,minMy,minMz,minDx,minDy,minDz,minRx );
+
 
 	// write results to the internal frame element force output data file
+		fprintf(fpif,"#.x                \tNx        \tVy        \tVz        \tTx       \tMy        \tMz        \tDx        \tDy        \tDz        \tRx\t~\n");
 		for (i=0; i<=nx; i++) {
 			fprintf(fpif,"%14.6e\t", x[i] );
 			fprintf(fpif,"%14.6e\t%14.6e\t%14.6e\t",

@@ -1,7 +1,10 @@
+*Mon Jun 17 11:47:25 EDT 2013 Henri Gavin <hpgavin> 0.20130317
+- add listing of maximum and minimum element forces, moments, and displacements to the internal force output data file
+- updated usr-manual.html with these changes
+
 *Wed Apr 17 14:27:47 EDT 2013 Henri Gavin <hpgavin> 0.20130317
-- bug preventing matrix condensation calculations found and fixed
-- more verbose run-time output to help find input data problems in
-condensation data
+- bug blocking matrix condensation calculations found and fixed
+- more verbose run-time output to help find input data problems in condensation data
 - if the number of animated modes, omit the line with the list of modes to anmimate, nA, is set to 0 (zero).
  
 *Mon 20 Mar 2013 <john.pye@anu.edu.au> 0.20130317
