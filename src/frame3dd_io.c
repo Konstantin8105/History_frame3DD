@@ -2633,7 +2633,7 @@ write internal forces and local displacements to an output data file
 4jan10, 7mar11
 ------------------------------------------------------------------------------*/
 void write_internal_forces (
-		char infcpath[], int lc, int nL, char title[], float dx,
+		FILE *fp, char infcpath[], int lc, int nL, char title[], float dx,
 		vec3 *xyz, 
 		double **Q, int nN, int nE, double *L, int *J1, int *J2, 
 		float *Ax,float *Asy,float *Asz,float *Jx,float *Iy,float *Iz,
@@ -2667,13 +2667,13 @@ void write_internal_forces (
 
 	double	maxNx, maxVy, maxVz, 	/*  maximum internal forces	*/
 		maxTx, maxMy, maxMz,	/*  maximum internal moments	*/
-		maxDx, maxDy, maxDz,	/*  maximum element displacements  */
-		maxRx;			/*  maximum element torsion	*/
+		maxDx, maxDy, maxDz,	/*  maximum element displacements */
+		maxRx, maxSy, maxSz;	/*  maximum element rotations	*/
 
 	double	minNx, minVy, minVz, 	/*  minimum internal forces	*/
 		minTx, minMy, minMz,	/*  minimum internal moments	*/
-		minDx, minDy, minDz,	/*  minimum element displacements  */
-		minRx;			/*  minimum element torsion	*/
+		minDx, minDy, minDz,	/*  minimum element displacements */
+		minRx, minSy, minSz;	/*  minimum element rotations	*/
 
 	int	n, m,		/* frame element number			*/
 		cU=0, cW=0, cP=0, /* counters for U, W, and P loads	*/
@@ -2708,6 +2708,16 @@ void write_internal_forces (
 	fprintf(fpif,"# F R A M E   E L E M E N T   I N T E R N A L   F O R C E S (local)\n");
 	fprintf(fpif,"# F R A M E   E L E M E N T   T R A N S V E R S E   D I S P L A C E M E N T S (local)\n\n");
 
+	// write header information for each frame element
+	fprintf(fp,"\nP E A K   F R A M E   E L E M E N T   I N T E R N A L   F O R C E S");
+	fprintf(fp,"\t(local)\n");
+	fprintf(fp,"  Elmnt             Nx          Vy         Vz");
+	fprintf(fp,"        Txx        Myy        Mzz\n");
+
+/*	fprintf(fp,"\n P E A K   I N T E R N A L   D I S P L A C E M E N T S");
+ *	fprintf(fp,"\t\t\t(local)\n");
+ * 	fprintf(fp,"  Elmnt  X-dsp       Y-dsp       Z-dsp       X-rot       Y-rot       Z-rot\n");
+*/
 
 	for ( m=1; m <= nE; m++ ) {	// loop over all frame elements
 
@@ -2736,6 +2746,7 @@ void write_internal_forces (
 		for (i=0; i<nx; i++)	x[i] = i*dx;	
 		x[nx] = L[m];		
 		dxnx = x[nx]-x[nx-1];	// length of the last x-axis increment
+
 
 	// write header information for each frame element
 
@@ -2948,7 +2959,7 @@ void write_internal_forces (
 		maxNx = minNx = Nx[0]; maxVy = minVy = Vy[0]; maxVz = minVz = Vz[0];  	//  maximum internal forces
 		maxTx = minTx = Tx[0]; maxMy = minMy = My[0]; maxMz = minMz = Mz[0]; 	//  maximum internal moments
 		maxDx = minDx = Dx[0]; maxDy = minDy = Dy[0]; maxDz = minDz = Dz[0]; 	//  maximum element displacements
-		maxRx =	minRx = Rx[0];							//  maximum element torsional rotation
+		maxRx =	minRx = Rx[0]; maxSy = minSy = Sy[0]; maxSz = minSz = Sz[0];	//  maximum element rotations
 
 	// find maximum and minimum internal element forces
 		for (i=1; i<=nx; i++) {
@@ -2977,6 +2988,10 @@ void write_internal_forces (
 			minDz = (Dz[i] < minDz) ? Dz[i] : minDz;
 			maxRx = (Rx[i] > maxRx) ? Rx[i] : maxRx;
 			minRx = (Rx[i] < minRx) ? Rx[i] : minRx;
+			maxSy = (Sy[i] > maxSy) ? Sy[i] : maxSy;
+			minSy = (Sy[i] < minSy) ? Sy[i] : minSy;
+			maxSz = (Sz[i] > maxSz) ? Sz[i] : maxSz;
+			minSz = (Sz[i] < minSz) ? Sz[i] : minSz;
 		}
 
 	// write max and min element forces to the internal frame element force output data file
@@ -2997,6 +3012,19 @@ void write_internal_forces (
 						Dx[i], Dy[i], Dz[i], Rx[i] );
 		}
 		fprintf(fpif,"#---------------------------------------\n\n\n");
+
+	// write max and min element forces to the Frame3DD output data file
+		fprintf(fp," %5d   max  %10.3f  %10.3f %10.3f %10.3f %10.3f %10.3f\n",
+				m, maxNx, maxVy, maxVz, maxTx, maxMy, maxMz );
+		fprintf(fp," %5d   min  %10.3f  %10.3f %10.3f %10.3f %10.3f %10.3f\n",
+				m, minNx, minVy, minVz, minTx, minMy, minMz );
+	
+/*
+		fprintf(fp," %5d %10.6f  %10.6f  %10.6f  %10.6f  %10.6f  %10.6f\n",
+				m, maxDx, maxDy, maxDz, maxRx, maxSy, maxSz );
+		fprintf(fp," %5d %10.6f  %10.6f  %10.6f  %10.6f  %10.6f  %10.6f\n",
+				m, minDx, minDy, minDz, minRx, minSy, minSz );
+*/
 
 	// free memory
 		free_dvector(x,0,nx);

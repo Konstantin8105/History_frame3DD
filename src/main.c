@@ -583,7 +583,7 @@ For compilation/installation, see README.txt.
  *		 " and re-run the analysis. \n");
  */
 
-		write_internal_forces ( infcpath, lc, nL, title, dx, xyz,
+		write_internal_forces ( fp, infcpath, lc, nL, title, dx, xyz,
 					Q, nN, nE, L, N1, N2, 
 					Ax, Asy, Asz, Jx, Iy, Iz, E, G, p,
 					d, gX[lc], gY[lc], gZ[lc],
