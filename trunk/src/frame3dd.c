@@ -1066,7 +1066,9 @@ void deallocate(
 	double *D, double *dD,
 	float *d, float *EMs, float *NMs, float *NMx, float *NMy, float *NMz,
 	double **M, double *f, double **V,
-	int *c, int *m
+	int *c, int *m, 
+	double **pkNx, double **pkVy, double **pkVz, double **pkTx, double **pkMy, double **pkMz, 
+	double **pkDx, double **pkDy, double **pkDz, double **pkRx, double **pkSy, double **pkSz 
 ){
 
 	void	free();
@@ -1132,6 +1134,20 @@ void deallocate(
 // printf("..K\n"); /* debug */
 	free_ivector(c,1,DoF);
 	free_ivector(m,1,DoF);
+
+	free_dmatrix(pkNx,1,nL,1,nE);
+	free_dmatrix(pkVy,1,nL,1,nE);
+	free_dmatrix(pkVz,1,nL,1,nE);
+	free_dmatrix(pkTx,1,nL,1,nE);
+	free_dmatrix(pkMy,1,nL,1,nE);
+	free_dmatrix(pkMz,1,nL,1,nE);
+
+	free_dmatrix(pkDx,1,nL,1,nE);
+	free_dmatrix(pkDy,1,nL,1,nE);
+	free_dmatrix(pkDz,1,nL,1,nE);
+	free_dmatrix(pkRx,1,nL,1,nE);
+	free_dmatrix(pkSy,1,nL,1,nE);
+	free_dmatrix(pkSz,1,nL,1,nE);
 
 // printf("..L\n"); /* debug */
 	if ( nM > 0 ) {

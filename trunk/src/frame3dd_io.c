@@ -705,7 +705,7 @@ void parse_input(FILE *fp, const char *tpath){
 	char	errMsg[MAXL];
 
 	if ((fpc = fopen (tpath, "w")) == NULL) {
-		sprintf (errMsg,"ERROR: cannot open file '%s'\n", tpath );
+		sprintf (errMsg,"\n  error: cannot open parsed input data file: '%s' \n", tpath );
 		errorMsg(errMsg);
 		exit(12);
 	}
@@ -1497,7 +1497,7 @@ void read_mass_data (
 	FILE	*mf;				// mass data file
 	mf = fopen("MassData.txt","w");		// open mass data file
 	if ((mf = fopen ("MassData.txt", "w")) == NULL) {
-	  errorMsg("\n  error: cannot open file 'MassData.txt'\n");
+	  errorMsg("\n  error: cannot open mass data debug file: 'MassData.txt' \n");
 	  exit(29);
 	}
 	fprintf(mf,"%% structural mass data \n");
@@ -2073,7 +2073,7 @@ void write_static_csv (
 	if (lc == 1) wa = "w";
 
 	if ((fpcsv = fopen (CSV_file, wa)) == NULL) {
-	  sprintf (errMsg,"\n  error: cannot open CSV file %s\n", CSV_file);
+	  sprintf (errMsg,"\n  error: cannot open CSV output data file: %s \n", CSV_file);
 	  errorMsg(errMsg);
 	  exit(17);
 	}
@@ -2246,7 +2246,7 @@ void write_static_mfile (
 	if (lc == 1) wa = "w";
 
 	if ((fpm = fopen (M_file, wa)) == NULL) {
-	  sprintf (errMsg,"\n  error: cannot open file %s\n", M_file );
+	  sprintf (errMsg,"\n  error: cannot open Matlab output data file: %s \n", M_file );
 	  errorMsg(errMsg);
 	  exit(18);
 	}
@@ -2340,6 +2340,292 @@ void write_static_mfile (
 
 
 /*------------------------------------------------------------------------------
+PEAK_INTERNAL_FORCES
+calculate frame element internal forces, Nx, Vy, Vz, Tx, My, Mz
+calculate frame element local displacements, Rx, Dx, Dy, Dz
+return the peak values of the internal forces, moments, slopes, and displacements
+18jun13
+------------------------------------------------------------------------------*/
+void peak_internal_forces (
+		int lc, 	// load case number
+		int nL, 	// total number of load cases
+		vec3 *xyz, 	// node locations
+		double **Q, int nN, int nE, double *L, int *N1, int *N2, 
+		float *Ax,float *Asy,float *Asz,float *Jx,float *Iy,float *Iz,
+		float *E, float *G, float *p,
+		float *d, float gX, float gY, float gZ,
+		int nU, float **U, int nW, float **W, int nP, float **P,
+		double *D, int shear,
+
+		// vectors of peak forces, moments, displacements and slopes 
+		// for each frame element, for load case "lc" 
+		double **pkNx, double **pkVy, double **pkVz, 
+		double **pkTx, double **pkMy, double **pkMz,
+		double **pkDx, double **pkDy, double **pkDz,
+		double **pkRx, double **pkSy, double **pkSz
+){
+	double	t1, t2, t3, t4, t5, t6, t7, t8, t9, /* coord transformation */
+		u1, u2, u3, u4, u5, u6, u7, u8, u9, u10, u11, u12; /* displ. */
+
+	double	xx1,xx2, wx1,wx2,	/* trapz load data, local x dir */
+		xy1,xy2, wy1,wy2,	/* trapz load data, local y dir */
+		xz1,xz2, wz1,wz2;	/* trapz load data, local z dir */
+
+	double	wx=0, wy=0, wz=0, // distributed loads in local coords at x[i] 
+		wx_=0,wy_=0,wz_=0,// distributed loads in local coords at x[i-1]
+		wxg=0,wyg=0,wzg=0,// gravity loads in local x, y, z coord's
+		tx=0.0, tx_=0.0;  // distributed torque about local x coord 
+
+	double	xp;		/* location of internal point loads	*/
+
+	double	x, dx,		/* distance along frame element		*/
+
+		// underscored "_" variables correspond to x=(i-1)*dx;
+		// non-underscored variables correspond to x=i*dx;
+		Nx_, Nx,	/* axial force within frame el.		*/
+		Vy_, Vy, Vz_, Vz,/* shear forces within frame el.	*/
+		Tx_, Tx,		/* torsional moment within frame el.	*/
+		My_, My, Mz_, Mz, /* bending moments within frame el.	*/
+		Sy_, Sy, Sz_, Sz,	/* transverse slopes of frame el.	*/
+		Dx, Dy, Dz,	/* frame el. displ. in local x,y,z, dir's */
+		Rx;		/* twist rotation about the local x-axis */
+
+	int	n, m,		// frame element number	
+		nx=1000,	// number of sections alont x axis
+		cU=0, cW=0, cP=0, // counters for U, W, and P loads
+		i,		// counter along x axis from node N1 to node N2
+		n1,n2,i1,i2;	// starting and stopping node numbers
+
+	if (dx == -1.0)	return;	// skip calculation of internal forces and displ
+
+	for ( m=1; m <= nE; m++ ) {	// initialize peak values to zero
+			pkNx[lc][m] = pkVy[lc][m] = pkVz[lc][m] = 0.0; 
+			pkTx[lc][m] = pkMy[lc][m] = pkMz[lc][m] = 0.0;
+			pkDx[lc][m] = pkDy[lc][m] = pkDz[lc][m] = 0.0;
+			pkRx[lc][m] = pkSy[lc][m] = pkSz[lc][m] = 0.0;
+	}
+
+	for ( m=1; m <= nE; m++ ) {	// loop over all frame elements
+
+		n1 = N1[m];	n2 = N2[m]; // node 1 and node 2 of elmnt m
+
+		dx = L[m] / (float) nx; // x-axis increment, same for each element
+
+	// no need to allocate memory for interior force or displacement data 
+
+	// find interior axial force, shear forces, torsion and bending moments
+
+		coord_trans ( xyz, L[m], n1, n2,
+			&t1, &t2, &t3, &t4, &t5, &t6, &t7, &t8, &t9, p[m] );
+
+		// distributed gravity load in local x, y, z coordinates
+		wxg = d[m]*Ax[m]*(t1*gX + t2*gY + t3*gZ);
+		wyg = d[m]*Ax[m]*(t4*gX + t5*gY + t6*gZ);
+		wzg = d[m]*Ax[m]*(t7*gX + t8*gY + t9*gZ);
+
+		// add uniformly-distributed loads to gravity load
+		for (n=1; n<=nE && cU<nU; n++) {
+			if ( (int) U[n][1] == m ) { // load n on element m
+				wxg += U[n][2];
+				wyg += U[n][3];
+				wzg += U[n][4];
+				++cU;
+			}
+		}
+
+		// interior forces for frame element "m" at (x=0)
+		Nx_ = Nx = -Q[m][1];	// positive Nx is tensile
+		Vy_ = Vy = -Q[m][2];	// positive Vy in local y direction
+		Vz_ = Vz = -Q[m][3];	// positive Vz in local z direction
+		Tx_ = Tx = -Q[m][4];	// positive Tx r.h.r. about local x axis
+		My_ = My =  Q[m][5];	// positive My -> positive x-z curvature
+		Mz_ = Mz = -Q[m][6];	// positive Mz -> positive x-y curvature
+
+		i1 = 6*(n1-1);	i2 = 6*(n2-1);
+
+		/* compute end deflections in local coordinates */
+
+		u1  = t1*D[i1+1] + t2*D[i1+2] + t3*D[i1+3];
+		u2  = t4*D[i1+1] + t5*D[i1+2] + t6*D[i1+3];
+		u3  = t7*D[i1+1] + t8*D[i1+2] + t9*D[i1+3];
+
+		u4  = t1*D[i1+4] + t2*D[i1+5] + t3*D[i1+6];
+		u5  = t4*D[i1+4] + t5*D[i1+5] + t6*D[i1+6];
+		u6  = t7*D[i1+4] + t8*D[i1+5] + t9*D[i1+6];
+
+		u7  = t1*D[i2+1] + t2*D[i2+2] + t3*D[i2+3];
+		u8  = t4*D[i2+1] + t5*D[i2+2] + t6*D[i2+3];
+		u9  = t7*D[i2+1] + t8*D[i2+2] + t9*D[i2+3];
+
+		u10 = t1*D[i2+4] + t2*D[i2+5] + t3*D[i2+6];
+		u11 = t4*D[i2+4] + t5*D[i2+5] + t6*D[i2+6];
+		u12 = t7*D[i2+4] + t8*D[i2+5] + t9*D[i2+6];
+
+		// rotations and displacements for frame element "m" at (x=0)
+		Dx =  u1;	// displacement in  local x dir  at node N1
+		Dy =  u2;	// displacement in  local y dir  at node N1
+		Dz =  u3;	// displacement in  local z dir  at node N1
+		Rx =  u4;	// rotationin about local x axis at node N1
+		Sy_ = Sy =  u6;	// slope in  local y  direction  at node N1
+		Sz_ = Sz = -u5;	// slope in  local z  direction  at node N1
+
+		// accumulate interior span loads, forces, moments, slopes, and displacements
+		// all in a single loop  
+
+		for (i=1; i<=nx; i++) {
+
+			x = i*dx;	// location from node N1 along the x-axis
+
+			// start with gravitational plus uniform loads
+			wx = wxg; wy = wyg; wz = wzg;
+
+			if (i==1) { wx_ = wxg; wy_ = wyg; wz_ = wzg; tx_ = tx; }
+
+			// add trapezoidally-distributed loads
+			for (n=1; n<=10*nE && cW<nW; n++) {
+			    if ( (int) W[n][1] == m ) { // load n on element m
+				if (i==nx) ++cW;
+				xx1 = W[n][2];  xx2 = W[n][3];
+				wx1 = W[n][4];  wx2 = W[n][5];
+				xy1 = W[n][6];  xy2 = W[n][7];
+				wy1 = W[n][8];  wy2 = W[n][9];
+				xz1 = W[n][10]; xz2 = W[n][11];
+				wz1 = W[n][12]; wz2 = W[n][13];
+
+				if ( x>xx1 && x<=xx2 )
+				    wx += wx1+(wx2-wx1)*(x-xx1)/(xx2-xx1);
+				if ( x>xy1 && x<=xy2 )
+				    wy += wy1+(wy2-wy1)*(x-xy1)/(xy2-xy1);
+				if ( x>xz1 && x<=xz2 )
+				    wz += wz1+(wz2-wz1)*(x-xz1)/(xz2-xz1);
+			    }
+			}
+
+			// trapezoidal integration of distributed loads 
+			// for axial forces, shear forces and torques
+
+			Nx = Nx - 0.5*(wx+wx_)*dx;
+			Vy = Vy - 0.5*(wy+wy_)*dx;
+			Vz = Vz - 0.5*(wz+wz_)*dx;
+			Tx = Tx - 0.5*(tx+tx_)*dx;
+
+			// update distributed loads at x = (i-1)*dx
+			wx_ = wx;
+			wy_ = wy;
+			wz_ = wz;
+			tx_ = tx;
+			
+			// add interior point loads 
+			for (n=1; n<=10*nE && cP<nP; n++) {
+			    if ( (int) P[n][1] == m ) { // load n on element m
+				if (i==nx) ++cP;
+				xp = P[n][5];
+				if ( x <= xp && xp < x+dx ) {
+					Nx -= P[n][2] * 0.5 * (1.0 - (xp-x)/dx);
+					Vy -= P[n][3] * 0.5 * (1.0 - (xp-x)/dx);
+					Vz -= P[n][4] * 0.5 * (1.0 - (xp-x)/dx);
+					
+				}
+				if ( x-dx <= xp && xp < x ) {
+					Nx -= P[n][2] * 0.5 * (1.0 - (x-dx-xp)/dx);
+					Vy -= P[n][3] * 0.5 * (1.0 - (x-dx-xp)/dx);
+					Vz -= P[n][4] * 0.5 * (1.0 - (x-dx-xp)/dx);
+				}
+			    }
+			}
+
+			// trapezoidal integration of shear force for bending momemnt
+			My = My - 0.5*(Vz_ + Vz)*dx;
+			Mz = Mz - 0.5*(Vy_ + Vy)*dx;
+
+			// displacement along frame element "m"
+			Dx = Dx + 0.5*(Nx_ + Nx)/(E[m]*Ax[m])*dx;
+
+			// torsional rotation along frame element "m"
+			Rx = Rx + 0.5*(Tx_+Tx)/(G[m]*Jx[m])*dx;
+
+			// transverse slope along frame element "m"
+			Sy = Sy + 0.5*(Mz_ + Mz)/(E[m]*Iz[m])*dx;
+			Sz = Sz + 0.5*(My_ + My)/(E[m]*Iy[m])*dx;
+		
+			if ( shear ) {
+				Sy += Vy/(G[m]*Asy[m]);
+				Sz += Vz/(G[m]*Asz[m]);
+			}
+
+			// displacement along frame element "m"
+			Dy = Dy + 0.5*(Sy_+Sy)*dx;
+			Dz = Dz + 0.5*(Sz_+Sz)*dx;
+
+			// update forces, moments, and slopes at x = (i-1)*dx
+			Nx_ = Nx;
+			Vy_ = Vy;
+			Vz_ = Vz;
+			Tx_ = Tx;
+			My_ = My;
+			Mz_ = Mz;
+			Sy_ = Sy;
+			Sz_ = Sz;
+
+			// update the peak forces, moments, slopes and displacements
+			// and their locations along the frame element
+
+			pkNx[lc][m] = (fabs(Nx) > pkNx[lc][m]) ? fabs(Nx) : pkNx[lc][m];
+			pkVy[lc][m] = (fabs(Vy) > pkVy[lc][m]) ? fabs(Vy) : pkVy[lc][m];
+			pkVz[lc][m] = (fabs(Vz) > pkVz[lc][m]) ? fabs(Vz) : pkVz[lc][m];
+
+			pkTx[lc][m] = (fabs(Tx) > pkTx[lc][m]) ? fabs(Tx) : pkTx[lc][m];
+			pkMy[lc][m] = (fabs(My) > pkMy[lc][m]) ? fabs(My) : pkMy[lc][m];
+			pkMz[lc][m] = (fabs(Mz) > pkMz[lc][m]) ? fabs(Mz) : pkMz[lc][m];
+
+
+			pkDx[lc][m] = (fabs(Dx) > pkDx[lc][m]) ? fabs(Dx) : pkDx[lc][m];
+			pkDy[lc][m] = (fabs(Dy) > pkDy[lc][m]) ? fabs(Dy) : pkDy[lc][m];
+			pkDz[lc][m] = (fabs(Dz) > pkDz[lc][m]) ? fabs(Dz) : pkDz[lc][m];
+
+			pkRx[lc][m] = (fabs(Rx) > pkRx[lc][m]) ? fabs(Rx) : pkRx[lc][m];
+			pkSy[lc][m] = (fabs(Sy) > pkSy[lc][m]) ? fabs(Sy) : pkSy[lc][m];
+			pkSz[lc][m] = (fabs(Sz) > pkSz[lc][m]) ? fabs(Sz) : pkSz[lc][m];
+
+		}			// end of loop along element "m"
+
+		// at the end of this loop,
+		// the variables Nx; Vy; Vz; Tx; My; Mz; Dx; Dy; Dz; Rx; Sy; Sz;
+		// contain the forces, moments, displacements, and slopes 
+		// at node N2 of element "m"
+
+		// comparing the internal forces and displacements at node N2
+		// to the values conmputed via trapezoidal rule could give an estimate 
+		// of the accuracy of the trapezoidal rule, (how small "dx" needs to be)
+			
+		// linear correction for bias in trapezoidal integration 
+		// is not implemented, the peak values are affected by accumulation
+		// of round-off error in trapezoidal rule integration.   
+		// round-off errors are larger in the peak displacements than in the peak forces
+
+
+	}				// end of loop over all frame elements
+
+	// DEBUG --- write output to terminal
+	fprintf(stderr,"P E A K   F R A M E   E L E M E N T   I N T E R N A L   F O R C E S");
+	fprintf(stderr,"\t(local)\n");
+	fprintf(stderr,"  Elmnt       Nx          Vy         Vz");
+	fprintf(stderr,"        Txx        Myy        Mzz\n");
+	for (m=1; m<=nE; m++) 
+		fprintf(stderr," %5d  %10.3f  %10.3f %10.3f %10.3f %10.3f %10.3f\n",
+			m, pkNx[lc][m], pkVy[lc][m], pkVz[lc][m], pkTx[lc][m], pkMy[lc][m], pkMz[lc][m] );
+	
+	fprintf(stderr,"\n P E A K   I N T E R N A L   D I S P L A C E M E N T S");
+	fprintf(stderr,"\t\t\t(local)\n");
+  	fprintf(stderr,"  Elmnt  X-dsp       Y-dsp       Z-dsp       X-rot       Y-rot       Z-rot\n");
+	for (m=1; m<=nE; m++) 
+		fprintf(stderr," %5d %10.6f  %10.6f  %10.6f  %10.6f  %10.6f  %10.6f\n",
+			m, pkDx[lc][m], pkDy[lc][m], pkDz[lc][m], pkRx[lc][m], pkSy[lc][m], pkSz[lc][m] );
+
+}
+
+
+/*------------------------------------------------------------------------------
 WRITE_INTERNAL_FORCES - 
 calculate frame element internal forces, Nx, Vy, Vz, Tx, My, Mz
 calculate frame element local displacements, Rx, Dx, Dy, Dz
@@ -2408,7 +2694,7 @@ void write_internal_forces (
 	
 	/* open the interior force data file */
 	if ((fpif = fopen (fnif, "w")) == NULL) {
-         sprintf (errMsg,"\nERROR: cannot open interior force data file '%s'\n",fnif);
+         sprintf (errMsg,"\n  error: cannot open interior force data file: %s \n",fnif);
 	 errorMsg(errMsg);
          exit(19);
 	}
@@ -2553,7 +2839,7 @@ void write_internal_forces (
 			}
 
 		}
-		// linear correction for bias in trapezoidal integration
+		// linear correction of forces for bias in trapezoidal integration
 		for (i=1; i<=nx; i++) {
 			Nx[i] -= (Nx[nx]-Q[m][7])  * i/nx;
 			Vy[i] -= (Vy[nx]-Q[m][8])  * i/nx;
@@ -2568,7 +2854,7 @@ void write_internal_forces (
 			Mz[i] = Mz[i-1] - 0.5*(Vy[i]+Vy[i-1])*dx_;
 
 		}
-		// linear correction for bias in trapezoidal integration
+		// linear correction of moments for bias in trapezoidal integration
 		for (i=1; i<=nx; i++) {
 			My[i] -= (My[nx]+Q[m][11]) * i/nx;
 			Mz[i] -= (Mz[nx]-Q[m][12]) * i/nx;
@@ -2611,7 +2897,7 @@ void write_internal_forces (
 			if (i==nx)	dx_ = dxnx;
 			Dx[i] = Dx[i-1] + 0.5*(Nx[i-1]+Nx[i])/(E[m]*Ax[m])*dx_;
 		}
-		// linear correction for bias in trapezoidal integration
+		// linear correction of axial displacement for bias in trapezoidal integration
 		for (i=1; i<=nx; i++) {
 			Dx[i] -= (Dx[nx]-u7) * i/nx;
 		}
@@ -2622,7 +2908,7 @@ void write_internal_forces (
 			if (i==nx)	dx_ = dxnx;
 			Rx[i] = Rx[i-1] + 0.5*(Tx[i-1]+Tx[i])/(G[m]*Jx[m])*dx_;
 		}
-		// linear correction for bias in trapezoidal integration
+		// linear correction of torsional rot'n for bias in trapezoidal integration
 		for (i=1; i<=nx; i++) {
 			Rx[i] -= (Rx[nx]-u10) * i/nx;
 		}
@@ -2871,13 +3157,13 @@ void static_mesh(
 
 	if (lc <= 1) {	// open plotting script file for writing
 	    if ((fpm = fopen (plotpath, "w")) == NULL) {
-		sprintf (errMsg,"\n  error: cannot open plot file: %s\n", plotpath);
+		sprintf (errMsg,"\n  error: cannot open gnuplot script file: %s \n", plotpath);
 		errorMsg(errMsg);
 		exit(23);
 	    }
 	} else {	// open plotting script file for appending
 	    if ((fpm = fopen (plotpath, "a")) == NULL) {
-		sprintf (errMsg,"\n  error: cannot open plot file: %s\n", plotpath);
+		sprintf (errMsg,"\n  error: cannot open gnuplot script file: %s \n", plotpath);
 		errorMsg(errMsg);
 		exit(24);
 	    }
@@ -2969,7 +3255,7 @@ void static_mesh(
 	if (lc <= 1) {
 	 // open the undeformed mesh data file for writing
 	 if ((fpm = fopen (meshpath, "w")) == NULL) {
-		sprintf (errMsg,"\n  error: cannot open meshpath: %s\n", meshpath );
+		sprintf (errMsg,"\n  error: cannot open gnuplot undeformed mesh data file: %s\n", meshpath );
 		errorMsg(errMsg);
 		exit(21);
 	 }
@@ -2999,7 +3285,7 @@ void static_mesh(
 
 	// open the deformed mesh data file for writing 
 	if ((fpm = fopen (meshfl, "w")) == NULL) {
-		sprintf (errMsg,"\n  error: cannot open meshpath: %s\n", meshfl );
+		sprintf (errMsg,"\n  error: cannot open gnuplot deformed mesh data file %s \n", meshfl );
 		errorMsg(errMsg);
 		exit(22);
 	}
@@ -3018,7 +3304,7 @@ void static_mesh(
 	 // file name for internal force data for load case "lc" 
 	 sprintf( fnif, "%s%02d", infcpath, lc );
 	 if ((fpif = fopen (fnif, "r")) == NULL) {
-          sprintf (errMsg,"\nERROR: cannot open interior force data file '%s'\n",fnif);
+          sprintf (errMsg,"\n  error: cannot open interior force data file: %s \n",fnif);
 	  errorMsg(errMsg);
           exit(20);
 	 }
@@ -3104,7 +3390,7 @@ void modal_mesh(
 		sprintf( modefl,"%s-%02d-", modepath, m );
 
 		if ((fpm = fopen (modefl, "w")) == NULL) {
-			sprintf (errMsg,"\n  error: cannot open modal mesh file: %s\n", modefl);
+			sprintf (errMsg,"\n  error: cannot open gnuplot modal mesh file: %s \n", modefl);
 			errorMsg(errMsg);
 			exit(27);
 		}
@@ -3148,7 +3434,7 @@ void modal_mesh(
 
 
 		if ((fpm = fopen (plotpath, "a")) == NULL) {
-			sprintf (errMsg,"\n  error: cannot append plot file: %s\n",plotpath);
+			sprintf (errMsg,"\n  error: cannot append gnuplot script file: %s \n",plotpath);
 			errorMsg(errMsg);
 			exit(25);
 		}
@@ -3255,7 +3541,7 @@ void animate(
 
 
 	if ((fpm = fopen (plotpath, "a")) == NULL) {
-		sprintf (errMsg,"\n  error: cannot append plot file: %s\n",plotpath);
+		sprintf (errMsg,"\n  error: cannot append gnuplot script file: %s \n",plotpath);
 		errorMsg(errMsg);
 		exit(26);
 	}
@@ -3388,7 +3674,7 @@ void animate(
 	    sprintf(modefl,"%s-%02d.%03d", modepath, m, fr  );
 
 	    if ((fpm = fopen (modefl, "w")) == NULL) {
-		sprintf (errMsg,"\n  error: cannot open modal mesh file: %s\n", modefl);
+		sprintf (errMsg,"\n  error: cannot open gnuplot modal mesh data file: %s \n", modefl);
 		errorMsg(errMsg);
 		exit(28);
 	    }

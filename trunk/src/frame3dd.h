@@ -213,7 +213,9 @@ void deallocate(
 	float *d, float *EMs,
 	float *NMs, float *NMx, float *NMy, float *NMz,
 	double **M, double *f, double **V, 
-	int *c, int *m
+	int *c, int *m, 
+	double **pkNx, double **pkVy, double **pkVz, double **pkTx, double **pkMy, double **pkMz,
+	double **pkDx, double **pkDy, double **pkDz, double **pkRx, double **pkSy, double **pkSz
 );
 
 
