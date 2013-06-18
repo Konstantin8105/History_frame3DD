@@ -347,6 +347,7 @@ void peak_internal_forces (
 	4jan10
 */
 void write_internal_forces(
+	FILE *fp,	/**< pointer to output data file		*/
 	char infcpath[],/**< interior force data file			*/
 	int lc,		/**< load case number				*/
 	int nL,		/**< number of static load cases		*/
