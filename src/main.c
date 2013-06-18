@@ -127,6 +127,12 @@ For compilation/installation, see README.txt.
 		exagg_static=10,// exaggerate static displ. in mesh data
 		exagg_modal=10;	// exaggerate modal displ. in mesh data
 
+		// peak internal forces, moments, and displacments
+		// in each frame element and each load case 
+	double	**pkNx, **pkVy, **pkVz, **pkTx, **pkMy, **pkMz,
+		**pkDx, **pkDy, **pkDz, **pkRx, **pkSy, **pkSz;
+
+
 	int	nN=0,		// number of Nodes
 		nE=0,		// number of frame Elements
 		nL=0, lc=0,	// number of Load cases
@@ -344,6 +350,21 @@ For compilation/installation, see README.txt.
 	c = ivector(1,DoF); 	/* vector of condensed degrees of freedom */
 	m = ivector(1,DoF); 	/* vector of condensed mode numbers	*/
 
+	// peak axial forces, shears, torques, and moments along each element
+	pkNx = dmatrix(1,nL,1,nE);	
+	pkVy = dmatrix(1,nL,1,nE);
+	pkVz = dmatrix(1,nL,1,nE);
+	pkTx = dmatrix(1,nL,1,nE);
+	pkMy = dmatrix(1,nL,1,nE);
+	pkMz = dmatrix(1,nL,1,nE); 
+
+	// peak displacements and slopes along each element
+	pkDx = dmatrix(1,nL,1,nE);
+	pkDy = dmatrix(1,nL,1,nE);
+	pkDz = dmatrix(1,nL,1,nE);
+	pkRx = dmatrix(1,nL,1,nE);
+	pkSy = dmatrix(1,nL,1,nE);
+	pkSz = dmatrix(1,nL,1,nE); 
 
 	read_and_assemble_loads( fp, nN, nE, nL, DoF, xyz, L, Le, N1, N2,
 			Ax,Asy,Asz, Iy,Iz, E, G, p,
@@ -704,7 +725,9 @@ For compilation/installation, see README.txt.
 			U,W,P,T, Dp, F_mech, F_temp,
 			feF_mech, feF_temp, F, dF, 
 			K, Q, D, dD,
-			d,EMs,NMs,NMx,NMy,NMz, M,f,V, c, m
+			d,EMs,NMs,NMx,NMy,NMz, M,f,V, c, m, 
+			pkNx, pkVy, pkVz, pkTx, pkMy, pkMz,
+			pkDx, pkDy, pkDz, pkRx, pkSy, pkSz
 	);
 
 	if ( verbose ) fprintf(stdout,"\n");

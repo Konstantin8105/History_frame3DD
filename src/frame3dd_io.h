@@ -313,6 +313,33 @@ void write_static_mfile(
 );
 
 
+/**
+	calculate frame element internal forces, Nx, Vy, Vz, Tx, My, Mz
+	calculate frame element local displacements, Rx, Dx, Dy, Dz
+	return the peak (maximum absolute) values
+	18 jun 2013
+*/
+void peak_internal_forces (
+
+
+                int lc,         // load case number
+                int nL,         // total number of load cases
+                vec3 *xyz,      // node locations
+                double **Q, int nN, int nE, double *L, int *N1, int *N2,
+                float *Ax,float *Asy,float *Asz,float *Jx,float *Iy,float *Iz,
+                float *E, float *G, float *p,
+                float *d, float gX, float gY, float gZ,
+                int nU, float **U, int nW, float **W, int nP, float **P,
+                double *D, int shear,
+
+                // vectors of peak forces, moments, displacements and slopes 
+		// for each frame element, for load case "lc" 
+                double **pkNx, double **pkVy, double **pkVz,
+                double **pkTx, double **pkMy, double **pkMz,
+                double **pkDx, double **pkDy, double **pkDz,
+                double **pkRx, double **pkSy, double **pkSz
+);
+
 /** 
 	calculate frame element internal forces, Nx, Vy, Vz, Tx, My, Mz
 	calculate frame element local displacements, Rx, Dx, Dy, Dz
