@@ -1,3 +1,7 @@
+*Mon Dec 16 22:19:21 EST 2013 Henri Gavin <hpgavin> 0.20130317
+- user_manual.html ... change .bashrc to .bash_profile
+- user_manual.html ... change .cshrc  to .login
+
 *Tue Jun 18 14:17:15 EDT 2013 Henri Gavin <hpgavin> 0.20130317
 - new function peak_internal_forces
 - write peak internal element forces to output data file
