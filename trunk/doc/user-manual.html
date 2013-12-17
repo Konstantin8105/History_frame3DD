@@ -304,9 +304,9 @@ Put the <b>Frame3DD</b> directory in your path and set the <b>FRAME3DD_OUTDIR</b
 To do this, double-click the <b>Home</b> icon on the Desktop, and select <b>View > Show Hidden Files</b><br><br>
 
 <ul>
-<li>If you have a file called <b>.bashrc</b> in your home directory,
+<li>If you have a file called <b>.bash_profile</b> in your home directory,
 open it with a double-click.
-Copy-and-paste the following ten lines into the beginning of <b>.bashrc</b> 
+Copy-and-paste the following ten lines into the beginning of <b>.bash_profile</b> 
 <pre>
 # for Frame3DD ... http://frame3dd.sourceforge.net/
 # add Frame3DD executable directory to the path
@@ -321,9 +321,9 @@ export FRAME3DD_OUTDIR=/tmp/frame3dd_temp_$USER
 </pre>
 ... save, and exit the editor.   
 
-<li>If you have a file named <b>.cshrc</b> in your home directory,
+<li>If you have a file named <b>.login</b> in your home directory,
 open it with a double-click. 
-Copy-and-paste the following ten lines into the beginning of <b>.cshrc</b> 
+Copy-and-paste the following ten lines into the beginning of <b>.login</b> 
 <pre>
 # for Frame3DD ... http://frame3dd.sourceforge.net/
 # add Frame3DD executable directory to the path
@@ -340,8 +340,8 @@ setenv FRAME3DD_OUTDIR /tmp/frame3dd_temp_$user
 
 <li> Open a Terminal window. (Right-click on an open part of the Desktop and select <b>Open Terminal</b>), and type:  
 <pre>
-source ~/.bashrc   # if you edited ~/.bashrc 
-source ~/.cshrc    # if you edited ~/.cshrc  
+source ~/.bash_profile   # if you edited ~/.bash_profile 
+source ~/.login    # if you edited ~/.login  
 </pre>
 </ul>
 </ol>
