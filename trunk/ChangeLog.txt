@@ -1,3 +1,6 @@
+*Tue Dec 17 22:19:21 EST 2013 Henri Gavin <hpgavin> 0.20130317
+- user_manual.html ... change .bash_profile to .profile
+
 *Mon Dec 16 22:19:21 EST 2013 Henri Gavin <hpgavin> 0.20130317
 - user_manual.html ... change .bashrc to .bash_profile
 - user_manual.html ... change .cshrc  to .login
