@@ -58,17 +58,20 @@ Example I: a triangular tower  (kip,in)
 23     14 15  100  60    60    500   1000  1000    9990   3800 0   2.4e-10
 24     15 13  100  60    60    500   1000  1000    9990   3800 0   2.4e-10
 
-1                               # 1: include shear deformation
-1                               # 1: include geometric stiffness
-2.0                             # exaggerate static mesh deformations
-12.0                            # x-axis increment for internal force data, in
-
-
+1               # 1: include shear deformation
+1               # 1: include geometric stiffness
+2.0             # exaggerate static mesh deformations
+12.0            # x-axis increment for internal force data, in
+                # if dx is -1 then internal force calculations are skipped.
 
 1			# number of static load cases
+
 				# Begin Static Load Case 1 of 1
-				
-0   -386.4   0                  # gravity in the X, Y, Z directions (global)
+
+# gravitational acceleration for self-weight loading (global)
+#.gX            gY              gZ              
+#.in./s^2       in./s^2         in./s^2
+  0		-386.4		0 
 
 1                               # number of loaded nodes
 #.n       Fx         Fy     Fz     Mxx     Myy     Mzz
@@ -94,7 +97,7 @@ Example I: a triangular tower  (kip,in)
 0                               # number of trapezoidal distributed loads
 0                               # number of internal concentrated loads
 0                               # number of temperature loads
-0                               # number of support settlements
+0                               # number of nodes with prescribed displacements
 				# End   Static Load Case 1 of 1
 
 
@@ -115,4 +118,4 @@ Example I: a triangular tower  (kip,in)
  1  2  3  4                     # modes to animate, omit if nA == 0
 1                               # pan rate during animation
 
-
+# End of input data file for example I

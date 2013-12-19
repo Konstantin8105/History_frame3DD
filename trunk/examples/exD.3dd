@@ -102,5 +102,4 @@ Example D: dynamic properties of an un-restrained frame with a triangular sectio
  1  7  9  11  12                # modes to animate, omit list of nA == 0
 2.0                             # pan rate during animation
 
-
-
+# End of input data file for example D
