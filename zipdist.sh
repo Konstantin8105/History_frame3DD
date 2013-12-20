@@ -38,10 +38,12 @@ cp --preserve=mode,timestamps LICENSE.txt           dist/Frame3DD/.
 cp --preserve=mode,timestamps README.txt            dist/Frame3DD/.
 cp --preserve=mode,timestamps README-win32.txt      dist/Frame3DD/.
 
-# copy example files
+# copy example files (text and .csv formats)
 echo "copying example files ... "
 cp --preserve=mode,timestamps examples/ex*.3dd      dist/Frame3DD/examples/.
 cp --preserve=mode,timestamps examples/ex*.out      dist/Frame3DD/examples/.
+cp --preserve=mode,timestamps examples/ex*.csv      dist/Frame3DD/examples/.
+cp --preserve=mode,timestamps examples/ex*_out.CSV  dist/Frame3DD/examples/.
 cp --preserve=mode,timestamps examples/saveplot     dist/Frame3DD/examples/.
 cp --preserve=mode,timestamps examples/saveplot_w32 dist/Frame3DD/examples/.
 
