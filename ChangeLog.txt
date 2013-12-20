@@ -1,5 +1,7 @@
 *Thu Dec 19 22:19:21 EST 2013 Henri Gavin <hpgavin> 0.20130317
 - add .csv versions of all examples to web site and to download collection
+- remove semicolon (;) from list of comment delimiters for "csv" compatability
+- add semicolon (;) to list of ignored characters for "csv" compatability
 
 *Tue Dec 17 22:19:21 EST 2013 Henri Gavin <hpgavin> 0.20130317
 - user_manual.html ... change .bash_profile to .profile

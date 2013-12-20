@@ -723,8 +723,10 @@ void parse_input(FILE *fp, const char *tpath){
 /*-----------------------------------------------------------------------------
 GETLINE_NO_COMMENT                                                
  get a line into a character string. from K&R
- get the line only up to one of the following characters:  \n  %  #  ;  ? 
- ignore all comma (,) characters, ignore all double quote (") characters
+ get the line only up to one of the following characters:  \n  %  #  ? 
+ ignore all comma (,) characters,
+ ignore all double quote (") characters,
+ ignore all semicolon (;) characters,
 09 Feb 2009
 -----------------------------------------------------------------------------*/
 void getline_no_comment (
@@ -734,9 +736,9 @@ void getline_no_comment (
 ){
 	int     c=0, i=0;
 
-	while (--lim > 0 && (c=getc(fp)) != EOF && c != '\n' && c != '%' &&
-		c != '#' && c != ';' && c != '?' ) {
-		if (c != ',' && c != '"' )
+	while (--lim > 0 && (c=getc(fp)) != EOF &&
+		c != '\n' && c != '%' && c != '#' && c != '?' ) {
+		if (c != ',' && c != '"' && c != ';' )
 			s[i++] = c;
 		else
 			s[i++] = ' ';
