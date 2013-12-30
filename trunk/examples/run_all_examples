@@ -13,6 +13,8 @@ frame3dd -i exH.csv -o exH.out
 frame3dd -i exI.csv -o exI.out 
 frame3dd -i exJ.csv -o exJ.out 
 
+rm ex*.out
+
 frame3dd -i exA.3dd -o exA.out 
 frame3dd -i exB.3dd -o exB.out 
 frame3dd -i exC.3dd -o exC.out 
