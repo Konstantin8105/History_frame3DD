@@ -1,3 +1,7 @@
+* Mon Dec 30 15:58:18 EST 2013 Henri Gavin <hpgavin> 0.20130317
+- sign of reaction forces in .CSV output is negative of what it should be.
+- source-code and examples updated
+
 *Thu Dec 19 22:19:21 EST 2013 Henri Gavin <hpgavin> 0.20130317
 - add .csv versions of all examples to web site and to download collection
 - remove semicolon (;) from list of comment delimiters for "csv" compatability
