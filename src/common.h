@@ -5,7 +5,7 @@
  ---------------------------------------------------------------------------
  http://frame3dd.sourceforge.net/
  ---------------------------------------------------------------------------
- Copyright (C) 1992-2013  Henri P. Gavin
+ Copyright (C) 1992-2014  Henri P. Gavin
 
     FRAME3DD is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@
 #define FILENMAX 128
 
 #ifndef VERSION
-#define VERSION "20130318"
+#define VERSION "20140121"
 #endif
 
 #ifndef PI

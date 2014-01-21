@@ -1,9 +1,9 @@
-" Frame3DD version: 20130318               http://frame3dd.sf.net/"
-"GPL Copyright (C) 1992-2013, Henri P. Gavin "
+" Frame3DD version: 20140121               http://frame3dd.sf.net/"
+"GPL Copyright (C) 1992-2014, Henri P. Gavin "
 "Frame3DD is distributed in the hope that it will be useful but with no warranty."
 "For details see the GNU Public Licence: http://www.fsf.org/copyleft/gpl.html"
 "  Example G: a building with a set-back (units: in  kip)               "
-" Mon Dec 30 16:00:35 2013
+" Tue Jan 21 15:57:36 2014
  "
 " .CSV formatted results of Frame3DD analysis "
 
