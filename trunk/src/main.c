@@ -5,7 +5,7 @@
  ---------------------------------------------------------------------------
  http://frame3dd.sourceforge.net/
  ---------------------------------------------------------------------------
- Copyright (C) 1992-2013  Henri P. Gavin
+ Copyright (C) 1992-2014  Henri P. Gavin
 
     FRAME3DD is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -200,7 +200,7 @@ For compilation/installation, see README.txt.
 		fprintf(stdout,"\n FRAME3DD version: %s\n", VERSION);
 		fprintf(stdout," Analysis of 2D and 3D structural frames with elastic and geometric stiffness.\n");
 		fprintf(stdout," http://frame3dd.sf.net\n");
-		fprintf(stdout," GPL Copyright (C) 1992-2013, Henri P. Gavin\n");
+		fprintf(stdout," GPL Copyright (C) 1992-2014, Henri P. Gavin\n");
 		fprintf(stdout," This is free software with absolutely no warranty.\n");
 		fprintf(stdout," For details, see the GPL license file, LICENSE.txt\n");
 		color(0); fprintf(stdout,"\n");

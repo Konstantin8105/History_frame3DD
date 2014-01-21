@@ -7,7 +7,7 @@
 # number in file 'SConstruct'. Note the alternative packaging instructions in 
 # the file 'PACKAGING.txt' which builds DEB, RPM and EXE packages, but nothing
 # for Mac users :-( 
-export VERSION=20130318
+export VERSION=20140121
 echo $VERSION
 
 # clean out prior distribution files
