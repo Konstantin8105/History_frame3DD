@@ -1,6 +1,7 @@
 * Tue Jan 21 16:00:00 EST 2013 Henri Gavin <hpgavin> 0.20140121
 - correction in computation of internal element transverse displacements
 - apply linear correction to integrated (M/EI) *before* adding in V/GA
+- update version numbers to 20140121 in code and documentation
 
 * Mon Dec 30 15:58:18 EST 2013 Henri Gavin <hpgavin> 0.20130317
 - sign of reaction forces in .CSV output is negative of what it should be.

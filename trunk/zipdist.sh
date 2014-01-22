@@ -129,10 +129,10 @@ rm -rf Frame3DD
 
 # To upload distribution files to sourceforge.net ...
 #
-# rsync -uav Frame3DD*_*.zip hpgavin,frame3dd@frs.sourceforge.net:/home/frs/project/f/fr/frame3dd/frame3dd/0.20130318/.
+# rsync -uav Frame3DD*_*.zip hpgavin,frame3dd@frs.sourceforge.net:/home/frs/project/f/fr/frame3dd/frame3dd/0.20140318/.
 #
-##rsync -uav *.bz2  hpgavin,frame3dd@frs.sourceforge.net:/home/frs/project/f/fr/frame3dd/frame3dd/0.20130318/.
+##rsync -uav *.bz2  hpgavin,frame3dd@frs.sourceforge.net:/home/frs/project/f/fr/frame3dd/frame3dd/0.20140318/.
 
 # ----------------------------------------------------------------- zipdist.sh
 # Henri P. Gavin  2009-10-20
-# updated: 2009-10-22, 2009-10-25, 2009-10-27, 2009-10-29, 2010-01-05, 2010-12-1, 2013-03-18
+# updated: 2009-10-22, 2009-10-25, 2009-10-27, 2009-10-29, 2010-01-05, 2010-12-1, 2013-03-18, 2014-01-21
