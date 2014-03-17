@@ -64,8 +64,8 @@ Example A: linear static analysis of a 2D truss with support settlement (kips,in
  
 0		# 1: include shear deformation
 0		# 1: include geometric stiffness
-10.0 		# exaggerate mesh deformations
-10.0		# x-axis increment for internal forces
+50.0 		# exaggerate mesh deformations
+-1.0		# x-axis increment for internal forces
 		# if dx is -1 then internal force calculations are skipped.
 
 
@@ -75,7 +75,7 @@ Example A: linear static analysis of a 2D truss with support settlement (kips,in
 # gravitational acceleration for self-weight loading (global)
 #.gX		gY		gZ		
 #.in./s^2	in./s^2		in./s^2
-   0		-386.4		0
+  0  		0		0
 
 5				# number of loaded nodes
 #.n     Fx       Fy     Fz      Mxx     Myy     Mzz
@@ -102,7 +102,7 @@ Example A: linear static analysis of a 2D truss with support settlement (kips,in
 # gravitational acceleration for self-weight loading (global)
 #.gX		gY		gZ		
 #.in./s^2	in./s^2		in./s^2
-   0		-386.4		0
+   0		0		0
 
 3				# number of loaded nodes
 #.n     Fx       Fy     Fz      Mxx     Myy     Mzz
