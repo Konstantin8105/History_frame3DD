@@ -50,11 +50,11 @@ static void getline_no_comment(
 );
 
 
-/*------------------------------------------------------------------------------
-PARSE_OPTIONS -  parse command line options		
-command line options over-ride values in the input data file	 	
-04 Mar 2009, 22 Sep 2009
-------------------------------------------------------------------------------*/
+/*
+ * PARSE_OPTIONS -  parse command line options		
+ * command line options over-ride values in the input data file	 	
+ * 04 Mar 2009, 22 Sep 2009
+ */
 void parse_options (
 	int argc, char *argv[], 
 	char IN_file[], char OUT_file[], 
@@ -248,10 +248,10 @@ void parse_options (
 }
 
 
-/*------------------------------------------------------------------------------
-DISPLAY_HELP -  display help information to stderr	
-04 Mar 2009, 22 Sep 2009
-------------------------------------------------------------------------------*/
+/*
+ * DISPLAY_HELP -  display help information to stderr	
+ * 04 Mar 2009, 22 Sep 2009
+ */
 void display_help()
 {
  textColor('g','x','x','x');
@@ -297,10 +297,10 @@ void display_help()
 }
 
 
-/*------------------------------------------------------------------------------
-DISPLAY_USAGE -  display usage information to stderr	
-04 Mar 2009
-------------------------------------------------------------------------------*/
+/*
+ * DISPLAY_USAGE -  display usage information to stderr	
+ * 04 Mar 2009
+ */
 void display_usage()
 {
  fprintf(stderr,"\n Frame3DD version: %s\n", VERSION);
@@ -314,10 +314,10 @@ void display_usage()
 
 }
 
-/*------------------------------------------------------------------------------
-DISPLAY_VERSION_HELP -  display version, website, and brief help info. to stderr
-04 Mar 2009
-------------------------------------------------------------------------------*/
+/*
+ * DISPLAY_VERSION_HELP -  display version, website, and brief help info. to stderr
+ * 04 Mar 2009
+ */
 void display_version()
 {
  fprintf(stderr,"\n Frame3DD version: %s\n", VERSION);
@@ -330,12 +330,12 @@ void display_version()
 }
 
 
-/*------------------------------------------------------------------------------
-DISPLAY_VERSION_ABOUT-  display version and website to stderr for 
-running as a background process 
-22 Sep 2009
-Contributed by Barry Sanford, barry.sanford@trimjoist.com
-------------------------------------------------------------------------------*/
+/*
+ * DISPLAY_VERSION_ABOUT-  display version and website to stderr for 
+ * running as a background process 
+ * 22 Sep 2009
+ * Contributed by Barry Sanford, barry.sanford@trimjoist.com
+ */
 void display_version_about()
 {
  fprintf(stderr," Frame3DD version: %s\n", VERSION);
@@ -349,10 +349,10 @@ void display_version_about()
 }
 
 
-/*------------------------------------------------------------------------------
-READ_NODE_DATA  -  read node location data		
-04 Jan 2009
-------------------------------------------------------------------------------*/
+/*
+ * READ_NODE_DATA  -  read node location data		
+ * 04 Jan 2009
+ */
 void read_node_data( FILE *fp, int nN, vec3 *xyz, float *r )
 {
 	int	i, j,
@@ -376,10 +376,10 @@ void read_node_data( FILE *fp, int nN, vec3 *xyz, float *r )
 }
 
 
-/*------------------------------------------------------------------------------
-READ_FRAME_ELEMENT_DATA  -  read frame element property data		
-04 Jan 2009
-------------------------------------------------------------------------------*/
+/*
+ * READ_FRAME_ELEMENT_DATA  -  read frame element property data		
+ * 04 Jan 2009
+ */
 void read_frame_element_data (
 	FILE *fp,
 	int nN, int nE, vec3 *xyz, float *r,
@@ -510,10 +510,10 @@ void read_frame_element_data (
 }
 
 
-/*------------------------------------------------------------------------------
-READ_RUN_DATA  -  read information for analysis
-29 Dec 2008
-------------------------------------------------------------------------------*/
+/*
+ * READ_RUN_DATA  -  read information for analysis
+ * 29 Dec 2008
+ */
 void read_run_data (
 	FILE	*fp, 
 	char	*OUT_file,	/* output data file name */
@@ -603,9 +603,9 @@ void read_run_data (
 }
 
 
-/*-----------------------------------------------------------------------------
-FRAME3DD_GETLINE -  get line into a character string. from K&R        03feb94
------------------------------------------------------------------------------*/
+/*
+ * FRAME3DD_GETLINE -  get line into a character string. from K&R        03feb94
+ */
 int frame3dd_getline (
 FILE	*fp,
 char    *s,
@@ -629,11 +629,11 @@ static const char sep = '\\';
 static const char sep = '/';
 #endif
 
-/*----------------------------------------------------------------------------
-TEMP_DIR
-return platform-specific temp file location -- 
-John Pye, Feb 2009
-----------------------------------------------------------------------------*/
+/*
+ * TEMP_DIR
+ * return platform-specific temp file location -- 
+ * John Pye, Feb 2009
+ */
 static const char *temp_dir(){
 #if defined(WIN32) || defined(DJGPP)
 	char *tmp;
@@ -653,12 +653,12 @@ static const char *temp_dir(){
 }
 
 
-/*------------------------------------------------------------------------------
-OUTPUT_PATH
-return path for output files using either current directory, or FRAME3DD_OUTDIR
-if specified. -- 
-John Pye, Feb 2009.
-------------------------------------------------------------------------------*/
+/*
+ * OUTPUT_PATH
+ * return path for output files using either current directory, or FRAME3DD_OUTDIR
+ * if specified. -- 
+ * John Pye, Feb 2009.
+ */
 void output_path(const char *fname, char fullpath[], const int len, const char *default_outdir) {
 	int res;
 	assert(fname!=NULL);
@@ -695,10 +695,11 @@ void output_path(const char *fname, char fullpath[], const int len, const char *
 }
 
 
-/*-----------------------------------------------------------------------------
-PARSE_INPUT                                                             7may03
- strip comments from the input file, and write a stripped input file
------------------------------------------------------------------------------*/
+/*
+ * PARSE_INPUT                                                            
+ * strip comments from the input file, and write a stripped input file
+ * 07 May 2003
+ */
 void parse_input(FILE *fp, const char *tpath){
 	FILE	*fpc;		/* stripped input file pointer	*/
 	char	line[256];
@@ -720,15 +721,15 @@ void parse_input(FILE *fp, const char *tpath){
 }
 
 
-/*-----------------------------------------------------------------------------
-GETLINE_NO_COMMENT                                                
- get a line into a character string. from K&R
- get the line only up to one of the following characters:  \n  %  #  ? 
- ignore all comma (,) characters
- ignore all double quote (") characters
- ignore all semi-colon (;) characters
-09 Feb 2009
------------------------------------------------------------------------------*/
+/*
+ * GETLINE_NO_COMMENT                                                
+ * get a line into a character string. from K&R
+ * get the line only up to one of the following characters:  \n  %  #  ? 
+ * ignore all comma (,) characters
+ * ignore all double quote (") characters
+ * ignore all semi-colon (;) characters
+ * 09 Feb 2009
+ */
 void getline_no_comment (
 	FILE *fp,   /**< pointer to the file from which to read */
 	char *s,    /**< pointer to the string to which to write */
@@ -755,10 +756,10 @@ void getline_no_comment (
 }
 
 
-/*------------------------------------------------------------------------------
-READ_REACTION_DATA - Read fixed node displacement boundary conditions
-29 Dec 2009
-------------------------------------------------------------------------------*/
+/*
+ * READ_REACTION_DATA - Read fixed node displacement boundary conditions
+ * 29 Dec 2009
+ */
 void read_reaction_data (
 	FILE *fp, int DoF, int nN, int *nR, int *q, int *r, int *sumR, int verbose
 ){
@@ -830,11 +831,11 @@ void read_reaction_data (
 }
 
 
-/*------------------------------------------------------------------------------
-READ_AND_ASSEMBLE_LOADS  -
-read load information data, assemble un-restrained load vectors
-09 Sep 2008
-------------------------------------------------------------------------------*/
+/*
+ * READ_AND_ASSEMBLE_LOADS  -
+ * read load information data, assemble un-restrained load vectors
+ * 09 Sep 2008
+ */
 void read_and_assemble_loads (
 		FILE *fp,
 		int nN, int nE, int nL, int DoF,
@@ -869,6 +870,7 @@ void read_and_assemble_loads (
 
 	char	errMsg[MAXL];
 
+					/* initialize load vectors to zero */
 	for (j=1; j<=DoF; j++)
 		for (lc=1; lc <= nL; lc++)
 			Fo[lc][j] = F_temp[lc][j] = F_mech[lc][j] = 0.0;
@@ -1440,9 +1442,9 @@ void read_and_assemble_loads (
 }
 
 
-/*------------------------------------------------------------------------------
-READ_MASS_DATA  -  read element densities and extra inertial mass data	16aug01
-------------------------------------------------------------------------------*/
+/*
+ * READ_MASS_DATA  -  read element densities and extra inertial mass data	16aug01 
+ */
 void read_mass_data (
 		FILE *fp,
 		char *OUT_file, 
@@ -1643,9 +1645,9 @@ void read_mass_data (
 }
 
 
-/*------------------------------------------------------------------------------
-READ_CONDENSE   -  read matrix condensation information 	        30aug01
-------------------------------------------------------------------------------*/
+/* 
+ * READ_CONDENSE   -  read matrix condensation information 	        30aug01
+ */
 void read_condensation_data (
 		FILE *fp,
 		int nN, int nM,
@@ -1745,9 +1747,9 @@ void read_condensation_data (
 }
 
 
-/*------------------------------------------------------------------------------
-WRITE_INPUT_DATA  -  save input data					07nov02
-------------------------------------------------------------------------------*/
+/* 
+ * WRITE_INPUT_DATA  -  save input data					07nov02
+ */
 void write_input_data (
 	FILE *fp,
 	char *title, int nN, int nE, int nL,
@@ -1935,10 +1937,10 @@ void write_input_data (
 }
 
 
-/*------------------------------------------------------------------------------
-WRITE_STATIC_RESULTS -  save node displacements and frame element end forces
-09 Sep 2008
-------------------------------------------------------------------------------*/
+/*
+ * WRITE_STATIC_RESULTS -  save node displacements and frame element end forces
+ * 09 Sep 2008
+ */
 void write_static_results (
 		FILE *fp,
 		int nN, int nE, int nL, int lc, int DoF,
@@ -2029,10 +2031,10 @@ void write_static_results (
 }
 
 
-/*------------------------------------------------------------------------------
-WRITE_STATIC_CSV -  save node displacements and frame element end forces
-31 Dec 2008
-------------------------------------------------------------------------------*/
+/*
+ * WRITE_STATIC_CSV -  save node displacements and frame element end forces
+ * 31 Dec 2008
+ */
 void write_static_csv (
 		char *OUT_file,
 		char *title,
@@ -2180,11 +2182,11 @@ void write_static_csv (
 }
 
 
-/*------------------------------------------------------------------------------
-WRITE_VALUE - write a value in %f or %e notation depending on numerical values
-and the number of available significant figures
-12 Dec 2009
-------------------------------------------------------------------------------*/
+/*
+ * WRITE_VALUE - write a value in %f or %e notation depending on numerical values
+ * and the number of available significant figures
+ * 12 Dec 2009
+ */
 /*
 void write_value ( 
 		FILE *fp, 
@@ -2203,12 +2205,12 @@ void write_value (
 */
 
 
-/*------------------------------------------------------------------------------
-WRITE_STATIC_MFILE -  						
-save node displacements and frame element end forces in an m-file
-this function interacts with frame_3dd.m, an m-file interface to frame3dd
-09 Sep 2008
-------------------------------------------------------------------------------*/
+/*
+ * WRITE_STATIC_MFILE -  						
+ * save node displacements and frame element end forces in an m-file
+ * this function interacts with frame_3dd.m, an m-file interface to frame3dd
+ * 09 Sep 2008
+ */
 void write_static_mfile (
 		char *OUT_file, char *title,
 		int nN, int nE, int nL, int lc, int DoF,
@@ -2341,13 +2343,13 @@ void write_static_mfile (
 }
 
 
-/*------------------------------------------------------------------------------
-PEAK_INTERNAL_FORCES
-calculate frame element internal forces, Nx, Vy, Vz, Tx, My, Mz
-calculate frame element local displacements, Rx, Dx, Dy, Dz
-return the peak values of the internal forces, moments, slopes, and displacements
-18jun13
-------------------------------------------------------------------------------*/
+/*
+ * PEAK_INTERNAL_FORCES
+ * calculate frame element internal forces, Nx, Vy, Vz, Tx, My, Mz
+ * calculate frame element local displacements, Rx, Dx, Dy, Dz
+ * return the peak values of the internal forces, moments, slopes, and displacements
+ * 18jun13
+ */
 void peak_internal_forces (
 		int lc, 	// load case number
 		int nL, 	// total number of load cases
@@ -2627,13 +2629,13 @@ void peak_internal_forces (
 }
 
 
-/*------------------------------------------------------------------------------
-WRITE_INTERNAL_FORCES - 
-calculate frame element internal forces, Nx, Vy, Vz, Tx, My, Mz
-calculate frame element local displacements, Rx, Dx, Dy, Dz
-write internal forces and local displacements to an output data file
-4jan10, 7mar11, 21jan14
-------------------------------------------------------------------------------*/
+/*
+ * WRITE_INTERNAL_FORCES - 
+ * calculate frame element internal forces, Nx, Vy, Vz, Tx, My, Mz
+ * calculate frame element local displacements, Rx, Dx, Dy, Dz
+ * write internal forces and local displacements to an output data file
+ * 4jan10, 7mar11, 21jan14
+ */
 void write_internal_forces (
 		FILE *fp, char infcpath[], int lc, int nL, char title[], float dx,
 		vec3 *xyz, 
@@ -3049,10 +3051,10 @@ void write_internal_forces (
 }
 
 
-/*------------------------------------------------------------------------------
-WRITE_MODAL_RESULTS -  save modal frequencies and mode shapes	
-16 Aug 2001
-------------------------------------------------------------------------------*/
+/*
+ * WRITE_MODAL_RESULTS -  save modal frequencies and mode shapes	
+ * 16 Aug 2001
+ */
 void write_modal_results(
 		FILE *fp,
 		int nN, int nE, int nI, int DoF,
@@ -3137,15 +3139,15 @@ void write_modal_results(
 }
 
 
-/*------------------------------------------------------------------------------
-STATIC_MESH  -
-create mesh data of deformed and undeformed mesh, use gnuplot	22 Feb 1999
-useful gnuplot options: set noxtics noytics noztics noborder view nokey
-This function illustrates how to read the internal force output data file.
-The internal force output data file contains all the information required 
-to plot deformed meshes, internal axial force, internal shear force, internal
-torsion, and internal bending moment diagrams.
-------------------------------------------------------------------------------*/
+/*
+ * STATIC_MESH  - create mesh data of deformed and undeformed mesh  22 Feb 1999 
+ * use gnuplot	
+ * useful gnuplot options: set noxtics noytics noztics noborder view nokey
+ * This function illustrates how to read the internal force output data file.
+ * The internal force output data file contains all the information required 
+ * to plot deformed meshes, internal axial force, internal shear force, internal
+ * torsion, and internal bending moment diagrams.
+ */
 void static_mesh(
 		char IN_file[],
 		char infcpath[], char meshpath[], char plotpath[],
@@ -3376,10 +3378,10 @@ void static_mesh(
 }
 
 
-/*------------------------------------------------------------------------------
-MODAL_MESH  -  create mesh data of the mode-shape meshes, use gnuplot	19oct98
-	 useful gnuplot options: set noxtics noytics noztics noborder view nokey
-------------------------------------------------------------------------------*/
+/*
+ * MODAL_MESH  -  create mesh data of the mode-shape meshes, use gnuplot	19oct98
+ * useful gnuplot options: set noxtics noytics noztics noborder view nokey
+ */
 void modal_mesh(
 		char IN_file[], char meshpath[], char modepath[],
 		char plotpath[], char *title,
@@ -3502,12 +3504,12 @@ void modal_mesh(
 }
 
 
-/*------------------------------------------------------------------------------
-ANIMATE -  create mesh data of animated mode-shape meshes, use gnuplot	16dec98
-	 useful gnuplot options: set noxtics noytics noztics noborder view nokey
-	 mpeg movie example:   % convert mesh_file-03-f-*.ps mode-03.mpeg
-	 ... requires ImageMagick and mpeg2vidcodec packages
-------------------------------------------------------------------------------*/
+/*
+ * ANIMATE -  create mesh data of animated mode-shape meshes, use gnuplot	16dec98
+ * useful gnuplot options: set noxtics noytics noztics noborder view nokey
+ * mpeg movie example:   % convert mesh_file-03-f-*.ps mode-03.mpeg
+ * ... requires ImageMagick and mpeg2vidcodec packages
+ */
 void animate(
 	char IN_file[], char meshpath[], char modepath[], char plotpath[],
 	char *title,
@@ -3738,12 +3740,12 @@ void animate(
 }
 
 
-/*------------------------------------------------------------------------------
-CUBIC_BENT_BEAM  -  computes cubic deflection functions from end deflections
-and end rotations.  Saves deflected shapes to a file.  These bent shapes
-are exact for mode-shapes, and for frames loaded at their nodes.
-15 May 2009
-------------------------------------------------------------------------------*/
+/*
+ * CUBIC_BENT_BEAM  -  computes cubic deflection functions from end deflections
+ * and end rotations.  Saves deflected shapes to a file.  These bent shapes
+ * are exact for mode-shapes, and for frames loaded at their nodes.
+ * 15 May 2009
+ */
 void cubic_bent_beam(
 	FILE *fpm, int n1, int n2, vec3 *xyz,
 	double L, float p, double *D, double exagg
@@ -3834,14 +3836,14 @@ void cubic_bent_beam(
 }
 
 
-/*------------------------------------------------------------------------------
-FORCE_BENT_BEAM  -  reads internal frame element forces and deflections
-from the internal force and deflection data file.  
-Saves deflected shapes to a file.  These bent shapes are exact. 
-Note: It would not be difficult to adapt this function to plot
-internal axial force, shear force, torques, or bending moments. 
-9 Jan 2010
-------------------------------------------------------------------------------*/
+/*
+ * FORCE_BENT_BEAM  -  reads internal frame element forces and deflections
+ * from the internal force and deflection data file.  
+ * Saves deflected shapes to a file.  These bent shapes are exact. 
+ * Note: It would not be difficult to adapt this function to plot
+ * internal axial force, shear force, torques, or bending moments. 
+ * 9 Jan 2010
+ */
 void force_bent_beam(
 	FILE *fpm, FILE *fpif, char fnif[], int nx, int n1, int n2, vec3 *xyz,
 	double L, float p, double *D, double exagg
@@ -3894,9 +3896,9 @@ void force_bent_beam(
 }
 
 
-/*------------------------------------------------------------------------------
-SFERR  -  Display error message upon an erronous *scanf operation
-------------------------------------------------------------------------------
+/*
+ * SFERR  -  Display error message upon an erronous *scanf operation
+ *
 void sferr ( char s[] ) {
 	char	errMsg[MAXL];
 	sprintf(errMsg,">> Input Data file error while reading %s\n",s);
@@ -3906,10 +3908,10 @@ void sferr ( char s[] ) {
 */
 
 
-/*------------------------------------------------------------------------------
-MY_ITOA  -  Convert an integer n to charcters in s, from K&R, 1978,   p. 59-60
-... specialized for portability between GNU GCC and DJGPP GCC
-------------------------------------------------------------------------------*/
+/*
+ * MY_ITOA  -  Convert an integer n to charcters in s, from K&R, 1978,   p. 59-60
+ * ... specialized for portability between GNU GCC and DJGPP GCC
+ */
 void my_itoa ( int n, char s[], int k ) {
 	int	c, i, j, sign;
 
@@ -3937,12 +3939,12 @@ void my_itoa ( int n, char s[], int k ) {
 }
 
 
-/*------------------------------------------------------------------------------
-GET_FILE_EXT  -  get the file extension,
-		return 1 if the extension is ".csv"
-		return 2 if the extension is ".fmm"
-		return 0 otherwise
-------------------------------------------------------------------------------*/
+/*
+ * GET_FILE_EXT  -  get the file extension,
+ *		return 1 if the extension is ".csv"
+ *		return 2 if the extension is ".fmm"
+ *		return 0 otherwise
+ */
 int get_file_ext( char *filename, char *ext )
 {
 	int	i=0, full_len=0, len=0;
@@ -3967,18 +3969,18 @@ int get_file_ext( char *filename, char *ext )
 }
 
 
-/*------------------------------------------------------------------------------
-DOTS  -  print a set of dots (periods)
-------------------------------------------------------------------------------*/
+/*
+ * DOTS  -  print a set of dots (periods)
+ */
 void dots ( FILE *fp, int n ) {
 	int i;
 	for (i=1; i<=n; i++)	fprintf(fp,".");
 }
 
 
-/*------------------------------------------------------------------------------
-EVALUATE -  displays a randomly-generated goodbye message.  
-------------------------------------------------------------------------------*/
+/*
+ * EVALUATE -  displays a randomly-generated goodbye message.  
+ */
 void evaluate ( float error, float rms_resid, float tol, int geom ) 
 {
 	int r;

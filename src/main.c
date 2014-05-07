@@ -103,7 +103,7 @@ For compilation/installation, see README.txt.
 		traceK = 0.0,	// trace of the global stiffness matrix
 		**M = NULL,	// global mass matrix
 		traceM = 0.0,	// trace of the global mass matrix
-		**F_mech=NULL,	// mechanical load vectors,  load cases	
+		**F_mech=NULL,	// mechanical load vectors, all load cases	
 		**F_temp=NULL,	// thermal load vectors, all load cases
 		**F = NULL, 	// general load vectors	for each load case
 		***feF_mech=NULL,// fixed end forces from mech loads

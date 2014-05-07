@@ -79,9 +79,9 @@ static void consistent_M(
 );
 
 
-/*------------------------------------------------------------------------------
-ASSEMBLE_K  -  assemble global stiffness matrix from individual elements 23feb94
-------------------------------------------------------------------------------*/
+/*
+ * ASSEMBLE_K  -  assemble global stiffness matrix from individual elements 23feb94
+ */
 void assemble_K(
 	double **K,
 	int DoF, int nE,
@@ -143,9 +143,9 @@ void assemble_K(
 }
 
 
-/*------------------------------------------------------------------------------
-ELASTIC_K - space frame elastic stiffness matrix in global coordnates	22oct02
-------------------------------------------------------------------------------*/
+/*
+ * ELASTIC_K - space frame elastic stiffness matrix in global coordnates	22oct02
+ */
 void elastic_K(
 	double **k, vec3 *xyz, float *r,
 	double L, double Le,
@@ -224,9 +224,9 @@ void elastic_K(
 }
 
 
-/*------------------------------------------------------------------------------
-GEOMETRIC_K - space frame geometric stiffness matrix, global coordnates 20dec07
-------------------------------------------------------------------------------*/
+/*
+ * GEOMETRIC_K - space frame geometric stiffness matrix, global coordnates 20dec07
+ */
 void geometric_K(
 	double **k, vec3 *xyz, float *r,
 	double L, double Le,
@@ -343,19 +343,19 @@ int	r;
 #endif
 
 
-/*------------------------------------------------------------------------------
-COMPUTE_REACTION_FORCES -  12oct12
-Compute  [K(r,q)] * {D(q)} + [K(r,r)] * {D(r)}
-The load vector modified for prescribed displacements Dp is returned as F
-Prescribed displacements are "mechanican loads" not "temperature loads"  
-------------------------------------------------------------------------------*/
+/*
+ * COMPUTE_REACTION_FORCES - compute  [K(r,q)] * {D(q)} + [K(r,r)] * {D(r)} 
+ * The load vector modified for prescribed displacements Dp is returned as F
+ * Prescribed displacements are "mechanican loads" not "temperature loads"  
+ * 2012-10-12 , 2014-05-07
+ */
 void compute_reaction_forces( double *F, double **K, double *D, int DoF, int *r)
 {
 	int	i,j;
 
 	for (i=1; i<=DoF; i++) {
-		if (r[i]) {
-			F[i] = 0.0;
+		if (r[i]) {		// coordinate "i" is a reaction coord.
+			F[i] = 0.0;	// F will be the vector of reactions
 			for (j=1; j<=DoF; j++)	F[i] += K[i][j]*D[j];
 		}
 	}
@@ -363,10 +363,10 @@ void compute_reaction_forces( double *F, double **K, double *D, int DoF, int *r)
 }
 
 
-/*----------------------------------------------------------------------------
-SOLVE_SYSTEM  -  solve {F} =   [K]{D} via L D L' decomposition        27dec01
-Prescribed displacements are "mechanical loads" not "temperature loads"  
-----------------------------------------------------------------------------*/
+/*
+ * SOLVE_SYSTEM  -  solve {F} =   [K]{D} via L D L' decomposition        27dec01
+ * Prescribed displacements are "mechanical loads" not "temperature loads"  
+ */
 void solve_system(
 	double **K, double *D, double *F, int DoF, int *q, int *r,
 	int *ok, int verbose, double *rms_resid
@@ -400,9 +400,9 @@ void solve_system(
 }
 
 
-/*----------------------------------------------------------------------------
-EQUILIBRIUM_ERROR -  compute {dF} =   {F} - [K]{D}  and return ||dF||/||F||
-----------------------------------------------------------------------------*/
+/*
+ * EQUILIBRIUM_ERROR -  compute {dF} =   {F} - [K]{D}  and return ||dF||/||F||
+ */
 double equilibrium_error( double *dF, double *F, double **K, double *D, int DoF, int *q )
 {
 	double	ss_dF = 0.0,	//  sum of squares of dF
@@ -424,9 +424,9 @@ double equilibrium_error( double *dF, double *F, double **K, double *D, int DoF,
 }
 
 
-/*------------------------------------------------------------------------------
-END_FORCES  -  evaluate the member end forces for every member		23feb94
-------------------------------------------------------------------------------*/
+/*
+ * END_FORCES  -  evaluate the member end forces for every member		23feb94
+ */
 void element_end_forces(
 	double **Q, int nE, vec3 *xyz,
 	double *L, double *Le,
@@ -457,9 +457,9 @@ void element_end_forces(
 }
 
 
-/*------------------------------------------------------------------------------
-MEMBER_FORCE  -  evaluate the end forces for a member			12nov02
-------------------------------------------------------------------------------*/
+/*
+ * MEMBER_FORCE  -  evaluate the end forces for a member			12nov02
+ */
 void member_force(
 	double *s, int M, vec3 *xyz, double L, double Le,
 	int n1, int n2, float Ax, float Asy, float Asz, float J,
@@ -578,9 +578,9 @@ void member_force(
 }
 
 
-/*----------------------------------------------------------------------------- 
-ADD_FEF -  add fixed end forces to reactions and internal element forces 18oct12
-------------------------------------------------------------------------------*/
+/*
+ * ADD_FEF -  add fixed end forces to reactions and internal element forces 18oct12
+ */
 void add_feF(	
 	vec3 *xyz,
 	double *L, int *N1, int *N2, float *p,
@@ -647,9 +647,9 @@ void add_feF(
 }
 
 
-/*------------------------------------------------------------------------------
-ASSEMBLE_M  -  assemble global mass matrix from element mass & inertia  24nov98
-------------------------------------------------------------------------------*/
+/*
+ * ASSEMBLE_M  -  assemble global mass matrix from element mass & inertia  24nov98
+ */
 void assemble_M(
 	double **M, int DoF, int nN, int nE,
 	vec3 *xyz, float *r, double *L,
@@ -724,9 +724,9 @@ void assemble_M(
 }
 
 
-/*------------------------------------------------------------------------------
-LUMPED_M  -  space frame element lumped mass matrix in global coordnates 7apr94
-------------------------------------------------------------------------------*/
+/*
+ * LUMPED_M  -  space frame element lumped mass matrix in global coordnates 7apr94
+ */
 static void lumped_M(
 	double **m, vec3 *xyz, double L,
 	int n1, int n2, float Ax, float J, float Iy, float Iz, float p,
@@ -760,10 +760,10 @@ static void lumped_M(
 }
 
 
-/*------------------------------------------------------------------------------
-CONSISTENT_M  -  space frame consistent mass matrix in global coordnates 2oct97
-		 does not include shear deformations
-------------------------------------------------------------------------------*/
+/*
+ * CONSISTENT_M  -  space frame consistent mass matrix in global coordnates 2oct97
+ *		 does not include shear deformations
+ */
 void consistent_M(
 	double **m, vec3 *xyz, float *r, double L,
 	int n1, int n2, float Ax, float J, float Iy, float Iz, float p, 
@@ -850,9 +850,9 @@ void consistent_M(
 
 
 
-/*------------------------------------------------------------------------------
-CONDENSE - static condensation of stiffness matrix from NxN to nxn    30aug01
-------------------------------------------------------------------------------*/
+/*
+ * CONDENSE - static condensation of stiffness matrix from NxN to nxn    30aug01
+ */
 void condense(
 	double **A, int N, int *c, int n, double **Ac, int verbose
 ){
@@ -909,12 +909,12 @@ void condense(
 }
 
 
-/*---------------------------------------------------------------------------- 
-GUYAN  -   generalized Guyan reduction of mass and stiffness matrices    6jun07
-           matches the response at a particular frequency, sqrt(L)/2/pi
-           Guyan, Robert J., ``Reduction of Stiffness and Mass Matrices,''
-           AIAA Journal, Vol. 3, No. 2 (1965) p 380.
------------------------------------------------------------------------------*/
+/*
+ * GUYAN  -   generalized Guyan reduction of mass and stiffness matrices    6jun07
+ *          matches the response at a particular frequency, sqrt(L)/2/pi
+ *          Guyan, Robert J., ``Reduction of Stiffness and Mass Matrices,''
+ *          AIAA Journal, Vol. 3, No. 2 (1965) p 380.
+ */
 void guyan(
 	double **M, double **K, int N,
 	int *c, int n,
@@ -989,11 +989,11 @@ void guyan(
 }
 
 
-/*---------------------------------------------------------------------------- 
-DYN_CONDEN - dynamic condensation of mass and stiffness matrices    8oct01
-	     matches the response at a set of frequencies
-WARNING: Kc and Mc may be ill-conditioned, and xyzsibly non-positive def.
------------------------------------------------------------------------------*/
+/*
+ * DYN_CONDEN - dynamic condensation of mass and stiffness matrices    8oct01
+ * 	     matches the response at a set of frequencies
+ * WARNING: Kc and Mc may be ill-conditioned, and xyzsibly non-positive def.
+ */
 void dyn_conden(
 	double **M, double **K, int N, int *R, int *p, int n,
 	double **Mc, double **Kc, double **V, double *f, int *m,
@@ -1048,9 +1048,9 @@ void dyn_conden(
 }
 
 
-/*------------------------------------------------------------------------------
-DEALLOCATE  -  release allocated memory					9sep08
-------------------------------------------------------------------------------*/
+/*
+ * DEALLOCATE  -  release allocated memory					9sep08
+ */
 void deallocate( 
 	int nN, int nE, int nL, int *nF, int *nU, int *nW, int *nP, int *nT,
 	int DoF, int nM,
