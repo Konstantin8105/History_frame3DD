@@ -1,0 +1,49 @@
+#!/usr/bin/python
+
+Import('env')
+
+srcs = Split("""
+	new.c  
+	parse.c 
+	print.c
+	CharactersInDouble.c
+	error.c 
+	array.c 
+	case.c 
+	model.c 
+	modelparser.c 
+	displacements.c
+	displacementparser.c
+	sections.c
+	sectionsparser.c
+	vec3.c
+	ctrans.c
+	forces.c
+	forceparser.c
+	defaultpaths.c
+""")
+# bdd.c row.c  table.c  print.c   iter.c  list.c  
+
+libenv = env.Clone()
+libenv.AppendUnique(LIBS = ['m'])
+
+lib = libenv.SharedLibrary("../microstranparser",srcs)
+
+microst = env.Program('microst',['main.c'],LIBS=["microstranparser"],LIBPATH=[".."])
+
+dumpsections = env.Program('dumpsections',['dumpsections.c'],LIBS=["microstranparser"],LIBPATH=[".."])
+
+dumpforces = env.Program('dumpforces',['dumpforces.c'],LIBS=["microstranparser"],LIBPATH=[".."])
+
+dumpcases = env.Program('dumpcases',['dumpcases.c'],LIBS=["microstranparser"],LIBPATH=[".."])
+
+env['PROGS'] += [microst, dumpsections, dumpforces, dumpcases, lib]
+
+incdir=Dir(env.subst("$INSTALL_ROOT$INSTALL_INCLUDE/microstran"))
+env.Install(incdir,libenv.Glob("*.h"))
+
+libdir=Dir(env.subst("$INSTALL_ROOT$INSTALL_LIB"))
+env.Install(libdir,lib)
+
+datadir=Dir(env.subst("$INSTALL_ROOT$INSTALL_FRAMEDATA"))
+env.Install(datadir,"properties.txt")
