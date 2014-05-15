@@ -1,9 +1,9 @@
-" Frame3DD version: 20130318               http://frame3dd.sf.net/"
-"GPL Copyright (C) 1992-2013, Henri P. Gavin "
+" Frame3DD version: 20140514               http://frame3dd.sf.net/"
+"GPL Copyright (C) 1992-2014, Henri P. Gavin "
 "Frame3DD is distributed in the hope that it will be useful but with no warranty."
 "For details see the GNU Public Licence: http://www.fsf.org/copyleft/gpl.html"
 "  Example I: a triangular tower (kip  in)               "
-" Sun Mar 16 20:22:39 2014
+" Wed May 14 22:53:25 2014
  "
 " .CSV formatted results of Frame3DD analysis "
 
@@ -82,9 +82,9 @@ Elmnt , Node  ,    Nx     ,    Vy   ,     Vz   ,     Txx   ,    Myy  ,     Mzz
     24,    13,  1.20416e+02,  9.29986e-01, -1.29468e+02,  6.99596e+02, -1.53989e+04, -3.04306e+01,
 "R E A C T I O N S  (global)"
  Node   ,    Fx      ,   Fy   ,      Fz   ,     Mxx    ,    Myy    ,    Mzz
-     1,  4.80592e+00, -7.61855e+01,  2.82143e+02,  1.03451e+04,  1.22085e+02,  1.24450e+00,
-     2, -4.80592e+00, -7.61855e+01,  2.82143e+02,  1.03451e+04, -1.22085e+02, -1.24450e+00,
-     3,       0.0,  -4.75983e+01,  3.63009e+03,  1.13209e+04,       0.0,        0.0, 
+     1,  3.90119e+01, -4.68202e+01,  9.09593e+02,  4.96125e+03,  9.92561e+02, -1.17725e+00,
+     2, -3.90119e+01, -4.68202e+01,  9.09593e+02,  4.96125e+03, -9.92561e+02,  1.17725e+00,
+     3,       0.0,  -1.06329e+02,  2.37519e+03,  6.50132e+03,       0.0,        0.0, 
      4,       0.0,        0.0,        0.0,        0.0,        0.0,        0.0, 
      5,       0.0,        0.0,        0.0,        0.0,        0.0,        0.0, 
      6,       0.0,        0.0,        0.0,        0.0,        0.0,        0.0, 
