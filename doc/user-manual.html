@@ -2178,7 +2178,7 @@ now making use of the axial frame element forces arising from the combined tempe
 The convergence tolerance is taken as the convergence tolerance for the dynamic modal analysis.
 The default value is 10<sup>-9</sup>.
 </ol>
-<li> Once the solution has converged, compute the reaction forces: <i>F<sub>r</sub><sup>(i)</sup> = K<sub>rq</sub>(D<sup>(i)</sup>) D<sub>q</sub><sup>(i)</sup> + K<sub>rr</sub>(D<sup>(i)</sup>) D<sub>r</sub></i>
+<li> Once the solution has converged, compute the reaction forces: <i>R<sub>r</sub><sup>(i)</sup> = K<sub>rq</sub>(D<sup>(i)</sup>) D<sub>q</sub><sup>(i)</sup> + K<sub>rr</sub>(D<sup>(i)</sup>) D<sub>r</sub> - F<sub>r</sub></i>
 <p>
 Notation:
 </p>
@@ -2193,6 +2193,7 @@ displacements at iteration <i>i</i>
 <li> <i>K(D<sup>(i)</sup>)</i> is the stiffness matrix, dependent upon
 displacements at iteration <i>i</i>
 <li> <i>F<sub>q</sub> </i>     is the vector of known applied loads (at displacement coordinates) 
+<li> <i>F<sub>r</sub> </i>     is the vector of known applied loads (at reaction coordinates) 
 <li> <i>F<sub>r</sub><sup>(i)</sup> </i>     is the vector of unknown reaction forces at iteration <i>i</i>
 <li> <i>dF<sub>q</sub><sup>(i)</sup></i>  is the equilibrium error vector at iteration <i>i</i> 
 <li> <i>dD<sub>q</sub><sup>(i)</sup></i>  is the incremental displacement vector at iteration <i>i</i> 
