@@ -1,0 +1,65 @@
+"""	
+ FRAME3DD:
+ Static and dynamic structural analysis of 2D and 3D frames and trusses with
+ elastic and geometric stiffness.
+ ---------------------------------------------------------------------------
+ http://www.duke.edu/~hpgavin/frame/
+ ---------------------------------------------------------------------------
+ Copyright (C) 1992-2008  Henri P. Gavin
+ 
+    FRAME3DD is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    FRAME3DD is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with FRAME3DD.  If not, see <http://www.gnu.org/licenses/>.
+"""
+Import('env')
+
+srcs = [
+	'frame3dd.c','lu_dcmp.c','ldl_dcmp.c','nrutil.c','eig.c','hpgUtils.c',
+	'frame3dd_io.c', 'coordtrans.c'
+]
+
+prog_env = env.Clone()
+
+obj_env = env.Clone()
+if env.get('HAVE_ITOA'):
+	obj_env.Append(CPPDEFINES=['HAVE_ITOA'])
+
+objs = []
+for s in srcs:	
+	objs.append( obj_env.Object(s) )
+	
+if env.get('VERSION'):
+	prog_env.Append(
+		CPPDEFINES=['VERSION=\\"%s\\"' % env['VERSION']]
+	)
+
+frame3dd = prog_env.Program('frame3dd',objs + ['main.c'], LIBS=['m'])
+
+env['PROGS'].append(frame3dd)
+
+# proceed into subdirectory to create libmicrostranparser
+env.SConscript('microstran/SConscript','env')
+
+# proceed into directory to create frame viewer program
+env.SConscript('viewer/SConscript','env')
+
+bindir=Dir(env.subst("$INSTALL_ROOT$INSTALL_BIN"))
+env.Install(bindir,frame3dd);
+
+#libdir=Dir(env.subst("$INSTALL_ROOT$INSTALL_LIB"))
+#env.Install(bindir,lib);
+
+env['installdirs'] += [bindir]
+
+print "CCFLAGS =",env['CCFLAGS']
+
+# vim: set syntax=python

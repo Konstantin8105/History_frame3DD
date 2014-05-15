@@ -46,7 +46,7 @@ Henri P. Gavin, Ph.D., P.E., </font></i></p>
 <hr>
 <h1>FRAME3DD</h1>
 
-<h2>version 0.20140121 </h2>
+<h2>version 0.20140514 </h2>
 
 <!-- iframe src="version.html" width="250" height="30" style="border:solid 1pt grey"></iframe -->
 
@@ -106,7 +106,7 @@ The software is distributed in the hope that it will be useful, but without any 
 </p>
 
 <p><b>Frame3DD</b> had a free <a href="http://www.sketchup.com/"><b>Sketchup</b></a> interface available 
-<a href="http://rhin.crai.archi.fr/rld/plugin_details.php?id=1008">here</a>.
+<a href="http://sketchucation.com/forums/viewtopic.php?t=46405">here</a>.
 
 <p>If you find <b>Frame3DD</b> to be useful please consider
 a donation to the vim charity, 
@@ -512,7 +512,8 @@ Download</a> the Frame3DD .ZIP archive (Frame3DD_VERSION_osx.zip) and save it in
 If the .ZIP archive was not automatically unzipped, 
 simply drag the <b>Frame3DD</b> folder icon to your <b>Desktop</b>. 
 <li><b><i>Optional</i></b><br>
- Download the <b>Sketchup</b> interface for <b>Frame3DD</b>, now available <a href="http://rhin.crai.archi.fr/rld/plugin_details.php?id=1008">here</a>.
+ Download the <b>Sketchup</b> interface for <b>Frame3DD</b>, available
+<a href="http://sketchucation.com/forums/viewtopic.php?t=46405">here</a>.
 <li><b><i>Recommended</i></b><br>
 Put the <b>Frame3DD</b> directory in your path and set the <b>FRAME3DD_OUTDIR</b> location.<br>
 <ul>
@@ -592,12 +593,11 @@ install <a href="http://www.apple.com/macosx/features/x11/">X11</a> and <a href=
 <p>
 From you Mac's Administrator account, first install Xcode, then install MacPorts, and finally install Gnuplot.
 <ol>
-<li>To install Xcode, go to the
-<a href="http://connect.apple.com/"> Apple Developer Connection (ADC)</a>,
-join ADC to create an account, log in, and then click on <b>Downloads > Developer Tools</b>, and browse for the version of Xcode for your version of OS X.<br>
+<li>Install <a href="https://developer.apple.com/xcode/">Xcode</a>,
+<!-- join ADC to create an account, log in, and then click on <b>Downloads > Developer Tools</b>, and browse for the version of Xcode for your version of OS X.<br> 
 For OS X <b>10.4</b> Tiger, install Xcode <b>2.5</b> Developer Tools<br>
 For OS X <b>10.5</b> Leopard, install Xcode <b>3.1.4</b> Developer Tools<br>
-For OS X <b>10.6</b> Snow Leopard, install Xcode <b>3.2.1</b> Developer Tools<br>
+For OS X <b>10.6</b> Snow Leopard, install Xcode <b>3.2.1</b> Developer Tools<br> -->
 Make sure the "Unix Development" option is selected if installing Xcode 3.1.4 or 3.2.1. 
 <li> To install MacPorts
 for your version of OS X (10.4 Tiger, 10.5 Leopard, or 10.6 Snow Leopard),
@@ -653,8 +653,7 @@ and animations until the <b>gnuplot></b> prompt returns.
 <h4> 3.2.4 Compiling Frame3DD from source for OS X</h4>
 
 <ol>
-<li> Install the Xcode Developer Tools for your version of OS X 
-as described above.  
+<li>Install <a href="https://developer.apple.com/xcode/">Xcode</a>.
 <li><a href="https://sourceforge.net/projects/frame3dd/files/">Download</a>
 the Frame3DD source-code zip file (frame3dd_VERSION_src.zip)
 and save it in your home directory.<br>
@@ -662,7 +661,7 @@ If the .ZIP archive was not automatically unzipped,
 simply drag the <b>Frame3DD</b> folder icon to your <b>Desktop</b>. 
 <li> Compile and install the code, as follows:
 <pre>
-gcc -O -o frame3dd main.c frame3dd.c frame3dd_io.c matrix.c coordtrans.c eig.c hpgUtils.c nrutil.c -lm
+gcc -O -o frame3dd main.c frame3dd.c frame3dd_io.c HPGmatrix.c coordtrans.c eig.c HPGutil.c NRutil.c -lm
 mv frame3dd ..
 </pre>
 </ol>
@@ -686,7 +685,7 @@ Download</a> the Frame3DD .ZIP archive (Frame3DD_VERSION_win32.zip) and save it 
 If the .ZIP archive was not automatically unzipped, 
 simply drag <b>Frame3DD</b> folder icon to your <b>Desktop</b>. 
 <li><b><i>Optional</i></b><br>
- Download the <b>Sketchup</b> interface for <b>Frame3DD</b>, now available <a href="http://rhin.crai.archi.fr/rld/plugin_details.php?id=1008">here</a>.
+ Download the <b>Sketchup</b> interface for <b>Frame3DD</b>, now available <a href="http://sketchucation.com/forums/viewtopic.php?t=46405">here</a>.
 <li> <b><i>Recommended</i></b><br>
 Put the <b>Frame3DD</b> directory in your path and set the 
 <b>PATH</b> and <b>FRAME3DD_OUTDIR</b> environment variables.<br>
@@ -700,10 +699,10 @@ with variable value <b>%HOMEPATH%\Desktop\Frame3DD\temp</b></br>
 Detailed information on how to set environment variables in Windows is <a href="http://vlaurie.com/computers2/Articles/environment.htm">here</a>, if you need it. 
 <li> <b><i>Recommended</i></b><br>
 Install
-<a href="http://adoxa.3eeweb.com/ansicon/">
+<a href="https://github.com/adoxa/ansicon/downloads/">
 ansicon</a>, a Windows console program that can display text in color.<br>
 Download and extract the
-<a href="http://adoxa.3eeweb.com/ansicon/dl.php?f=ansicon">
+<a href="https://github.com/adoxa/ansicon/downloads/">
 ansicon .ZIP file</a> and copy the <b>x86</b> folder 
 into the <b>Desktop\Frame3DD\</b> folder.  <br>
 Make a shortcut from <b>Desktop\Frame3DD\x86\ansicon</b> to the <b>Desktop</b>.
@@ -725,7 +724,7 @@ Alternatively, you may open a
 <!-- <a href="http://en.wikipedia.org/wiki/Windows_command_line">Command Prompt</a> window -->
 (<b>Start > All Programs > Accessories > Command Prompt</b>),
 or an
-<a href="http://adoxa.3eeweb.com/ansicon/">ansicon</a> window.<br> 
+<a href="https://github.com/adoxa/aansicon/downloads/">ansicon</a> window.<br> 
 Change to the directory of example files, and run an example, as follows:
 <pre>
 chdir %HOMEPATH%\Desktop\Frame3DD
@@ -752,7 +751,7 @@ Three tutorials for vim/evim/gvim are <a href="http://www.jerrywang.net/vi/">her
 frame3dd  examples/MyFrame.3dd  examples/MyResultsA.out
 </pre>
  ... within a Command Prompt or
-<a href="http://adoxa.3eeweb.com/ansicon/">ansicon</a> window.  
+<a href="https://github.com/adoxa/ansicon/downloads/">ansicon</a> window.  
 <!-- <li> You may wish to delete all the files in the temporary file directory (c:\temp) after you have finished your analyses.  -->
 </ol>
 
@@ -763,8 +762,8 @@ frame3dd  examples/MyFrame.3dd  examples/MyResultsA.out
 
 <ol>
 <li>
-<a href="http://sourceforge.net/projects/gnuplot/files/gnuplot/4.6.0/gp460-win32-setup.exe/download">
-Download</a> the MS-Windows version of Gnuplot 4.6.0
+<a href="http://sourceforge.net/projects/gnuplot/files/gnuplot/4.6.3/gp463-win32-setup.exe/download">
+Download</a> the MS-Windows version of Gnuplot 4.6.3
 and extract it to your <b>Desktop</b>.
 <li> Navigate to <b>Desktop > Gnuplot > bin</b>, 
 right click on the <b>wgnuplot</b> application icon, and create a shortcut to your <b>Desktop</b>.
@@ -851,7 +850,7 @@ If the .ZIP archive was not automatically unzipped,
 double-click the icon to extract it to your <b>Desktop</b>. 
 and compile the code, as follows:
 <pre>
-gcc -O -o frame3dd main.c frame3dd.c frame3dd_io.c matrix.c coordtrans.c eig.c hpgUtils.c nrutil.c -lm
+gcc -O -o frame3dd main.c frame3dd.c frame3dd_io.c HPGmatrix.c coordtrans.c eig.c HPGutil.c NRutil.c -lm
 move frame3dd ..
 </pre>
 </ol>
@@ -1336,7 +1335,11 @@ where <i>A</i> is the area enclosed by the box.
 </p>
 
 <p>
-Restraints to <a href="http://www.archoneng.com/tptasm.html">warping deformation</a> and the dynamic radial expansion of beams in torsion are not considered in the analysis.
+Restraints to 
+<!-- a href="http://www.archoneng.com/tptasm.html" --> 
+warping deformation
+<!-- /a -->
+and the dynamic radial expansion of beams in torsion are not considered in the analysis.
 </p>
 
 <h4> 7.4.4 Bending Effects </h4>
@@ -2178,7 +2181,7 @@ now making use of the axial frame element forces arising from the combined tempe
 The convergence tolerance is taken as the convergence tolerance for the dynamic modal analysis.
 The default value is 10<sup>-9</sup>.
 </ol>
-<li> Once the solution has converged, compute the reaction forces: <i>F<sub>r</sub><sup>(i)</sup> = K<sub>rq</sub>(D<sup>(i)</sup>) D<sub>q</sub><sup>(i)</sup> + K<sub>rr</sub>(D<sup>(i)</sup>) D<sub>r</sub></i>
+<li> Compute the reaction forces: <i>R<sub>r</sub><sup>(i)</sup> = K<sub>rq</sub>(D<sup>(i)</sup>) D<sub>q</sub><sup>(i)</sup> + K<sub>rr</sub>(D<sup>(i)</sup>) D<sub>r</sub> - F<sub>r</sub> </i>
 <p>
 Notation:
 </p>
@@ -2193,7 +2196,8 @@ displacements at iteration <i>i</i>
 <li> <i>K(D<sup>(i)</sup>)</i> is the stiffness matrix, dependent upon
 displacements at iteration <i>i</i>
 <li> <i>F<sub>q</sub> </i>     is the vector of known applied loads (at displacement coordinates) 
-<li> <i>F<sub>r</sub><sup>(i)</sup> </i>     is the vector of unknown reaction forces at iteration <i>i</i>
+<li> <i>F<sub>r</sub> </i>     is the vector of known applied loads (at reaction coordinates) 
+<li> <i>R<sub>r</sub><sup>(i)</sup> </i>     is the vector of unknown reaction forces at iteration <i>i</i>
 <li> <i>dF<sub>q</sub><sup>(i)</sup></i>  is the equilibrium error vector at iteration <i>i</i> 
 <li> <i>dD<sub>q</sub><sup>(i)</sup></i>  is the incremental displacement vector at iteration <i>i</i> 
 <li> <i>D<sub>q</sub><sup>(i+1)</sup></i>  is the vector of uknown displacements at iteration <i>i+1</i>
@@ -2841,7 +2845,7 @@ Exit code values have the following meanings:
 <ul>
 <li>       A GPL'able GUI<br>
 <ul>
- <li> A <b>Sketchup</b> interface for <b>Frame3DD</b> is now available <a href="http://rhin.crai.archi.fr/rld/plugin_details.php?id=1008">here</a>. (July 2012)
+ <li> A <b>Sketchup</b> interface for <b>Frame3DD</b> is now available <a href="http://sketchucation.com/forums/viewtopic.php?t=46405">here</a>. (July 2012)
  <li> <b>FrameEd</b> is a Windows GUI for the 20020103 version of <b>Frame3DD</b> (Jan 3, 2002).
  (<a href="#FrameEd">See above</a>.)
  <li> Work has been done on a <a href="http://www.trolltech.com/products/qt">Qt</a> GUI (Fall 2004)<br>

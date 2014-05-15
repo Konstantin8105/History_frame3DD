@@ -3142,7 +3142,7 @@ void write_modal_results(
 /*
  * STATIC_MESH  - create mesh data of deformed and undeformed mesh  22 Feb 1999 
  * use gnuplot	
- * useful gnuplot options: set noxtics noytics noztics noborder view nokey
+ * useful gnuplot options: unset xtics ytics ztics border view key
  * This function illustrates how to read the internal force output data file.
  * The internal force output data file contains all the information required 
  * to plot deformed meshes, internal axial force, internal shear force, internal
@@ -3216,12 +3216,12 @@ void static_mesh(
 	 /* fprintf(fpm,"#  X=%d , Y=%d , Z=%d, D3=%d  \n", X,Y,Z,D3_flag); */
 
 	 fprintf(fpm,"set autoscale\n");
-	 fprintf(fpm,"set noborder\n");
+	 fprintf(fpm,"unset border\n");
 	 fprintf(fpm,"set pointsize 1.0\n");
 	 fprintf(fpm,"set xtics; set ytics; set ztics; \n");
-	 fprintf(fpm,"set nozeroaxis\n");
-	 fprintf(fpm,"set nokey\n");
-	 fprintf(fpm,"set nolabel\n");
+	 fprintf(fpm,"unset zeroaxis\n");
+	 fprintf(fpm,"unset key\n");
+	 fprintf(fpm,"unset label\n");
 	 fprintf(fpm,"set size ratio -1    # 1:1 2D axis scaling \n");	
 	 fprintf(fpm,"# set view equal xyz # 1:1 3D axis scaling \n");	
 
@@ -3244,12 +3244,12 @@ void static_mesh(
 
 	 fprintf(fpm,"%c set parametric\n", D3 );
 	 fprintf(fpm,"%c set view 60, 70, 1 \n", D3 );
-	 fprintf(fpm,"%c set view equal xyz \n", D3 );
-	 fprintf(fpm,"%c set nokey\n", D3 );
+	 fprintf(fpm,"%c set view equal xyz # 1:1 3D axis scaling \n", D3 );
+	 fprintf(fpm,"%c unset key\n", D3 );
 	 fprintf(fpm,"%c set xlabel 'x'\n", D3 );
 	 fprintf(fpm,"%c set ylabel 'y'\n", D3 );
 	 fprintf(fpm,"%c set zlabel 'z'\n", D3 );
-//	 fprintf(fpm,"%c set nolabel\n", D3 );
+//	 fprintf(fpm,"%c unset label\n", D3 );
 
 	} 
 
@@ -3263,6 +3263,8 @@ void static_mesh(
 	} else {
 		fprintf(fpm,"  data check only \"\n");
 	}
+	fprintf(fpm,"unset clip; \nset clip one; set clip two\n");
+	fprintf(fpm,"set xyplane 0 \n"); // requires Gnuplot >= 4.6
 
 	// 2D plot command
 
@@ -3380,7 +3382,7 @@ void static_mesh(
 
 /*
  * MODAL_MESH  -  create mesh data of the mode-shape meshes, use gnuplot	19oct98
- * useful gnuplot options: set noxtics noytics noztics noborder view nokey
+ * useful gnuplot options: unset xtics ytics ztics border view key
  */
 void modal_mesh(
 		char IN_file[], char meshpath[], char modepath[],
@@ -3474,8 +3476,8 @@ void modal_mesh(
 		fprintf(fpm,"pause -1\n");
 
 		if (m==1) {
-			fprintf(fpm,"set nolabel\n");
-			fprintf(fpm,"%c set nokey\n", D3 );
+			fprintf(fpm,"unset label\n");
+			fprintf(fpm,"%c unset key\n", D3 );
 		}
 
 		fprintf(fpm,"set title '%s     mode %d     %lf Hz'\n",IN_file,m,f[m]);
@@ -3506,7 +3508,7 @@ void modal_mesh(
 
 /*
  * ANIMATE -  create mesh data of animated mode-shape meshes, use gnuplot	16dec98
- * useful gnuplot options: set noxtics noytics noztics noborder view nokey
+ * useful gnuplot options: unset xtics ytics ztics border view key
  * mpeg movie example:   % convert mesh_file-03-f-*.ps mode-03.mpeg
  * ... requires ImageMagick and mpeg2vidcodec packages
  */
@@ -3530,8 +3532,8 @@ void animate(
 		rot_x_final =  60.0,	/* final  x-rotation in 3D animation */
 		rot_z_init  = 100.0,	/* inital z-rotation in 3D animation */
 		rot_z_final = 120.0,	/* final  z-rotation in 3D animation */
-		zoom_init  = 1.1,	/* inital zoom scale in 3D animation */
-		zoom_final = 1.2,	/* final  zoom scale in 3D animation */
+		zoom_init  = 1.5,	/* inital zoom scale in 3D animation */
+		zoom_final = 1.7,	/* final  zoom scale in 3D animation */
 		frames = 25;	/* number of frames in animation	*/
 
 	double	ex=10,		/* an exageration factor, for animation */
@@ -3579,7 +3581,7 @@ void animate(
 	}
 	i = 1;
 	while ( (m = anim[i]) != 0 && i < 20) {
-	 if ( i==0 ) {
+	 if ( i==1 ) {
 
 	   fprintf(fpm,"\n# --- M O D E   S H A P E   A N I M A T I O N ---\n");
 	   fprintf(fpm,"# rot_x_init  = %7.2f\n", rot_x_init ); 
@@ -3589,11 +3591,14 @@ void animate(
 	   fprintf(fpm,"# zoom_init   = %7.2f\n", zoom_init ); 
 	   fprintf(fpm,"# zoom_final  = %7.2f\n", zoom_init );
 	   fprintf(fpm,"# pan rate    = %7.2f \n", pan );
-	   fprintf(fpm,"set noborder\n");
-	   fprintf(fpm,"set nozeroaxis\n");
 	   fprintf(fpm,"set autoscale\n");
-	   fprintf(fpm,"set noxtics; set noytics; set noztics; \n");
-	   fprintf(fpm,"set nokey\n");
+	   fprintf(fpm,"unset border\n");
+	   fprintf(fpm,"%c unset xlabel \n", D3 );
+	   fprintf(fpm,"%c unset ylabel \n", D3 );
+	   fprintf(fpm,"%c unset zlabel \n", D3 );
+	   fprintf(fpm,"%c unset label \n", D3 );
+	   fprintf(fpm,"unset key\n");
+	   fprintf(fpm,"%c set parametric\n", D3 );
 
 	   fprintf(fpm,"# x_min = %12.5e     x_max = %12.5e \n", x_min, x_max);
 	   fprintf(fpm,"# y_min = %12.5e     y_max = %12.5e \n", y_min, y_max);
@@ -3605,7 +3610,6 @@ void animate(
 			y_min-0.1*Dxyz, y_max+0.1*Dxyz );
 	   fprintf(fpm,"set zrange [ %lf : %lf ] \n",
 			z_min-0.1*Dxyz, z_max+0.1*Dxyz );
-	   fprintf(fpm,"set xyplane 0 \n"); // requires Gnuplot >= 4.6
 
 /*
  *	   if ( x_min != x_max )
@@ -3625,12 +3629,12 @@ void animate(
  *			z_min-exagg_modal, z_max+exagg_modal );
  */
 
-	   fprintf(fpm,"%c set parametric\n", D3 );
+	   fprintf(fpm,"unset xzeroaxis; unset yzeroaxis; unset zzeroaxis\n");
+	   fprintf(fpm,"unset xtics; unset ytics; unset ztics; \n");
 	   fprintf(fpm,"%c set view 60, 70, 1 \n", D3 );
-	   fprintf(fpm,"%c set xlabel \n", D3 );
-	   fprintf(fpm,"%c set ylabel \n", D3 );
-	   fprintf(fpm,"%c set zlabel \n", D3 );
-	   fprintf(fpm,"%c set nolabel \n", D3 );
+	   fprintf(fpm,"set size ratio -1    # 1:1 2D axis scaling \n");	
+	   fprintf(fpm,"%c set view equal xyz # 1:1 3D axis scaling \n", D3 );
+
 	 }
 
 	 fprintf(fpm,"pause -1 \n");

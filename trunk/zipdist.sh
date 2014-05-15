@@ -7,7 +7,7 @@
 # number in file 'SConstruct'. Note the alternative packaging instructions in 
 # the file 'PACKAGING.txt' which builds DEB, RPM and EXE packages, but nothing
 # for Mac users :-( 
-export VERSION=20140121
+export VERSION=20140514
 echo $VERSION
 
 # clean out prior distribution files
@@ -65,7 +65,7 @@ zip -r Frame3DD_$(echo $VERSION).zip Frame3DD/*
 
 cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_DukeOIT.zip
 cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_linux.zip
-cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_osx678.zip
+cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_osx789.zip
 cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_win32.zip
 cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_src.zip
 
@@ -87,8 +87,8 @@ rm Frame3DD/frame3dd
 
 # add OS X  10.6 10.7 10.8 executables  
 echo "adding OS X executable ... "
-cp --preserve=mode,timestamps ../build/frame3dd-osx678   Frame3DD/frame3dd
-zip Frame3DD_$(echo $VERSION)_osx678.zip Frame3DD/frame3dd
+cp --preserve=mode,timestamps ../build/frame3dd-osx789   Frame3DD/frame3dd
+zip Frame3DD_$(echo $VERSION)_osx789.zip Frame3DD/frame3dd
 rm Frame3DD/frame3dd
 
 # add Windows executable
@@ -129,10 +129,9 @@ rm -rf Frame3DD
 
 # To upload distribution files to sourceforge.net ...
 #
-# rsync -uav Frame3DD*_*.zip hpgavin,frame3dd@frs.sourceforge.net:/home/frs/project/f/fr/frame3dd/frame3dd/0.20140318/.
+# rsync -uavP -e ssh  Frame3DD*_*.zip hpgavin,frame3dd@frs.sourceforge.net:/home/frs/project/frame3dd/0.20140514/.
 #
-##rsync -uav *.bz2  hpgavin,frame3dd@frs.sourceforge.net:/home/frs/project/f/fr/frame3dd/frame3dd/0.20140318/.
-
+#
 # ----------------------------------------------------------------- zipdist.sh
 # Henri P. Gavin  2009-10-20
-# updated: 2009-10-22, 2009-10-25, 2009-10-27, 2009-10-29, 2010-01-05, 2010-12-1, 2013-03-18, 2014-01-21
+# updated: 2009-10-22, 2009-10-25, 2009-10-27, 2009-10-29, 2010-01-05, 2010-12-1, 2013-03-18, 2014-01-21, 2014-05-14
