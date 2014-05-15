@@ -77,7 +77,7 @@ void gaussj(float **A, int n, float **B, int m)
 							irow=j;
 							icol=k;
 						}
-					} else if (ipiv[k] > 1) NRerror("gaussj: Singular Matrix-1");
+					} else if (ipiv[k] > 1) nrerror("gaussj: Singular Matrix-1");
 				}
 		++(ipiv[icol]);
 
@@ -99,7 +99,7 @@ void gaussj(float **A, int n, float **B, int m)
 
 /* We are now ready to divide the pivot row by the by the pivot element, located at irow,icol */
 
-		if (A[icol][icol] == 0.0) NRerror("gaussj: Singular Matrix-2");
+		if (A[icol][icol] == 0.0) nrerror("gaussj: Singular Matrix-2");
 		pivinv=1.0/A[icol][icol];
 		A[icol][icol]=1.0;
 		for (l=1;l<=n;l++) A[icol][l] *= pivinv;
@@ -351,11 +351,10 @@ LDL_DCMP_PM  -  Solves partitioned matrix equations
 
  usage: double **A, *d, *b, *x;
 	int   n, reduce, solve, pd;
-	ldl_dcmp_pm ( A, n, d, b, x, q, r, reduce, solve, &pd );
+	ldl_dcmp ( A, n, d, b, x, reduce, solve, &pd );
 
- H.P. Gavin, Civil Engineering, Duke University, hpgavin@duke.edu
+ H.P. Gavin, Civil Engineering, Duke University, hpgavin@duke.edu  9 Oct 2001
  Bathe, Finite Element Procecures in Engineering Analysis, Prentice Hall, 1982
- 2014-05-14 
 -----------------------------------------------------------------------------*/
 void ldl_dcmp_pm (
 	double **A,	/**< the system matrix, and L of the L D L' decomp.*/
@@ -434,7 +433,7 @@ void ldl_dcmp_pm (
 
 	    for (i=1; i<=n; i++) {
 		if ( r[i] ) {
-			b[i] = -b[i]; // changed from 0.0 to -b[i]; 2014-05-14
+			b[i] = 0;
 			for (j=1; j<=n; j++)
 				b[i] += A[i][j]*x[j];
 		}
@@ -456,24 +455,22 @@ LDL_MPROVE_PM
  decomposition of the original system matrix, as returned by ldl_dcmp().
  Also input is the diagonal vector, {d} of [D] of the L D L' decompositon.
  On output, only {x} is modified to an improved set of values.
- The calculations in ldl_mprove_pm do not involve b_r.  
 
  usage: double **A, *d, *b, *x, rms_resid;
 	int   n, ok, *q, *r;
 	ldl_mprove_pm ( A, n, d, b, x, q, r, &rms_resid, &ok );
 
- H.P. Gavin, Civil Engineering, Duke University, hpgavin@duke.edu 
- 2001-05-01, 2014-05-14 
+ H.P. Gavin, Civil Engineering, Duke University, hpgavin@duke.edu  4 May 2001
 -----------------------------------------------------------------------------*/
 void ldl_mprove_pm (
 	double **A, int n, double *d, double *b, double *x, 
 	int *q, int *r,
 	double *rms_resid, int *ok
 ){
-	double  sdp;		// accumulate the r.h.s. in double precision
-	double  *resid,		// the residual error
-		rms_resid_new=0.0, // the RMS error of the mprvd solution
-		*dvector();	// allocate memory for a vector	of doubles
+	double  sdp;		/* accumulate the r.h.s. in double precision */
+	double   *resid,	/* the residual error		  	*/
+		rms_resid_new=0.0, /* the RMS error of the mprvd solution */
+		*dvector();	/* allocate memory for a vector	of doubles */
 	int	j,i, pd;
 	void	ldl_dcmp(),
 		free_dvector();
@@ -484,12 +481,11 @@ void ldl_mprove_pm (
 
 	// calculate the r.h.s. of ...
 	//  [A_qq]{r_q} = {b_q} - [A_qr]*{x_r} - [A_qq]{x_q+r_q}      
-	//  {r_r} is left unchanged at 0.0;
 	for (i=1;i<=n;i++) {	
 	    if ( q[i] ) {
 		sdp = b[i];	
-		for (j=1;j<=n;j++) if ( r[j] )	sdp -= A[i][j] * x[j];
-		for (j=1;j<=n;j++) {	// A_qq in upper triangle only
+		for (j=1;j<=n;j++) if ( r[j] ) sdp -= A[i][j] * x[j];
+		for (j=1;j<=n;j++) {	/* A in upper triangle only     */
 			if ( q[j] ) {
 				if ( i <= j )   sdp -= A[i][j] * x[j];
 				else		sdp -= A[j][i] * x[j];
@@ -499,7 +495,7 @@ void ldl_mprove_pm (
 	    } // else resid[i] = 0.0; // x[i];
 	}
 
-	// solve for the residual error term
+	/* solve for the residual error term	*/
 	ldl_dcmp_pm ( A, n, d, resid, resid, q,r, 0, 1, &pd );
 
 	for (i=1;i<=n;i++) if ( q[i] )	rms_resid_new += resid[i]*resid[i];
@@ -507,17 +503,11 @@ void ldl_mprove_pm (
 	rms_resid_new = sqrt ( rms_resid_new / (double) n );
 
 	*ok = 0;
-	if ( rms_resid_new / *rms_resid < 0.90 ) {	// good improvement 
-		for (i=1;i<=n;i++) {
-		    if ( q[i] ) {
-			// subtract the error from the old solution x_q
-			x[i] += resid[i];
-			// update b_r with residual r_q - 2014-05-14
-			for (j=1;j<=n;j++) if ( r[j] ) b[j] += A[j][i]*resid[i];
-		    }
-		}
-		*rms_resid = rms_resid_new;	// return the new residual
-		*ok = 1;			// the solution has improved
+	if ( rms_resid_new / *rms_resid < 0.90 ) {	/* good improvement */
+				/* subtract the error from the old solution */
+		for (i=1;i<=n;i++) if ( q[i] )	x[i] += resid[i];
+		*rms_resid = rms_resid_new;
+		*ok = 1;	/* the solution has improved		*/
 	}
 
 	free_dvector(resid,1,n);
@@ -919,7 +909,7 @@ void Legendre( int order, float *t, int n, float **P, float **Pp, float **Ppp )
 {
 	int k,p;
 
-// save_vector( n, t, "t.dat");
+// save_vector( "t.dat", t, 1,n, "w" );
 
 	for (p=1; p <= n; p++) {
 
