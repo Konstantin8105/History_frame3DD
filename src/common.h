@@ -33,7 +33,7 @@
 #define FILENMAX 128
 
 #ifndef VERSION
-#define VERSION "20140514"
+#define VERSION "20140121"
 #endif
 
 #ifndef PI
