@@ -344,6 +344,26 @@ int	r;
 
 
 /*
+ * COMPUTE_REACTION_FORCES - compute  [K(r,q)] * {D(q)} + [K(r,r)] * {D(r)} 
+ * The load vector modified for prescribed displacements Dp is returned as F
+ * Prescribed displacements are "mechanican loads" not "temperature loads"  
+ * 2012-10-12 , 2014-05-07
+ */
+void compute_reaction_forces( double *F, double **K, double *D, int DoF, int *r)
+{
+	int	i,j;
+
+	for (i=1; i<=DoF; i++) {
+		if (r[i]) {		// coordinate "i" is a reaction coord.
+			F[i] = 0.0;	// F will be the vector of reactions
+			for (j=1; j<=DoF; j++)	F[i] += K[i][j]*D[j];
+		}
+	}
+
+}
+
+
+/*
  * SOLVE_SYSTEM  -  solve {F} =   [K]{D} via L D L' decomposition        27dec01
  * Prescribed displacements are "mechanical loads" not "temperature loads"  
  */
@@ -358,18 +378,18 @@ void solve_system(
 
 	diag = dvector ( 1, DoF );
 
-	/*  L D L' decomposition of K[q,q] into lower triangle of K[q,q] and diag[q] */
-	/*  vectors F and D are unchanged */
+	/*  L D L' decomp */
 	ldl_dcmp_pm ( K, DoF, diag, F, D, q,r, 1, 0, ok );
 	if ( *ok < 0 ) {
 	 	fprintf(stderr," Make sure that all six");
 		fprintf(stderr," rigid body translations are restrained!\n");
 		/* exit(31); */
-	} else {	/* LDL'  back-substitution for D[q] and F[r] */
+	} else {				/* back substitute for D */
+		/* LDL'  back-sub */
 		ldl_dcmp_pm ( K, DoF, diag, F, D, q,r, 0, 1, ok );
 		if ( verbose ) fprintf(stdout,"    LDL' RMS residual:");
 		*rms_resid = *ok = 1;
-		do {	/* improve solution for D[q] and F[r] */
+		do {					/* improve solution */
 			ldl_mprove_pm ( K, DoF, diag, F,D, q,r, rms_resid, ok );
 			if ( verbose ) fprintf(stdout,"%9.2e", *rms_resid );
 		} while ( *ok );
@@ -559,61 +579,36 @@ void member_force(
 
 
 /*
- * COMPUTE_REACTION_FORCES - compute  [K(r,q)] * {D(q)} + [K(r,r)] * {D(r)} 
- * The load vector modified for prescribed displacements Dp is returned as F
- * Prescribed displacements are "mechanican loads" not "temperature loads"  
- * 2012-10-12  
- * removed from Frame3DD on 2014-05-14 ... calculations now in solve_system()
-void compute_reaction_forces( double *F, double **K, double *D, int DoF, int *r)
-{
-	int	i,j;
-
-	for (i=1; i<=DoF; i++) {
-		if (r[i]) {		// coordinate "i" is a reaction coord.
-			// F starts out as fixed-end-forces at reaction coords
-			F[i] = 0.0;
-			// reactions are relaxed through system deformations
-			for (j=1; j<=DoF; j++)	F[i] += K[i][j]*D[j];
-		}
-	}
-
-}
- */
-
-
-/*
- * ADD_FEF -  add fixed end forces to internal element forces 18oct12, 14may14
+ * ADD_FEF -  add fixed end forces to reactions and internal element forces 18oct12
  */
 void add_feF(	
 	vec3 *xyz,
 	double *L, int *N1, int *N2, float *p,
 	double **Q, double **f_t, double **f_m, int nE, int DoF, 
+	double *F, int *r,
 	int verbose
 ){
-	double  t1, t2, t3, t4, t5, t6, t7, t8, t9,	// 3D coord Xformn 
+	double  t1, t2, t3, t4, t5, t6, t7, t8, t9,	/* 3D coord Xformn */
 		f1=0, f2=0, f3=0, f4=0,  f5=0,  f6=0, 
 		f7=0, f8=0, f9=0, f10=0, f11=0, f12=0;
-	int	m, n1, n2, i1, i2; //, J, x;
+	int	m, n1, n2, i, i1, i2; //, J, x;
 
-	for (m=1; m <= nE; m++) {	// loop over all frame elements 
+	for (m=1; m <= nE; m++) {	/* loop over all frame elements */
 
 		n1 = N1[m];	n2 = N2[m];
 
-/* reaction calculations removed from Frame3DD on 2014-05-14 ... 
- * these calculations are now in solve_system()
- *		// add fixed-end forces to reaction forces 
- *		for (i=1; i<=6; i++) {
- *			i1 = 6*(n1-1) + i;
- *			if (r[i1])
- *				F[i1] -= ( f_t[m][i] + f_m[m][i] );
- *		}
- *		for (i=1; i<=6; i++) {
- *			i2 = 6*(n2-1) + i;
- *			if (r[i2])
- *				F[i2] -= ( f_t[m][i+6] + f_m[m][i+6] );
- *		}
- */
- 
+		/* add fixed-end forces to reaction forces */
+		for (i=1; i<=6; i++) {
+			i1 = 6*(n1-1) + i;
+			if (r[i1])
+				F[i1] -= ( f_t[m][i] + f_m[m][i] );
+		}
+		for (i=1; i<=6; i++) {
+			i2 = 6*(n2-1) + i;
+			if (r[i2])
+				F[i2] -= ( f_t[m][i+6] + f_m[m][i+6] );
+		}
+
 		coord_trans ( xyz, L[m], n1, n2,
 			&t1, &t2, &t3, &t4, &t5, &t6, &t7, &t8, &t9, p[m] );
 
@@ -632,7 +627,7 @@ void add_feF(
 		f10 += f_m[m][10]; f11 += f_m[m][11]; f12 += f_m[m][12];
 
 		// add fixed end forces (-equivalent loads) to internal loads 
-		// {Q} = [T]{f}
+		// {Q} = [T]{F}
 		Q[m][1]  -= ( f1 *t1 + f2 *t2 + f3 *t3 );    
 		Q[m][2]  -= ( f1 *t4 + f2 *t5 + f3 *t6 );
 		Q[m][3]  -= ( f1 *t7 + f2 *t8 + f3 *t9 );
@@ -648,6 +643,7 @@ void add_feF(
 		Q[m][12] -= ( f10*t7 + f11*t8 + f12*t9 );
 
 	}
+
 }
 
 
