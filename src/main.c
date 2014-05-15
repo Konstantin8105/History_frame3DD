@@ -35,7 +35,7 @@ For more information go to http://frame3dd.sourceforge.net/
 
 The input file format for FRAME is defined in doc/user_manual.html
 
-Henri P. Gavin hpgavin@duke.edu (main FRAME3DD code) <br>
+Henri P. Gavin hpgavin@duke.edu (main FRAME3DD code) 
 John Pye john.pye@anu.edu.au (Microstran parser and viewer)
 
 For compilation/installation, see README.txt.
@@ -414,6 +414,7 @@ For compilation/installation, see README.txt.
 			F_temp, F_mech, Dp, r, U, W, P, T,
 			shear, anlyz, geom );
 
+
 	if ( anlyz ) {			/* solve the problem	*/
 	 srand(time(NULL));
 	 for (lc=1; lc<=nL; lc++) {	/* begin load case analysis loop */
@@ -484,6 +485,7 @@ For compilation/installation, see README.txt.
 			}
 		}
 
+
 		/*  combine {F} = {F_t} + {F_m} */
 		for (i=1; i<=DoF; i++)	F[lc][i] = F_temp[lc][i] + F_mech[lc][i]; 
 
@@ -548,10 +550,14 @@ For compilation/installation, see README.txt.
 			}
 		}			/* end quasi Newton-Raphson iteration */
 
-		compute_reaction_forces( F[lc], K, D, DoF, r );
+/* 2014-05-14: calculations in compute_reaction_forces
+ * have been moved to ldl_dcmp_pm()
+ *		compute_reaction_forces( F[lc], K, D, DoF, r );
+ */
 
 		add_feF ( xyz, L, N1,N2, p, Q, feF_temp[lc], feF_mech[lc],
-				nE, DoF, F[lc], r, verbose );
+				nE, DoF, verbose );
+
 
 		/*  dealocate Broyden secant stiffness matrix, Ks */
 		// if ( geom )	free_dmatrix(Ks, 1, DoF, 1, DoF );

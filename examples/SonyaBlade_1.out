@@ -1,0 +1,139 @@
+________________________________________________________________________________
+Frame3DD version: 20140514               http://frame3dd.sf.net/
+GPL Copyright (C) 1992-2014, Henri P. Gavin 
+Frame3DD is distributed in the hope that it will be useful but with no warranty.
+For details see the GNU Public Licence: http://www.fsf.org/copyleft/gpl.html
+________________________________________________________________________________
+
+Example B: a pyramid-shaped frame --- static and dynamic analysis (N mm ton) 
+Tue May 13 22:00:31 2014
+________________________________________________________________________________
+In 2D problems the Y-axis is vertical.  In 3D problems the Z-axis is vertical.
+________________________________________________________________________________
+    4 NODES              2 FIXED NODES        3 FRAME ELEMENTS   1 LOAD CASES   
+________________________________________________________________________________
+N O D E   D A T A                                           R E S T R A I N T S
+  Node       X              Y              Z         radius  Fx Fy Fz Mx My Mz
+    1       0.000000       0.000000       0.000000    0.000   1  1  1  1  1  1
+    2       0.000000       0.000000       6.000000    0.000   0  0  0  0  0  0
+    3       6.000000       0.000000       8.000000    0.000   0  0  0  0  0  0
+    4       6.000000       0.000000       0.000000    0.000   1  1  1  1  1  1
+F R A M E   E L E M E N T   D A T A					(local)
+  Elmnt  J1    J2     Ax   Asy   Asz    Jxx     Iyy     Izz       E       G roll  density
+    1     1     2    0.2   0.0   0.0    3.1     1.1     2.8 10000000.0 3623188.5   0 8.00e+03
+    2     2     3    0.2   0.0   0.0    3.1     1.1     2.8 10000000.0 3623188.5   0 8.00e+03
+    3     3     4    0.2   0.0   0.0    3.1     1.1     2.8 10000000.0 3623188.5   0 8.00e+03
+  Neglect shear deformations.
+  Include geometric stiffness.
+
+L O A D   C A S E   1   O F   1  ... 
+
+   Gravity X =  0.0    Gravity Y =  0.0    Gravity Z =  -1.000 
+   0 concentrated loads
+   0 uniformly distributed loads
+   0 trapezoidally distributed loads
+   0 concentrated point loads
+   0 temperature loads
+   0 prescribed displacements
+
+E L A S T I C   S T I F F N E S S   A N A L Y S I S   via  L D L'  decomposition
+
+
+L O A D   C A S E   1   O F   1  ... 
+
+N O D E   D I S P L A C E M E N T S  					(global)
+  Node    X-dsp       Y-dsp       Z-dsp       X-rot       Y-rot       Z-rot
+     2    0.004312    0.0        -0.032604    0.0         0.001639    0.0     
+     3    0.004698    0.0        -0.041805    0.0         0.000806    0.0     
+F R A M E   E L E M E N T   E N D   F O R C E S				(local)
+  Elmnt  Node       Nx          Vy         Vz        Txx        Myy        Mzz
+     1      1  11751.078c      0.0     -383.855      0.0    -1932.613      0.0  
+     1      2  -4551.078c      0.0      383.855      0.0     4200.597      0.0  
+     2      2   1803.335c      0.0     4196.146      0.0    -4200.597      0.0  
+     2      3    596.666t      0.0     3003.854      0.0      424.900      0.0  
+     3      3   3038.389c      0.0      383.855      0.0     -424.900      0.0  
+     3      4 -12638.389c      0.0     -383.855      0.0    -2682.764      0.0  
+R E A C T I O N S							(global)
+  Node        Fx          Fy          Fz         Mxx         Myy         Mzz
+     1     383.781       0.0     11755.411       0.0     -1907.327       0.0  
+     4    -383.781       0.0     12634.056       0.0     -2656.737       0.0  
+R M S    R E L A T I V E    E Q U I L I B R I U M    E R R O R: 1.005e-28
+
+P E A K   F R A M E   E L E M E N T   I N T E R N A L   F O R C E S	(local)
+  Elmnt             Nx          Vy         Vz        Txx        Myy        Mzz
+     1   max   -4551.078      -0.000    383.855      0.000  -1932.613     -0.000
+     1   min  -11751.078      -0.000    383.855      0.000  -4200.597     -0.000
+     2   max     596.666      -0.000   3003.854      0.000   -424.900     -0.000
+     2   min   -1803.335      -0.000  -4196.146      0.000  -4200.597     -0.000
+     3   max   -3038.389      -0.000   -383.855      0.000   2682.764     -0.000
+     3   min  -12638.389      -0.000   -383.855      0.000   -424.900     -0.000
+
+M O D A L   A N A L Y S I S   R E S U L T S
+  Total Mass:  2.438947e+04     Structural Mass:  2.438947e+04 
+N O D A L   M A S S E S	(diagonal of the mass matrix)			(global)
+  Node  X-mass      Y-mass      Z-mass      X-inrta     Y-inrta     Z-inrta
+     1 8.01285e+05 8.01285e+05 8.01285e+05 8.01285e+05 8.01285e+05 8.01285e+05
+     2 7.39473e+03 7.39473e+03 7.39473e+03 1.45886e+05 5.54605e+04 1.47044e+05
+     3 8.59473e+03 8.59473e+03 8.59473e+03 1.68422e+05 6.44605e+04 1.72044e+05
+     4 8.01285e+05 8.01285e+05 8.01285e+05 8.01285e+05 8.01285e+05 8.01285e+05
+  Lump masses at nodes.
+N A T U R A L   F R E Q U E N C I E S   & 
+M A S S   N O R M A L I Z E D   M O D E   S H A P E S 
+ convergence tolerance: 1.000e-09 
+  MODE     1:   f= 0.543970 Hz,  T= 1.838336 sec
+		X- modal participation factor =   9.6217e+01 
+		Y- modal participation factor =  -1.7572e-26 
+		Z- modal participation factor =  -1.9515e+01 
+  Node    X-dsp       Y-dsp       Z-dsp       X-rot       Y-rot       Z-rot
+     1   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00
+     2   4.134e-03  -7.310e-34   2.230e-03   2.055e-34   1.077e-03  -3.146e-35
+     3   7.638e-03   6.309e-33  -4.189e-03  -6.621e-34   1.366e-03   1.954e-34
+     4   5.118e-10  -2.199e-32  -7.114e-10   1.432e-30   3.808e-09   1.704e-31
+  MODE     2:   f= 0.576389 Hz,  T= 1.734941 sec
+		X- modal participation factor =   4.6115e-26 
+		Y- modal participation factor =   7.8512e+01 
+		Z- modal participation factor =  -3.6503e-26 
+  Node    X-dsp       Y-dsp       Z-dsp       X-rot       Y-rot       Z-rot
+     1   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00
+     2   3.802e-33   2.175e-03  -5.857e-34  -6.920e-04  -4.330e-33   5.497e-04
+     3  -1.241e-32   7.263e-03   2.505e-33  -1.481e-03   4.420e-33   4.365e-04
+     4   5.765e-32   7.945e-10  -4.558e-32  -7.920e-09   4.521e-31   5.514e-10
+  MODE     3:   f= 0.709042 Hz,  T= 1.410354 sec
+		X- modal participation factor =   7.0713e-25 
+		Y- modal participation factor =  -3.0260e+01 
+		Z- modal participation factor =   7.9802e-26 
+  Node    X-dsp       Y-dsp       Z-dsp       X-rot       Y-rot       Z-rot
+     1   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00
+     2   2.159e-32  -4.992e-03  -9.938e-33   1.365e-03  -4.483e-33   1.350e-03
+     3  -9.912e-33   7.739e-04   8.998e-33   1.083e-04   6.641e-33   1.228e-03
+     4   8.824e-31   7.209e-10   9.959e-32  -2.541e-09   2.736e-30   1.552e-09
+  MODE     4:   f= 0.831843 Hz,  T= 1.202150 sec
+		X- modal participation factor =   1.9907e+01 
+		Y- modal participation factor =  -3.6313e-25 
+		Z- modal participation factor =   1.2443e+02 
+  Node    X-dsp       Y-dsp       Z-dsp       X-rot       Y-rot       Z-rot
+     1   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00
+     2   6.728e-04  -5.101e-33   7.720e-03   1.712e-33   7.758e-05  -1.787e-33
+     3   1.737e-03   1.871e-32   7.835e-03   2.537e-33   1.767e-04  -1.910e-33
+     4   2.444e-10  -4.533e-31   1.331e-09  -1.414e-30   1.208e-09  -1.602e-31
+  MODE     5:   f= 1.235785 Hz,  T= 0.809202 sec
+		X- modal participation factor =  -3.8942e-25 
+		Y- modal participation factor =  -8.1298e+00 
+		Z- modal participation factor =  -8.6809e-26 
+  Node    X-dsp       Y-dsp       Z-dsp       X-rot       Y-rot       Z-rot
+     1   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00
+     2   2.444e-32  -4.714e-04  -2.950e-32   3.036e-04   6.703e-33   1.596e-03
+     3  -5.955e-33  -5.402e-04   2.361e-32  -3.114e-04   7.600e-33  -1.846e-03
+     4  -4.862e-31  -1.067e-09  -1.083e-31   3.279e-09   1.000e-30  -2.332e-09
+  MODE     6:   f= 1.340052 Hz,  T= 0.746239 sec
+		X- modal participation factor =   1.3986e+01 
+		Y- modal participation factor =  -2.9511e-24 
+		Z- modal participation factor =  -8.9027e+00 
+  Node    X-dsp       Y-dsp       Z-dsp       X-rot       Y-rot       Z-rot
+     1   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00
+     2  -5.191e-03   2.861e-32  -4.927e-03   2.038e-33  -1.805e-03  -8.835e-34
+     3   6.094e-03  -7.745e-33   3.203e-03   3.764e-35   7.168e-04  -4.056e-34
+     4   7.645e-10  -3.683e-30   5.440e-10  -5.650e-29   3.989e-09   3.825e-30
+M A T R I X    I T E R A T I O N S: 2
+There are 6 modes below 1.340052 Hz. ... All 6 modes were found.
+

@@ -54,17 +54,6 @@ void assemble_K(
 );
 
 
-/* compute_reaction_forces --- comput [K(r,q)] * {D(q)} + [K(r,r)] * {D(r)} */
- 
-void compute_reaction_forces( 
-	double *F,	/**< vector of external loads and reaction forces  */
-	double **K,	/**< stiffness matrix				*/
-	double *D,	/**< displacement vector to be solved		*/
-	int DoF,	/**< number of structural coordinates		*/
-	int *r		/**< 0: not a reaction; 1: a reaction coordinate */
-);
-
-
 /** solve {F} =   [K]{D} via L D L' decomposition */
 void solve_system(
 	double **K,	/**< stiffness matrix for the restrained frame	*/
@@ -76,6 +65,34 @@ void solve_system(
 	int *ok,	/**< indicates positive definite stiffness matrix */
 	int verbose,	/**< 1: copious screen output; 0: none		*/
         double *rms_resid /**< the RMS error of the solution residual */
+);
+
+
+/** compute_reaction_forces --- comput [K(r,q)] * {D(q)} + [K(r,r)] * {D(r)} 
+ * removed from Frame3DD on 2014-05-13 ... calculations now in ldl_dcmp_pm()
+void compute_reaction_forces( 
+	double *F,	//< vector of external loads and reaction forces  
+	double **K,	//< stiffness matrix				
+	double *D,	//< displacement vector to be solved	
+	int DoF,	//< number of structural coordinates
+	int *r		//< 0: not a reaction; 1: a reaction coordinate
+);
+ */
+
+/** add fixed end forces to internal element forces 
+ * removed reaction calculations on 2014-05-14 ... calculations now in ldl_dmp_pm()
+ */
+void add_feF(	
+	vec3 *xyz,	/**< XYZ locations of each node	 */
+	double *L,	/**< length of each frame element, effective */
+	int *N1, int *N2, /**< node connectivity	 */
+	float *p,	/**< roll angle, radians	 */
+	double **Q,	/**< frame element end forces */
+	double **feF_temp, /**< temp. fixed end forces for every frame element */
+	double **feF_mech, /**< mech. fixed end forces for every frame element */
+	int nE,		/**< number of frame elements */
+	int DoF,	/**< number of degrees of freedom */
+	int verbose	/**< 1: copious screen output; 0: none */
 );
 
 
@@ -106,22 +123,6 @@ void element_end_forces(
 	int geom	/**< 1: include goemetric stiffness, 0: don't */
 );
 
-
-/** add fixed end forces to internal element forces */
-void add_feF(	
-	vec3 *xyz,	/**< XYZ locations of each node		*/
-	double *L,	/**< length of each frame element, effective	*/
-	int *N1, int *N2, /**< node connectivity			*/
-	float *p,	/**< roll angle, radians			*/
-	double **Q,	/**< frame element end forces			*/
-	double **feF_temp, /**< temp. fixed end forces for every frame element*/
-	double **feF_mech, /**< mech. fixed end forces for every frame element*/
-	int nE,		/**< number of frame elements			*/
-	int DoF,	/**< number of degrees of freedom		*/
-	double *F,	/**< vector of external loads and reaction forces  */
-	int *r,		/**< 0: not a reaction; 1: a reaction coordinate */
-	int verbose	/**< 1: copious screen output; 0: none		*/
-);
 
 
 /** assemble global mass matrix from element mass & inertia */

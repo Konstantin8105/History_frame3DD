@@ -1,0 +1,74 @@
+Fixed-Fixed beam with uniform load
+
+# this template indicates units of Newton, millimeter, and tonne
+# other units may be specified as desired      
+
+# node data ...
+
+4                         # number of nodes
+#.node       X-coord  Y-coord  Z-coord  radius 
+#                mm       mm       mm      mm
+    1            0        0        0       0
+    2          300        0        0       0
+    3          600        0        0       0
+    4         1000        0        0       0
+
+# reaction data ...
+
+2                           # number of nodes with reactions
+#.node    X      Y      Z       XX      YY      ZZ       0:free, 1:fixed
+     1    1      1      1       1       1       1        
+     4    1      1      1       1       1       1        
+
+
+# frame element data ...
+
+3                        # number of frame elements 
+
+#.e n1 n2 Ax    Asy     Asz     Jxx     Iyy     Izz     E       G   roll density
+#   .  .  mm^2  mm^2    mm^2    mm^4    mm^4    mm^4    MPa     MPa  deg T/mm^3
+ 1  1  2   100    8       8     2e4     1e4     1e4     1e7     5e6   0    1 
+ 2  2  3   100    8       8     2e4     1e4     1e4     1e7     5e6   0    1 
+ 3  3  4   100    8       8     2e4     1e4     1e4     1e7     5e6   0    1 
+
+ 0         # 1=Do, 0=Don't include shear deformation effects
+ 0         # 1=Do, 0=Don't include geometric stiffness effects
+ 100       # exaggeration factor for static mesh deformations
+ 5         # length of x-axis increment for frame element internal force data, mm
+           # if dx is -1 then internal force calculations are skipped
+
+
+# load data ...
+
+ 1                        # number of static load cases,  1..30
+
+# Begin Static Load Case 1  
+
+# gravitational acceleration for self-weight loading, mm/s^2 (global)
+#   gX         gY         gZ
+#   mm/s^2     mm/s^2     mm/s^2
+    0          0          0    
+
+2                               # number of loaded nodes
+#.e      Fx       Fy     Fz      Mxx     Myy     Mzz
+#        N        N      N       N.mm    N.mm    N.mm
+  1      1.0e0    2.0e0  3.0e0   4.0e0   5.0e0   6.0e0
+  4      1.0      2.0    3.0     4.0     5.0     6.0
+
+3                    # number of uniformly-distributed element loads (local)
+#.elmnt  X-load   Y-load   Z-load   uniform member loads in member coordinates
+#         N/mm     N/mm     N/mm
+    1     0        -10      0
+    2     0        -10      0
+    3     0        -10      0
+
+0                   # number of trapezoidally-distributed element loads (local)
+0                   # number of concentrated interior point loads (local)
+0                   # number of frame elements with temperature changes (local)
+0                    # number of prescribed displacements nD<=nR (global)
+
+# End Static Load Case 1
+
+# dynamic analysis data ...
+
+0      # number of desired dynamic modes 
