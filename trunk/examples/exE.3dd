@@ -85,7 +85,7 @@ Example E: a three dimensional structure showing lateral-torsional dynamic modes
 0                               # 0: consistent mass ... 1: lumped mass matrix
 1e-5                            # mode shape tolerance
 1.0                             # shift value ... for unrestrained structures
-20.0                            # exaggerate modal mesh deformations
+10.0                            # exaggerate modal mesh deformations
 
 1                               # number of nodes with extra mass or inertia
 #.n     M       Ixx      Iyy      Izz - nodes and concentrated mass and inertia
