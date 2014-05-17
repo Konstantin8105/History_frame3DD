@@ -65,7 +65,7 @@ zip -r Frame3DD_$(echo $VERSION).zip Frame3DD/*
 
 cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_DukeOIT.zip
 cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_linux.zip
-cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_osx678.zip
+cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_osx789.zip
 cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_win32.zip
 cp Frame3DD_$(echo $VERSION).zip Frame3DD_$(echo $VERSION)_src.zip
 
@@ -87,8 +87,8 @@ rm Frame3DD/frame3dd
 
 # add OS X  10.6 10.7 10.8 executables  
 echo "adding OS X executable ... "
-cp --preserve=mode,timestamps ../build/frame3dd-osx678   Frame3DD/frame3dd
-zip Frame3DD_$(echo $VERSION)_osx678.zip Frame3DD/frame3dd
+cp --preserve=mode,timestamps ../build/frame3dd-osx789   Frame3DD/frame3dd
+zip Frame3DD_$(echo $VERSION)_osx789.zip Frame3DD/frame3dd
 rm Frame3DD/frame3dd
 
 # add Windows executable
