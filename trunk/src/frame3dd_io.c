@@ -526,6 +526,7 @@ void read_run_data (
 	char	*infcpath,
 	double	*exagg_static,
 	double	exagg_flag,
+	float   *scale,
 	float	*dx,
 	int	*anlyz,
 	int	anlyz_flag,
@@ -568,8 +569,8 @@ void read_run_data (
 		fprintf(stderr,"MESHPATH  = %s \n", meshpath);
 	}
 
-	sfrv=fscanf( fp, "%d %d %lf %f", shear, geom,  exagg_static, dx );
-	if (sfrv != 4) sferr("shear, geom, exagg_static, or dx variables");
+	sfrv=fscanf( fp, "%d %d %lf %f %f", shear,geom, exagg_static,scale,dx );
+	if (sfrv != 5) sferr("shear, geom, exagg_static, scale, or dx variables");
 
 	if (*shear != 0 && *shear != 1) {
 	    errorMsg(" Rember to specify shear deformations with a 0 or a 1 \n after the frame element property info.\n");
@@ -2371,7 +2372,8 @@ void peak_internal_forces (
 		float *E, float *G, float *p,
 		float *d, float gX, float gY, float gZ,
 		int nU, float **U, int nW, float **W, int nP, float **P,
-		double *D, int shear,
+		double *D, int shear, 
+		float dx,	// x-axis increment along frame element
 
 		// vectors of peak forces, moments, displacements and slopes 
 		// for each frame element, for load case "lc" 
@@ -2394,7 +2396,7 @@ void peak_internal_forces (
 
 	double	xp;		/* location of internal point loads	*/
 
-	double	x, dx,		/* distance along frame element		*/
+	double	x, 		/* distance along frame element		*/
 
 		// underscored "_" variables correspond to x=(i-1)*dx;
 		// non-underscored variables correspond to x=i*dx;
@@ -3166,7 +3168,7 @@ void static_mesh(
 		char *title, int nN, int nE, int nL, int lc, int DoF,
 		vec3 *xyz, double *L,
 		int *N1, int *N2, float *p, double *D, 
-		double exagg_static, int D3_flag, int anlyz, float dx
+		double exagg_static, int D3_flag, int anlyz, float dx, float scale
 ){
 	FILE	*fpif=NULL, *fpm=NULL;
 	double	mx, my, mz; /* coordinates of the frame element number labels */
@@ -3255,7 +3257,7 @@ void static_mesh(
 	 // 3D plot setup commands
 
 	 fprintf(fpm,"%c set parametric\n", D3 );
-	 fprintf(fpm,"%c set view 60, 70, 1 \n", D3 );
+	 fprintf(fpm,"%c set view 60, 70, %5.2f \n", D3, scale );
 	 fprintf(fpm,"%c set view equal xyz # 1:1 3D axis scaling \n", D3 );
 	 fprintf(fpm,"%c unset key\n", D3 );
 	 fprintf(fpm,"%c set xlabel 'x'\n", D3 );
@@ -3532,7 +3534,8 @@ void animate(
 	vec3 *xyz, double *L, float *p,
 	int *J1, int *J2, double *f, double **V,
 	double exagg_modal, int D3_flag, 
-	float pan
+	float pan,		/* pan rate for animation	     */
+	float scale		/* inital zoom scale in 3D animation */
 ){
 	FILE	*fpm;
 
@@ -3544,9 +3547,9 @@ void animate(
 		rot_x_final =  60.0,	/* final  x-rotation in 3D animation */
 		rot_z_init  = 100.0,	/* inital z-rotation in 3D animation */
 		rot_z_final = 120.0,	/* final  z-rotation in 3D animation */
-		zoom_init  = 1.5,	/* inital zoom scale in 3D animation */
-		zoom_final = 1.7,	/* final  zoom scale in 3D animation */
-		frames = 25;	/* number of frames in animation	*/
+		zoom_init  = 1.0*scale,	/* init.  zoom scale in 3D animation */
+		zoom_final = 1.1*scale, /* final  zoom scale in 3D animation */
+		frames = 25;		/* number of frames in animation */
 
 	double	ex=10,		/* an exageration factor, for animation */
 		*v;
@@ -3617,11 +3620,11 @@ void animate(
 	   fprintf(fpm,"# z_min = %12.5e     z_max = %12.5e \n", z_min, z_max);
 	   fprintf(fpm,"# Dxyz = %12.5e \n", Dxyz );
 	   fprintf(fpm,"set xrange [ %lf : %lf ] \n",
-			x_min-0.1*Dxyz, x_max+0.1*Dxyz );
+			x_min-0.2*Dxyz, x_max+0.1*Dxyz );
 	   fprintf(fpm,"set yrange [ %lf : %lf ] \n",
-			y_min-0.1*Dxyz, y_max+0.1*Dxyz );
+			y_min-0.2*Dxyz, y_max+0.1*Dxyz );
 	   fprintf(fpm,"set zrange [ %lf : %lf ] \n",
-			z_min-0.1*Dxyz, z_max+0.1*Dxyz );
+			z_min-0.2*Dxyz, z_max+0.1*Dxyz );
 
 /*
  *	   if ( x_min != x_max )
@@ -3643,7 +3646,7 @@ void animate(
 
 	   fprintf(fpm,"unset xzeroaxis; unset yzeroaxis; unset zzeroaxis\n");
 	   fprintf(fpm,"unset xtics; unset ytics; unset ztics; \n");
-	   fprintf(fpm,"%c set view 60, 70, 1 \n", D3 );
+	   fprintf(fpm,"%c set view 60, 70, %5.2f \n", D3, scale );
 	   fprintf(fpm,"set size ratio -1    # 1:1 2D axis scaling \n");	
 	   fprintf(fpm,"%c set view equal xyz # 1:1 3D axis scaling \n", D3 );
 

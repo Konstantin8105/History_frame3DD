@@ -46,7 +46,7 @@ Henri P. Gavin, Ph.D., P.E., </font></i></p>
 <hr>
 <h1>FRAME3DD</h1>
 
-<h2>version 0.20140514 </h2>
+<h2>version 0.20140514+ </h2>
 
 <!-- iframe src="version.html" width="250" height="30" style="border:solid 1pt grey"></iframe -->
 
@@ -2172,16 +2172,18 @@ now making use of the axial frame element forces arising from the combined tempe
 <i>K(D<sup>(i)</sup>)</i>,
 <li> Compute the equilibrium error at displacements <i>D<sup>(i)</sup></i>:
 <i>dF<sub>q</sub><sup>(i)</sup> = F<sub>q</sub> - K<sub>qq</sub>(D<sup>(i)</sup>) D<sub>q</sub><sup>(i)</sup> - K<sub>qr</sub>(D<sup>(i)</sup>) D<sub>r</sub> </i>
+<li> Compute the RMS relative equilibrium error criterion || <i>dF<sub>q</sub><sup>(i)</sup></i> || / || <i>F<sub>q</sub> </i> || 
 <li> Solve for the incremental displacements, <i>dD<sup>(i)</sup></i>:
 <i> K<sub>qq</sub>(D<sup>(i)</sup>) dD<sub>q</sub><sup>(i)</sup> = dF<sub>q</sub><sup>(i)</sup> </i>
 
 <li> Increment the displacements: <i> D<sub>q</sub><sup>(i+1)</sup> = D<sub>q</sub><sup>(i)</sup> + dD<sub>q</sub><sup>(i)</sup></i>
 <li> Compute frame element end forces from the displacements due to the combined temperature and mechanical loads, <i>Q(D<sup>(i)</sup>)</i>.
-<li>The  Newton-Raphson iterations have converged when the root-mean-square relative equilibrium error (the root-mean-squre of <i>dF<sub>q</sub><sup>(i)</sup></i> divided by the root-mean-square of <i>F<sub>q</sup></i>) is less than the specified tolerance. <br>
+<li>The  Newton-Raphson iterations have converged when the root-mean-square relative equilibrium error (the root-mean-squre of <i>dF<sub>q</sub><sup>(i)</sup></i> divided by the root-mean-square of <i>F<sub>q</sup></i> computed in step 3., above) is less than the specified tolerance. <br>
 The convergence tolerance is taken as the convergence tolerance for the dynamic modal analysis.
 The default value is 10<sup>-9</sup>.
 </ol>
-<li> Compute the reaction forces: <i>R<sub>r</sub><sup>(i)</sup> = K<sub>rq</sub>(D<sup>(i)</sup>) D<sub>q</sub><sup>(i)</sup> + K<sub>rr</sub>(D<sup>(i)</sup>) D<sub>r</sub> - F<sub>r</sub> </i>
+<li> Compute the reaction forces for the converged solution:
+<i>R<sub>r</sub><sup></sup> = K<sub>rq</sub>(D<sup>(i)</sup>) D<sub>q</sub><sup>(i)</sup> + K<sub>rr</sub>(D<sup>(i)</sup>) D<sub>r</sub> - F<sub>r</sub> </i>
 <p>
 Notation:
 </p>
@@ -2197,7 +2199,7 @@ displacements at iteration <i>i</i>
 displacements at iteration <i>i</i>
 <li> <i>F<sub>q</sub> </i>     is the vector of known applied loads (at displacement coordinates) 
 <li> <i>F<sub>r</sub> </i>     is the vector of known applied loads (at reaction coordinates) 
-<li> <i>R<sub>r</sub><sup>(i)</sup> </i>     is the vector of unknown reaction forces at iteration <i>i</i>
+<li> <i>R<sub>r</sub> </i>     is the vector of unknown reaction forces for the converged solution
 <li> <i>dF<sub>q</sub><sup>(i)</sup></i>  is the equilibrium error vector at iteration <i>i</i> 
 <li> <i>dD<sub>q</sub><sup>(i)</sup></i>  is the incremental displacement vector at iteration <i>i</i> 
 <li> <i>D<sub>q</sub><sup>(i+1)</sup></i>  is the vector of uknown displacements at iteration <i>i+1</i>
@@ -2220,7 +2222,8 @@ iterative improvement for enhanced speed and accuracy.
 Iterative improvements to the solution to <i>[K]{dD} = {dF}</i> 
 are obtained (for both linear elastic and geometrically nonlinear problems)
 by iteratively solving
-<i>[K]{r}<sup>(k)</sup>  = {dF}-[K]{dD}<sup>(k)</sup></i>
+<i>[K<sub>qq</sub>]{r<sub>q</sub>}<sup>(k)</sup>  = {dF<sub>q</sub>}-[K<sub>qq</sub>]{dD<sub>q</sub>}<sup>(k)</sup>
+-[K<sub>qr</sub>]{dD<sub>r</sub>}<sup>(k)</sup></i>
 with <i>{dD}<sup>(k+1)</sup> = {dD}<sup>(k)</sup> + {r}<sup>(k)</sup>.</i>
 The superscript <i>(k)</i> is the LDL' iteration counter.  
 Iterations are stopped when the root-mean-square of the residual incremental
@@ -2331,6 +2334,7 @@ EL[nE] N1[nE] N2[nE] Ax[nE] Asy[nE] Asz[nE] Jx[nE] Iy[nE] Iz[nE] E[nE] G[nE] p[n
 shear        # 1=Do, 0=Don't include shear deformation effects
 geom         # 1=Do, 0=Don't include geometric stiffness effects
 exagg_static # exaggeration factor for static mesh deformations
+scale        # zoom scale for 3D plotting
 dx           # length of x-axis increment for frame element internal force data, mm
              # if dx is -1 then internal force calculations are skipped
 
@@ -2584,6 +2588,7 @@ nC      # number of condensed nodes
     Ryy          - 1: reaction moment about the global Y axis, 0: free
     Rzz          - 1: reaction moment about the global Z axis, 0: free
     rj           - radius of rigid node sphere around node i
+    scale        - zoom scale for 3D plotting in Gnuplot
     shear        - 1: include shear deformations, 0: do not.
     shift        - shift factor for non-definite stiffness matrices
     tol          - tolerance for finding mode shapes ~ 1.e-4

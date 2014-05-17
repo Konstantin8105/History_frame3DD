@@ -1,3 +1,12 @@
+* Sat May 17 07:00:00 EST 2014 Henri Gavin <hpgavin> 0.20140514
+- clear a few warnings when compiling with -Wall
+- add more precision to the description of the numerical method in the
+user-manual.html
+- rename user-manual.html to Frame3DD-manual.html
+- fix link in website/index.html
+- add Frame3DD-manual.html to sourceforge repository and distributions
+- add scale variable to Input Data File to scale 3D plots in gnuplot 4.6
+
 * Fri May 16 07:00:00 EST 2014 Henri Gavin <hpgavin> 0.20140514
 - Reaction forces reflect the presence of loads applied directly on reaction coordinates
 - Reactions are computed and updating for partitioned matrix systems

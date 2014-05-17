@@ -354,7 +354,6 @@ void solve_system(
 	int *ok, int verbose, double *rms_resid
 ){
 	double	*diag;		/* diagonal vector of the L D L' decomp. */
-	int	i;
 
 	verbose = 0;		/* suppress verbose output		*/
 
@@ -468,8 +467,8 @@ void frame_element_force(
 ){
 	double	t1, t2, t3, t4, t5, t6, t7, t8, t9, /* coord Xformn	*/
 		d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12,
-		x1, y1, z1, x2, y2, z2,	/* node coordinates	*/
-		Ls,			/* stretched length of element */
+		// x1, y1, z1, x2, y2, z2,	/* node coordinates	*/
+		//  Ls,			/* stretched length of element */
 		delta=0.0,		/* stretch in the frame element */
 		Ksy, Ksz, Dsy, Dsz,	/* shear deformation coeff's	*/
 		T = 0.0;		/* axial force for geometric stiffness */
@@ -479,9 +478,6 @@ void frame_element_force(
 
 	coord_trans ( xyz, L, n1, n2,
 			&t1, &t2, &t3, &t4, &t5, &t6, &t7, &t8, &t9, p );
-
-	x1 = xyz[n1].x;	y1 = xyz[n1].y;	z1 = xyz[n1].z;
-	x2 = xyz[n2].x;	y2 = xyz[n2].y;	z2 = xyz[n2].z;
 
 	n1 = 6*(n1-1);	n2 = 6*(n2-1);
 
@@ -509,6 +505,9 @@ void frame_element_force(
 
 	/* true strain ... (not appropriate for structural materials) */
 /* 
+ *	x1 = xyz[n1].x;	y1 = xyz[n1].y;	z1 = xyz[n1].z;
+ *	x2 = xyz[n2].x;	y2 = xyz[n2].y;	z2 = xyz[n2].z;
+ *
  *  	Ls =	pow((x2+d7-x1-d1),2.0) + 
  *		pow((y2+d8-y1-d2),2.0) + 
  *		pow((z2+d9-z1-d3),2.0);

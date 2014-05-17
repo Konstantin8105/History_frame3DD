@@ -141,6 +141,7 @@ void read_run_data (
 	char infcpath[],/**< file name for internal force data		*/
 	double *exagg_static,/**< factor for static displ. exaggeration	*/
 	double exagg_flag, /**< static exagg. command-line over-ride	*/
+	float *scale,	/**< zoom scale for 3D plotting in gnuplot      */
 	float *dx,	/**< frame element increment for internal forces*/
 	int *anlyz,	/**< 1: perform elastic analysis, 0: don't	*/
 	int anlyz_flag,	/**< command-line over-ride			*/
@@ -336,6 +337,7 @@ void peak_internal_forces (
         float *d, float gX, float gY, float gZ,
         int nU, float **U, int nW, float **W, int nP, float **P,
         double *D, int shear,
+	float dx,	// x-axis increment along frame element
 
         // vectors of peak forces, moments, displacements and slopes 
 	// for each frame element, for load case "lc" 
@@ -411,7 +413,7 @@ void static_mesh(
 	char *title, int nN, int nE, int nL, int lc, int DoF,
 	vec3 *xyz, double *L,
 	int *N1, int *N2, float *p, double *D,
-	double exagg_static, int D3_flag, int anlyz, float dx
+	double exagg_static, int D3_flag, int anlyz, float dx, float scale
 );
 
 
@@ -445,7 +447,7 @@ void animate(
 	int nN, int nE, int DoF, int nM,
 	vec3 *xyz, double *L, float *p,
 	int *N1, int *N2, double *f, double **V,
-	double exagg_modal, int D3_flag, float pan
+	double exagg_modal, int D3_flag, float pan, float scale
 );
 
 
