@@ -324,9 +324,9 @@ void geometric_K(
 
 
 #if 0 /* DISUSED CODE */
-/*------------------------------------------------------------------------------
-END_RELEASE - apply matrix condensation for one member end force release 20nov04
-------------------------------------------------------------------------------*/
+/*
+ * END_RELEASE - apply matrix condensation for one member end force release 20nov04
+ */
 void end_release ( X, r )
 double	**X;
 int	r;
@@ -356,7 +356,7 @@ void solve_system(
 	double	*diag;		/* diagonal vector of the L D L' decomp. */
 	int	i;
 
-	verbose = 1;		/* suppress verbose output		*/
+	verbose = 0;		/* suppress verbose output		*/
 
 	diag = dvector ( 1, DoF );
 
@@ -384,29 +384,36 @@ void solve_system(
 
 /*
  * EQUILIBRIUM_ERROR -  compute {dF_q} =   {F_q} - [K_qq]{D_q} - [K_qr]{D_r} 
- * and return ||dF||/||F||
+ * use only the upper-triangle of [K_qq]
+ * return ||dF||/||F||
  * 2014-05-16
  */
-double equilibrium_error( double *dF, double *F, double **K, double *D, int DoF, int *q )
+double equilibrium_error( double *dF, double *F, double **K, double *D, int DoF, int *q, int *r )
 {
 	double	ss_dF = 0.0,	//  sum of squares of dF
-		ss_F  = 0.0;	//  sum of squares of F	
+		ss_F  = 0.0,	//  sum of squares of F	
+		errF  = 0.0;
 	int	i,j;
 
 	// compute equilibrium error at free coord's (q)
 	for (i=1; i<=DoF; i++) {
-		dF[i] = 0.0;
+		errF = 0.0;
 		if (q[i]) {
-			dF[i] = F[i];
+			errF = F[i];
 			for (j=1; j<=DoF; j++) {
-			    if ( K[i][j] != 0.0 && D[j] != 0.0 )
-				dF[i] -= K[i][j]*D[j];
+				if ( q[j] ) {	// K_qq in upper triangle only
+					if ( i <= j )   errF -= K[i][j] * D[j];
+					else            errF -= K[j][i] * D[j];
+				}
 			}
+			for (j=1; j<=DoF; j++) 
+				if ( r[j] )	errF -= K[i][j] * D[j];
 		}
-	}       
+		dF[i] = errF;
+	}
 
 	for (i=1; i<=DoF; i++) if (q[i]) ss_dF += ( dF[i] * dF[i] );
-	for (i=1; i<=DoF; i++) if (q[i]) ss_F  += ( F[i]  * F[i] );
+	for (i=1; i<=DoF; i++) if (q[i]) ss_F  += (  F[i] *  F[i] );
 
 	return ( sqrt(ss_dF) / sqrt(ss_F) );	// convergence criterion
 }
@@ -512,17 +519,11 @@ void frame_element_force(
 
 	/* axial element displacement ... */
 	delta = (d7-d1)*t1 + (d8-d2)*t2 + (d9-d3)*t3; 
-
 	*axial_strain = delta / Le;	// log(Ls/Le);
 
+	s[1]  =  -(Ax*E/Le)*( (d7-d1)*t1 + (d8-d2)*t2 + (d9-d3)*t3 );
 
-
-	if ( geom )	 T = Ax*E/Le * delta;
-			 // T  = Ax*E*log(Ls/Le); 	// true strain 
-	if ( geom )
-		s[1] = -T;
-	else
-		s[1]  =  -(Ax*E/Le)*( (d7-d1)*t1 + (d8-d2)*t2 + (d9-d3)*t3 );
+	if ( geom )	T = -s[1];
 
 	s[2]  = -( 12.*E*Iz/(Le*Le*Le*(1.+Ksy)) + 
 		   T/L*(1.2+2.0*Ksy+Ksy*Ksy)/Dsy ) *
@@ -606,7 +607,7 @@ void frame_element_force(
 
 
 /*
-void add_feF(	
+void add_feF(		// DISUSED CODE
 	vec3 *xyz,
 	double *L, int *N1, int *N2, float *p,
 	double **Q,
@@ -647,26 +648,25 @@ int nE, int DoF,
 
 
 /*
- * COMPUTE_REACTION_FORCES - compute  [K(r,q)] * {D(q)} + [K(r,r)] * {D(r)} 
- * The load vector modified for prescribed displacements Dp is returned as F
- * Prescribed displacements are "mechanican loads" not "temperature loads"  
- * 2012-10-12  
- * removed from Frame3DD on 2014-05-14 ... calculations now in solve_system()
-void compute_reaction_forces( double *F, double **K, double *D, int DoF, int *r)
-{
+ * COMPUTE_REACTION_FORCES : R(r) = [K(r,q)]*{D(q)} + [K(r,r)]*{D(r)} - F(r)
+ * reaction forces satisfy equilibrium in the solved system
+ * only really needed for geometric-nonlinear problems
+ * 2012-10-12  , 2014-05-16
+ */
+void compute_reaction_forces(
+	 double *R, double *F, double **K, double *D, int DoF, int *r
+){
 	int	i,j;
 
 	for (i=1; i<=DoF; i++) {
+		R[i] = 0;
 		if (r[i]) {		// coordinate "i" is a reaction coord.
-			// F starts out as equivalent-end-forces at reaction coords
-			F[i] = 0.0;
+			R[i] = -F[i];	// negative of equiv loads at coord i
 			// reactions are relaxed through system deformations
-			for (j=1; j<=DoF; j++)	F[i] += K[i][j]*D[j];
+			for (j=1; j<=DoF; j++)  R[i] += K[i][j]*D[j];
 		}
 	}
-
 }
- */
 
 
 /*
