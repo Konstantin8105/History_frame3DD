@@ -7,7 +7,7 @@
 # number in file 'SConstruct'. Note the alternative packaging instructions in 
 # the file 'PACKAGING.txt' which builds DEB, RPM and EXE packages, but nothing
 # for Mac users :-( 
-export VERSION=20140121
+export VERSION=20140514+
 echo $VERSION
 
 # clean out prior distribution files
@@ -129,10 +129,10 @@ rm -rf Frame3DD
 
 # To upload distribution files to sourceforge.net ...
 #
-# rsync -uav Frame3DD*_*.zip hpgavin,frame3dd@frs.sourceforge.net:/home/frs/project/f/fr/frame3dd/frame3dd/0.20140318/.
+# rsync -uav Frame3DD*_*.zip hpgavin,frame3dd@frs.sourceforge.net:/home/frs/project/f/fr/frame3dd/frame3dd/0.20140514+/.
 #
-##rsync -uav *.bz2  hpgavin,frame3dd@frs.sourceforge.net:/home/frs/project/f/fr/frame3dd/frame3dd/0.20140318/.
+##rsync -uav *.bz2  hpgavin,frame3dd@frs.sourceforge.net:/home/frs/project/f/fr/frame3dd/frame3dd/0.20140514+/.
 
 # ----------------------------------------------------------------- zipdist.sh
 # Henri P. Gavin  2009-10-20
-# updated: 2009-10-22, 2009-10-25, 2009-10-27, 2009-10-29, 2010-01-05, 2010-12-1, 2013-03-18, 2014-01-21
+# updated: 2009-10-22, 2009-10-25, 2009-10-27, 2009-10-29, 2010-01-05, 2010-12-1, 2013-03-18, 2014-01-21, 2014-05-14, 2014-05-17

@@ -96,6 +96,7 @@ For compilation/installation, see README.txt.
 		gY[_NL_],	// gravitational acceleration in global Y
 		gZ[_NL_],	// gravitational acceleration in global Z
 		pan=1.0,	// >0: pan during animation; 0: don't
+		scale=1.0,	// zoom scale for 3D plotting in Gnuplot
 		dx=1.0;		// x-increment for internal force data
 
 	double	**K=NULL,	// equilibrium stiffness matrix
@@ -303,8 +304,8 @@ For compilation/installation, see README.txt.
 
 	read_run_data ( fp, OUT_file, &shear, shear_flag, &geom, geom_flag,
 			meshpath, plotpath, infcpath, 
-			&exagg_static, exagg_flag, &dx, &anlyz, anlyz_flag,
-			debug );
+			&exagg_static, exagg_flag, &scale, &dx,
+			&anlyz, anlyz_flag, debug );
 
 	sfrv=fscanf(fp, "%d", &nL );	/* number of load cases		*/
 	if (sfrv != 1)	sferr("nL value for number of load cases");
@@ -606,7 +607,8 @@ For compilation/installation, see README.txt.
 		static_mesh ( IN_file, infcpath, meshpath, plotpath, title,
 					nN, nE, nL, lc, DoF,
 					xyz, L, N1,N2, p, D,
-					exagg_static, D3_flag, anlyz, dx );
+					exagg_static, D3_flag, anlyz,
+					dx, scale );
 
 	 } /* end load case loop */
 	} else {		/*  data check only  */
@@ -618,7 +620,7 @@ For compilation/installation, see README.txt.
 	 static_mesh ( IN_file, infcpath, meshpath, plotpath, title,
 			nN, nE, nL, lc, DoF,
 			xyz, L, N1,N2, p, D,
-			exagg_static, D3_flag, anlyz, dx );
+			exagg_static, D3_flag, anlyz, dx, scale );
 	}
 
 
@@ -685,7 +687,7 @@ For compilation/installation, see README.txt.
 
 		animate ( IN_file, meshpath, modepath, plotpath, title,anim,
 				nN,nE, DoF, nM, xyz, L, p, N1,N2, f,
-				V, exagg_modal, D3_flag, pan );
+				V, exagg_modal, D3_flag, pan, scale );
 	}
 
 	if ( nC > 0 ) {		/* matrix condensation of stiffness and mass */
