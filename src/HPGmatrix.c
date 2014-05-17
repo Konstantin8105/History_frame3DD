@@ -436,11 +436,11 @@ void ldl_dcmp_pm (
 	    /* finally, evaluate c_r	*/
 
 	    for (i=1; i<=n; i++) {
+		c[i] = 0.0;
 		if ( r[i] ) {
 			c[i] = -b[i]; // changed from 0.0 to -b[i]; 2014-05-14
 			for (j=1; j<=n; j++)	c[i] += A[i][j]*x[j];
 		}
-		else c[i] = 0.0;
 	    }
 				
 	}
@@ -499,18 +499,18 @@ void ldl_mprove_pm (
 	for (i=1;i<=n;i++)	dx[i] = 0.0;
 
 	// calculate the r.h.s. of ...
-	//  [A_qq]{dx_q} = {b_q} - [A_qr]*{x_r} - [A_qq]*{x_q}      
+	//  [A_qq]{dx_q} = {b_q} - [A_qq]*{x_q} - [A_qr]*{x_r}      
 	//  {dx_r} is left unchanged at 0.0;
 	for (i=1;i<=n;i++) {	
 	    if ( q[i] ) {
 		sdp = b[i];	
-		for (j=1;j<=n;j++) if ( r[j] )	sdp -= A[i][j] * x[j];
-		for (j=1;j<=n;j++) {	// A_qq in upper triangle only
-			if ( q[j] ) {
+		for (j=1;j<=n;j++) {
+			if ( q[j] ) {	// A_qq in upper triangle only
 				if ( i <= j )   sdp -= A[i][j] * x[j];
 				else		sdp -= A[j][i] * x[j];
 			}
 		}
+		for (j=1;j<=n;j++) if ( r[j] )	sdp -= A[i][j] * x[j];
 		dx[i] = sdp;
 	    } // else dx[i] = 0.0; // x[i];
 	}

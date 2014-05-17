@@ -4005,12 +4005,12 @@ void evaluate ( float error, float rms_resid, float tol, int geom )
 
 	color(0);
 	fprintf(stdout,"  RMS relative equilibrium error  = %9.3e ", error );
-	if ( error < tol && geom ) {
+	if ( error < tol ) {
 		fprintf(stdout," < tol = %7.1e ", tol );
 		(void) fflush(stdout);
 		textColor('y','b','b','x');
 		fprintf(stdout," ** converged ** ");
-	} if ( error > tol && geom ) {
+	} if ( error > tol ) {
 		fprintf(stdout," > tol = %7.1e ", tol );
 		(void) fflush(stdout);
 		textColor('y','r','b','x');

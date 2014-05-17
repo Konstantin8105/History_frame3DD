@@ -460,7 +460,7 @@ For compilation/installation, see README.txt.
 
 			/* increment {D_t} = {0} + {D_t} temp.-induced displ */
 			for (i=1; i<=DoF; i++)	if (q[i]) D[i] += dD[i];
-			/* increment {R_t} = {0} + {R_t} temp.-induced rectn */
+			/* increment {R_t} = {0} + {R_t} temp.-induced react */
 			for (i=1; i<=DoF; i++)	if (r[i]) R[i] += dR[i];
 
 			if (geom) {	/* assemble K = Ke + Kg */
@@ -490,9 +490,9 @@ For compilation/installation, see README.txt.
 			/* combine {D} = {D_t} + {D_m}	*/
 			for (i=1; i<=DoF; i++) {
 				if (q[i])	D[i] += dD[i];
-				else {		D[i] = Dp[lc][i]; dD[i] = 0.0; }
+				else {		D[i]  = Dp[lc][i]; dD[i] = 0.0; }
 			}
-			/* combine {R} = {R_t} + {R_m}	*/
+			/* combine {R} = {R_t} + {R_m} --- for linear systems */
 			for (i=1; i<=DoF; i++)	if (r[i]) R[i] += dR[i];
 		}
 
@@ -504,6 +504,9 @@ For compilation/installation, see README.txt.
 		element_end_forces ( Q, nE, xyz, L, Le, N1,N2,
 				Ax, Asy,Asz, Jx,Iy,Iz, E,G, p, 
 				eqF_temp[lc], eqF_mech[lc], D, shear, geom );
+
+		/*  check the equilibrium error	*/
+		error = equilibrium_error ( dF, F, K, D, DoF, q,r );
 
 		if ( geom && verbose )
 			fprintf(stdout,"\n Non-Linear Elastic Analysis ...\n");
@@ -520,8 +523,7 @@ For compilation/installation, see README.txt.
  */
 
 		/* quasi Newton-Raphson iteration for geometric nonlinearity  */
-		ok = 0; iter = 0;	/* re-initialize */
-		if (geom) error = 1.0; else error = tol;
+		if (geom) { error = 1.0; ok = 0; iter = 0; } /* re-initialize */
 		while ( geom && error > tol && iter < 500 && ok >= 0) {
 
 			++iter;
@@ -534,7 +536,7 @@ For compilation/installation, see README.txt.
 			/*  compute equilibrium error, {dF}, at iteration i   */
 			/*  {dF}^(i) = {F} - [K({D}^(i))]*{D}^(i)	      */
 			/*  convergence criteria = || {dF}^(i) ||  /  || F || */
-			error = equilibrium_error ( dF, F, K, D, DoF, q );
+			error = equilibrium_error ( dF, F, K, D, DoF, q,r );
 
 			/*  Powell-Symmetric-Broyden secant stiffness update  */
 			// PSB_update ( Ks, dF, dD, DoF );  /* not helpful?   */
@@ -550,24 +552,19 @@ For compilation/installation, see README.txt.
 
 			/*  increment {D}^(i+1) = {D}^(i) + {dD}^(i)	      */
 			for (i=1; i<=DoF; i++)	if ( q[i] )	D[i] += dD[i];
-			/*  increment {R}^(i+1) = {R}^(i) + {dR}^(i)	      */
-			for (i=1; i<=DoF; i++)	if ( r[i] )	R[i] += dR[i];
 
-			/*  compute element forces {Q} for displacements {D}^(i) */ 
+			/*  element forces {Q} for displacements {D}^(i)      */ 
 			element_end_forces ( Q, nE, xyz, L, Le, N1,N2,
 				Ax, Asy,Asz, Jx,Iy,Iz, E,G, p, 
 				eqF_temp[lc], eqF_mech[lc], D, shear, geom );
 
 			if ( verbose ) { /*  display equilibrium error        */
-				fprintf(stdout,"   NR iteration %3d ---", iter);
-				printf(" RMS relative equilibrium error = %8.2e \n",error);
+			 fprintf(stdout,"   NR iteration %3d ---", iter);
+			 fprintf(stdout," RMS relative equilibrium error = %8.2e \n",error);
 			}
 		}			/* end quasi Newton-Raphson iteration */
 
-		/* 2014-05-14: calculations in compute_reaction_forces
- 		* have been moved to ldl_dcmp_pm()
- 		* compute_reaction_forces( F, K, D, DoF, r );
- 		*/
+ 		if ( geom )	compute_reaction_forces( R,F,K, D, DoF, r );
 
 		/*  dealocate Broyden secant stiffness matrix, Ks */
 		// if ( geom )	free_dmatrix(Ks, 1, DoF, 1, DoF );
