@@ -1,5 +1,0 @@
-Import('env')
-
-specfile = env.SubstInFile('version.html.in')
-
-env.Precious('version.html')
