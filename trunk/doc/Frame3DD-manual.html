@@ -425,13 +425,13 @@ Or hit <b>CTRL-C</b> to stop the plots at the current plot.
 For Linux and Unix we currently only provide source-code tarball; you must
 build the software yourself.
 -->
-The following instructions work on Ubuntu 8.10 - 11.10
+The following instructions work on Ubuntu 8.10 - 14.04
 and should work with minor changes on any other recent Linux or Unix system.
 There are two options for compiling under Linux:
 </p>
 
 <ol> 
-<li> Compiling using make:
+<li> Compiling using <b>make</b>.
 <ol>
 <li><a href="https://sourceforge.net/projects/frame3dd/files/">
 Download</a> the Frame3DD source-code zip-file (frame3dd_VERSION_src.zip)
@@ -661,7 +661,8 @@ If the .ZIP archive was not automatically unzipped,
 simply drag the <b>Frame3DD</b> folder icon to your <b>Desktop</b>. 
 <li> Compile and install the code, as follows:
 <pre>
-gcc -O -o frame3dd main.c frame3dd.c frame3dd_io.c HPGmatrix.c coordtrans.c eig.c HPGutil.c NRutil.c -lm
+cd ~/Desktop/Frame3DD/src/
+make
 mv frame3dd ..
 </pre>
 </ol>
@@ -850,8 +851,9 @@ If the .ZIP archive was not automatically unzipped,
 double-click the icon to extract it to your <b>Desktop</b>. 
 and compile the code, as follows:
 <pre>
-gcc -O -o frame3dd main.c frame3dd.c frame3dd_io.c HPGmatrix.c coordtrans.c eig.c HPGutil.c NRutil.c -lm
-move frame3dd ..
+cd ~/Desktop/Frame3DD/src/
+make
+mv frame3dd ..
 </pre>
 </ol>
 
@@ -2737,7 +2739,7 @@ the <a href="http://www.cs.virginia.edu/~lcc-win32/"> LCC-win32 compiler</a>,
 and the <a href="http://www.mingw.org/"> MinGW gcc compiler</a>.
 </p>
 
-<p>Using GCC, the command to compile is:</p>
+<p>Using GCC, the command to compile without using the Makefile is:</p>
 
 <pre>
 gcc -O -o frame3dd main.c frame3dd.c frame3dd_io.c HPGmatrix.c coordtrans.c eig.c HPGutil.c NRutil.c -lm
