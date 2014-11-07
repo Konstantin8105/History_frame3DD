@@ -7,9 +7,9 @@
 Source code includes:  frame analysis, LDL' decomposition, LU decomposition, sub-space iteration, Stodola iteration, Sturm eigenvalue checking,
 Static Condensation, Guyan Reduction and Dynamic Condensation.
 Matlab interface.
-Graphical output and mode shape animation via Gnuplot.">
+Graphical output and mode shape animation via gnuplot.">
 
-<META NAME="Keywords" CONTENT="Frame3DD, Structural Dynamics, Structural Analysis, Frame Analysis, 3D Frames, 3D Trusses, Structural Analysis Software, Geometric Stiffness, Geometric Stiffness Matrix, Modal Analysis, Modal Analysis Software, Structural Dynamics, Structural Dynamics Software, LDL Decomposition, LDL Decomposition, LU Decomposition, Subspace Iteration, Gnuplot, Matlab, Octave, Henri Gavin, Duke">
+<META NAME="Keywords" CONTENT="Frame3DD, Structural Dynamics, Structural Analysis, Frame Analysis, 3D Frames, 3D Trusses, Structural Analysis Software, Geometric Stiffness, Geometric Stiffness Matrix, Modal Analysis, Modal Analysis Software, Structural Dynamics, Structural Dynamics Software, LDL Decomposition, LDL Decomposition, LU Decomposition, Subspace Iteration, gnuplot, matlab, octave, Henri Gavin, Duke">
 
 <style>
 h1 {font: bold xx-large sans-serif}
@@ -81,11 +81,11 @@ recapitulates the input information, gives node displacements in global coordina
 </p>
 
 <p><b>Frame3DD</b> writes a
-<a href="http://www.gnuplot.info/">Gnuplot</a>
+<a href="http://www.gnuplot.info/">gnuplot</a>
 script file used for viewing deformed frames and dynamic mode shapes.
 If the Output Data is written to a file called <b>MyResultsA.out</b>,
-the Gnuplot script is written to a file called <b>MyResultsA.plt</b>.
-Graphical output may be viewed by starting Gnuplot and typing:
+the gnuplot script is written to a file called <b>MyResultsA.plt</b>.
+Graphical output may be viewed by starting gnuplot and typing:
 <b> load 'MyResultsA.plt'</b>.
 </p>
 
@@ -125,7 +125,7 @@ includes: frame analysis, LDL' decomposition, LU decomposition,
 Newton-Raphson iteration, sub-space iteration, Stodola iteration,
 Sturm eigenvalue check, and Static Condensation, Guyan Reduction,
 Dynamic Condensation.  Graphical output and mode shape animation
-via <a href="http://www.gnuplot.info/">Gnuplot</a> version 4.6.
+via <a href="http://www.gnuplot.info/">gnuplot</a> version 4.6.
 <hr>
 <h4>SYNOPSIS </h4>
        frame3dd  <Input Data file>  <Output Data file>
@@ -165,14 +165,14 @@ via <a href="http://www.gnuplot.info/">Gnuplot</a> version 4.6.
 <li>
 <a href="http://sourceforge.net/project/platformdownload.php?group_id=221386">
 Download</a> Frame3DD and save the Frame3DD folder to your Desktop (more details below).
-<li>Optionally, obtain a copy of Gnuplot for your operating system (more details below).
+<li>Optionally, obtain a copy of gnuplot for your operating system (more details below).
 <li>Open a terminal window, go to the Frame3DD directory, and run the program on one of the examples using a command like ...
 <pre>
 cd ~/Desktop/Frame3DD
 frame3dd  examples/exE.3dd  examples/exE.out
 </pre>
 <li>Open the Output Data file using a <a href="http://en.wikipedia.org/wiki/Vim_(text_editor)">good text editor</a> and view the Output Data.
-<li>Plot the structural configuration, the deformed structural shape, and mode-shapes, by starting <a href="http://www.gnuplot.info/">Gnuplot</a>, and typing
+<li>Plot the structural configuration, the deformed structural shape, and mode-shapes, by starting <a href="http://www.gnuplot.info/">gnuplot</a>, and typing
 <pre>
      gnuplot>   cd 'Desktop/Frame3DD/examples'
      gnuplot>   load 'exE.plt'
@@ -387,18 +387,18 @@ frame3dd  examples/MyFrame.3dd  examples/MyResultsA.out
 </ol>
 
 
-<h4>3.1.3 Plotting Results with <a href="http://www.gnuplot.info/">Gnuplot</a> in Linux </h4>
+<h4>3.1.3 Plotting Results with <a href="http://www.gnuplot.info/">gnuplot</a> in Linux </h4>
 
 <ol>
 <li> Gnuplot is commonly pre-installed on Linux systems.
 If it is not, you may install it only if you have root privileges using a command like ... <tt> sudo apt-get install gnuplot </tt> ... or by using the package manager GUI installed on your system.
 
-<li>Change directories to your Frame3DD directory and Start Gnuplot in the Terminal with the command:
+<li>Change directories to your Frame3DD directory and start gnuplot in the Terminal with the command:
 <pre>
 cd ~/Desktop/Frame3DD/examples
 gnuplot
 </pre>
-<li>Change directories to Display the plots of your structure using Gnuplot with a command like ...
+<li>Change directories to Display the plots of your structure using gnuplot with a command like ...
 <pre>
       gnuplot>  load 'MyResultsA.plt'
 </pre>
@@ -407,12 +407,25 @@ specified when running Frame3DD.
 <li>Hit the 'Return' key in the Terminal window to see the sequence of plots
 and animations until the <b>gnuplot></b> prompt returns.
 Or hit <b>CTRL-C</b> to stop the plots at the current plot.  
+<li> In examining plots of 3D structures with gnuplot, it is convenient to use a scroll-mouse to zoom, pan, and shift the image.  
+<pre>
+      zoom                           :  hold Alt + scroll   ... or ...    hold the scroll button and drag left-right
+      pan                            :  hold Left mouse button + drag the mouse  ... or ...   arrow key (up, down, left, right)  ... or ... shift + arrow key
+      shift X                        :  hold shift + scroll
+      shift Y                        :  scroll
+      shift Z                        :  hold shift + hold the scroll wheel + drag up-down
+      autoscale                      :  the 'a' key
+      toggle border                  :  the 'b' key
+      toggle grid                    :  the 'g' key
+      toggle mouse functions on/off  :  the 'm' key
+      undo shift                     :  the 'u' key
+</pre>
 <li> To save the current plot as a PostScript file in the Frame3DD/examples directory, use the <b>saveplot</b> script included in the Frame3DD/examples directory.
 <pre>
      gnuplot>  load 'saveplot'
      gnuplot>  !cp my-plot.ps PlotFileA.ps
 </pre>
-<li>After finishing with your plots, you can exit Gnuplot by typing  ...
+<li>After finishing with your plots, you can exit gnuplot by typing  ...
 <pre>
      gnuplot>  quit
 </pre>
@@ -577,21 +590,21 @@ frame3dd  examples/MyFrame.3dd  examples/MyResultsA.out
 (within a Terminal window).  
 </ol>
 
-<h4>3.2.3 Plotting Results with <a href="http://www.gnuplot.info/">Gnuplot</a> in OS X</h4>
+<h4>3.2.3 Plotting Results with <a href="http://www.gnuplot.info/">gnuplot</a> in OS X</h4>
 
 <!--
 <p>
-For a version of Gnuplot for OS X-Intel, or for a version with mouse-scrolling and panning features,
-install <a href="http://www.apple.com/macosx/features/x11/">X11</a> and <a href="http://developer.apple.com/tools/">Apple Development Tools</a>, and then <a href="http://maba.wordpress.com/2006/08/02/scientific-plotting-on-mac-os-x-using-gnuplot-and-plot/">compile Gnuplot from sources</a>.
+For a version of gnuplot for OS X-Intel, or for a version with mouse-scrolling and panning features,
+install <a href="http://www.apple.com/macosx/features/x11/">X11</a> and <a href="http://developer.apple.com/tools/">Apple Development Tools</a>, and then <a href="http://maba.wordpress.com/2006/08/02/scientific-plotting-on-mac-os-x-using-gnuplot-and-plot/">compile gnuplot from sources</a>.
 </p>
 -->
 
 <p>
-<b>Installing <a href="http://www.gnuplot.info/">Gnuplot</a> for OS X</b>
+<b>Installing <a href="http://www.gnuplot.info/">gnuplot</a> for OS X</b>
 </p>
 
 <p>
-From you Mac's Administrator account, first install Xcode, then install MacPorts, and finally install Gnuplot.
+From you Mac's Administrator account, first install Xcode, then install MacPorts, and finally install gnuplot.
 <ol>
 <li>Install <a href="https://developer.apple.com/xcode/">Xcode</a>,
 <!-- join ADC to create an account, log in, and then click on <b>Downloads > Developer Tools</b>, and browse for the version of Xcode for your version of OS X.<br> 
@@ -603,7 +616,7 @@ Make sure the "Unix Development" option is selected if installing Xcode 3.1.4 or
 for your version of OS X (10.4 Tiger, 10.5 Leopard, or 10.6 Snow Leopard),
 follow <a href="http://www.macports.org/install.php#pkg">
 these instructions</a>.
-<li> To install Gnuplot, open a terminal window and type:
+<li> To install gnuplot, open a terminal window and type:
 <pre>
 sudo port install gnuplot
 </pre>
@@ -611,7 +624,7 @@ If this is your first MacPorts package installation, it will take several minute
 </ol>
 </p>
 <!--
-<li>        Test that Gnuplot works.
+<li>        Test that gnuplot works.
          Open a Terminal window (Applications > Utilities > Terminal) and 
 <pre>
 gnuplot
@@ -621,7 +634,7 @@ gnuplot
 -->
 
 <p>
-<b>Running <a href="http://www.gnuplot.info/">Gnuplot</a> in OS X</b>
+<b>Running <a href="http://www.gnuplot.info/">gnuplot</a> in OS X</b>
 </p>
 
 <p>
@@ -637,12 +650,25 @@ where <b>MyResultsA.out</b> is the name of of the Output Data file specified
 when running frame3dd.
 <li>Hit the 'Return' key in the Terminal window to see the sequence of plots
 and animations until the <b>gnuplot></b> prompt returns.
+<li> In examining plots of 3D structures with gnuplot, it is convenient to use a scroll-mouse to zoom, pan, and shift the image. 
+<pre>
+      zoom                           :  hold command + scroll   ... or ...    hold the scroll button and drag left-right
+      pan                            :  hold Left mouse button + drag the mouse  ... or ...   arrow key (up, down, left, right)  ... or ... shift + arrow key
+      shift X                        :  hold shift + scroll
+      shift Y                        :  scroll
+      shift Z                        :  hold shift + hold the scroll wheel + drag up-down
+      autoscale                      :  the 'a' key
+      toggle border                  :  the 'b' key
+      toggle grid                    :  the 'g' key
+      toggle mouse functions on/off  :  the 'm' key
+      undo shift                     :  the 'u' key
+</pre>
 <li> To save the current plot as a PDF file in the Frame3DD/examples directory, use the <b>saveplot_osx</b> script included in the Frame3DD/examples directory.
 <pre>
      gnuplot>  load 'saveplot_osx'
      gnuplot>  !cp my-plot.pdf PlotFileA.pdf
 </pre>
-<li>After finishing with your plots, you can exit Gnuplot by typing  ...
+<li>After finishing with your plots, you can exit gnuplot by typing  ...
 <pre>
      gnuplot>  quit
 </pre>
@@ -756,15 +782,15 @@ frame3dd  examples/MyFrame.3dd  examples/MyResultsA.out
 <!-- <li> You may wish to delete all the files in the temporary file directory (c:\temp) after you have finished your analyses.  -->
 </ol>
 
-<h4>3.3.3 Plotting Results with <a href="http://www.gnuplot.info/">Gnuplot</a> in Windows</h4>
+<h4>3.3.3 Plotting Results with <a href="http://www.gnuplot.info/">gnuplot</a> in Windows</h4>
 
 <p>
-<b>Installing <a href="http://www.gnuplot.info/">Gnuplot</a> for Windows</b>
+<b>Installing <a href="http://www.gnuplot.info/">gnuplot</a> for Windows</b>
 
 <ol>
 <li>
 <a href="http://sourceforge.net/projects/gnuplot/files/gnuplot/4.6.3/gp463-win32-setup.exe/download">
-Download</a> the MS-Windows version of Gnuplot 4.6.3
+Download</a> the MS-Windows version of gnuplot 4.6.3
 and extract it to your <b>Desktop</b>.
 <li> Navigate to <b>Desktop > Gnuplot > bin</b>, 
 right click on the <b>wgnuplot</b> application icon, and create a shortcut to your <b>Desktop</b>.
@@ -772,12 +798,12 @@ right click on the <b>wgnuplot</b> application icon, and create a shortcut to yo
 </p>
 
 <p>
-<b>Running <a href="http://www.gnuplot.info/">Gnuplot</a> in Windows</b>
+<b>Running <a href="http://www.gnuplot.info/">gnuplot</a> in Windows</b>
 
 <ol>
-<li>Clicking on the <b>wgnuplot</b> icon on the Desktop starts Gnuplot.
-<li>To view the plot with Gnuplot, first change directories to to location of your output files, by clicking on the <b>ChDir</b> button at the top of the Gnuplot window and navigating to <b>Desktop > Frame3DD > examples</b>.
-<li>Display the plots of your structure using Gnuplot with a command like ...
+<li>Clicking on the <b>wgnuplot</b> icon on the Desktop starts gnuplot.
+<li>To view the plot with gnuplot, first change directories to to location of your output files, by clicking on the <b>ChDir</b> button at the top of the gnuplot window and navigating to <b>Desktop > Frame3DD > examples</b>.
+<li>Display the plots of your structure using gnuplot with a command like ...
 <pre>
       gnuplot>  load 'exE.plt'
 </pre>
@@ -788,11 +814,29 @@ or
 where <b>exE.out</b> or <b>MyResultsA.out</b>
 is the name of of the specified Output Data file. 
 <li>Click <b>OK</b> to see the next plot or <b>Cancel</b> to stop with the current plot.  
+<li> In examining plots of 3D structures with gnuplot, it is convenient to use a scroll-mouse to zoom, pan, and shift the image. 
+<pre>
+      zoom                           :  hold Alt + scroll   ... or ...    hold the scroll button and drag left-right
+      pan                            :  hold Left mouse button + drag the mouse  ... or ...   arrow key (up, down, left, right)  ... or ... shift + arrow key
+      shift X                        :  hold shift + scroll
+      shift Y                        :  scroll
+      shift Z                        :  hold shift + hold the scroll wheel + drag up-down
+      autoscale                      :  the 'a' key
+      toggle border                  :  the 'b' key
+      toggle grid                    :  the 'g' key
+      toggle mouse functions on/off  :  the 'm' key
+      undo shift                     :  the 'u' key
+</pre>
 <li> To save the current plot as a PostScript file in the Frame3DD/examples folder, use the <b>saveplot_w32</b> script included in the Frame3DD/examples folder.
 <pre>
      gnuplot>  load 'saveplot_w32'
      gnuplot>  !copy my-plot.ps PlotFileA.ps
 </pre>
+<li>After finishing with your plots, you can exit gnuplot by typing  ...
+<pre>
+     gnuplot>  quit
+</pre>
+
 </ol>
 </p>
 
@@ -831,7 +875,7 @@ frame3dd  examples/exE.3dd  examples/exE.out
 Some run-time information will be displayed on the Command Prompt window and
 the results of your Frame3DD analysis will have been appended to the end of the <b>examples/exE.out</b> Output Data file.
 Data files used primarily for plotting are stored in the <b>Desktop\Frame3DD\temp</b> folder.
-<li> You may run <b>Frame3DD</b>, examine the analysis results, visualize the results using Gnuplot, and edit Input Data files
+<li> You may run <b>Frame3DD</b>, examine the analysis results, visualize the results using gnuplot, and edit Input Data files
  as described above.  
 </ol>
 -->
@@ -1557,7 +1601,7 @@ about the local <i>x</i>-axis.   If the roll angle, <i>p</i>, is zero, this proc
 in a transformation for which loads in the global <i>Z</i>-direction will cause no
 cross-axis bending.   In this code, this type of coordinate transformation is
 called "<i>Z</i>-axis is vertical" and is selected primarily for the sake of visualization
-with Gnuplot, in which the <i>Z</i>-axis is vertical for all three-dimensional plots.
+with gnuplot, in which the <i>Z</i>-axis is vertical for all three-dimensional plots.
 </p>
 
 <p>
@@ -1815,7 +1859,7 @@ If a dynamic modal analysis is to be carried out,
 the Input Data file may also specify
 any additional mass carried by frame elements, and extra mass or inertia
 concentrated at nodal points. 
-A specified set of modes may be animated within Gnuplot.
+A specified set of modes may be animated within gnuplot.
 </p>
 
 <p>
@@ -1954,7 +1998,7 @@ Each section has eleven columns, as follows:
 <p>
 The data in the frame element internal force data file is tab-delimitted.  
 The frame element internal force data file may be 
-plotted with Gnuplot, may be read by a spreadsheet program,
+plotted with gnuplot, may be read by a spreadsheet program,
 may be read by Matlab or may be read by your own program
 for further post-processing or visualization.   An example
 of the first several lines of an internal force data file is shown here.
@@ -2590,7 +2634,7 @@ nC      # number of condensed nodes
     Ryy          - 1: reaction moment about the global Y axis, 0: free
     Rzz          - 1: reaction moment about the global Z axis, 0: free
     rj           - radius of rigid node sphere around node i
-    scale        - zoom scale for 3D plotting in Gnuplot
+    scale        - zoom scale for 3D plotting in gnuplot
     shear        - 1: include shear deformations, 0: do not.
     shift        - shift factor for non-definite stiffness matrices
     tol          - tolerance for finding mode shapes ~ 1.e-4
@@ -2707,7 +2751,7 @@ frame3dd -i InFile -o OutFile -e100 -gOn
 
   Use consistent mass matrix, set static deformation exaggeration factor, 
 set the animation pan rate, over-riding Input Data file values,
-and force 3D plotting in Gnuplot:
+and force 3D plotting in gnuplot:
 <pre>
 frame3dd -i InFile -o OutFile -lOff -e100 -p3.4 -z
 </pre>
