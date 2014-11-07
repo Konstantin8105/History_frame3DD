@@ -1,6 +1,7 @@
 * Fri Nov  7 13:11:00 EST 2014 Henri Gavin <hpgavin> 0.20140514
 - update Frame3DD-manual.html with instructions on how to zoom, pan, and shift
 3D images in gnuplot.
+- update saveplot and saveplot_w32 for gnuplot version 4.6
 
 * Sat May 17 07:00:00 EST 2014 Henri Gavin <hpgavin> 0.20140514
 - clear a few warnings when compiling with -Wall
