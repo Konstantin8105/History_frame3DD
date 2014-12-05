@@ -1,5 +1,5 @@
 # File name: saveplot_osx
-#  creates a PDF file using  Gnuplot version 4.2 on OS X
+#  creates a PDF file using  Gnuplot version 4.6 on OS X
 #  to save the current plot as a postscript file issue the commands:
 #   gnuplot>   load 'saveplot_osx'
 #   gnuplot>   !cp  my-plot.ps plotfileA.ps
