@@ -623,8 +623,7 @@ For compilation/installation, see README.txt.
 			exagg_static, D3_flag, anlyz, dx, scale );
 	}
 
-
-	if (nM > 0) { /* carry out modal analysis */
+	if ( nM > 0 && anlyz ) { /* carry out modal analysis */
 
 		if(verbose & anlyz) fprintf(stdout,"\n\n Modal Analysis ...\n");
 
@@ -690,7 +689,7 @@ For compilation/installation, see README.txt.
 				V, exagg_modal, D3_flag, pan, scale );
 	}
 
-	if ( nC > 0 ) {		/* matrix condensation of stiffness and mass */
+	if ( nC > 0 && anlyz ) {  /* matrix condensation of stiffness and mass */
 
 		if ( verbose ) fprintf(stdout,"\n Matrix Condensation ...\n");
 
