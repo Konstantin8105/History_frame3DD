@@ -5,6 +5,9 @@
 -- rename guyan to paz_condensation
 -- rename dynamic_conden to modal_condensation
 - associated updates to user manual
+- replace links with platformdownload in the user manual with links to list of
+download .zip files ... the platformdownload option at sourceforge appears to
+be no longer implemented.
 
 
 * Fri Dec  5 13:11:00 EST 2014 Henri Gavin <hpgavin> 0.20140514
