@@ -871,9 +871,9 @@ void consistent_M(
 
 
 /*
- * CONDENSE - static condensation of stiffness matrix from NxN to nxn    30aug01
+ * STATIC_CONDENSATION - of stiffness matrix from NxN to nxn    30aug01
  */
-void condense(
+void static_condensation(
 	double **A, int N, int *c, int n, double **Ac, int verbose
 ){
 	double	**Arr, **Arc;
@@ -930,12 +930,11 @@ void condense(
 
 
 /*
- * GUYAN  -   generalized Guyan reduction of mass and stiffness matrices    6jun07
+ * PAZ_CONDENSATION -   Paz condensation of mass and stiffness matrices 6jun07
  *          matches the response at a particular frequency, sqrt(L)/2/pi
- *          Guyan, Robert J., ``Reduction of Stiffness and Mass Matrices,''
- *          AIAA Journal, Vol. 3, No. 2 (1965) p 380.
+ *          Paz M. Dynamic condensation. AIAA J 1984;22(5):724-727.
  */
-void guyan(
+void paz_condensation(
 	double **M, double **K, int N,
 	int *c, int n,
 	double **Mc, double **Kc, double w2, 
@@ -1010,11 +1009,12 @@ void guyan(
 
 
 /*
- * DYN_CONDEN - dynamic condensation of mass and stiffness matrices    8oct01
- * 	     matches the response at a set of frequencies
+ * MODAL_CONDENSATION -
+ *      dynamic condensation of mass and stiffness matrices    8oct01
+ * 	matches the response at a set of frequencies and modes 
  * WARNING: Kc and Mc may be ill-conditioned, and xyzsibly non-positive def.
  */
-void dyn_conden(
+void modal_condensation(
 	double **M, double **K, int N, int *R, int *p, int n,
 	double **Mc, double **Kc, double **V, double *f, int *m,
 	int verbose

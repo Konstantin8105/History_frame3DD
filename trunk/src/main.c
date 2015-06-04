@@ -161,7 +161,7 @@ For compilation/installation, see README.txt.
 		lump=1,		// 1: lumped, 0: consistent mass matrix
 		iter=0,		// number of iterations	
 		ok=1,		// number of (-ve) diag. terms of L D L'
-		anim[32],	// the modes to be animated
+		anim[128],	// the modes to be animated
 		Cdof=0,		// number of condensed degrees o freedom
 		Cmethod=0,	// matrix condensation method
 		*c=NULL,	// vector of DoF's to condense
@@ -708,21 +708,21 @@ For compilation/installation, see README.txt.
 		if ( m[1] > 0 && nM > 0 )	Cfreq = f[m[1]];
 
 		if ( Cmethod == 1 && anlyz ) {	/* static condensation only	*/
-			condense(K, DoF, c, Cdof, Kc, 0 );
+			static_condensation(K, DoF, c, Cdof, Kc, 0 );
 			if ( verbose )
 				fprintf(stdout,"   static condensation of K complete\n");
 		}
-		if ( Cmethod == 2 && anlyz ) {
-			guyan(M, K, DoF, c, Cdof, Mc,Kc, Cfreq, 0 );
+		if ( Cmethod == 2 && anlyz ) {  /* dynamic condensation  */
+			paz_condensation(M, K, DoF, c, Cdof, Mc,Kc, Cfreq, 0 );
 			if ( verbose ) {
-				fprintf(stdout,"   Guyan condensation of K and M complete");
+				fprintf(stdout,"   Paz condensation of K and M complete");
 				fprintf(stdout," ... dynamics matched at %f Hz.\n", Cfreq );
 			}
 		}
 		if ( Cmethod == 3 && nM > 0 && anlyz ) {
-			dyn_conden(M,K, DoF, r, c, Cdof, Mc,Kc, V,f, m, 0 );
+			modal_condensation(M,K, DoF, r, c, Cdof, Mc,Kc, V,f, m, 0 );
 			if ( verbose ) 
-				fprintf(stdout,"   dynamic condensation of K and M complete\n");
+				fprintf(stdout,"   modal condensation of K and M complete\n");
 		}
 		save_dmatrix("Kc", Kc, 1,Cdof, 1,Cdof, 0, "w" );
 		save_dmatrix("Mc", Mc, 1,Cdof, 1,Cdof, 0, "w" );
