@@ -5,7 +5,7 @@
  ---------------------------------------------------------------------------
  http://frame3dd.sourceforge.net/
  ---------------------------------------------------------------------------
- Copyright (C) 1992-2014  Henri P. Gavin
+ Copyright (C) 1992-2015  Henri P. Gavin
 
  FRAME3DD is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -341,7 +341,7 @@ void display_version_about()
  fprintf(stderr," Frame3DD version: %s\n", VERSION);
  fprintf(stderr," Analysis of 2D and 3D structural frames with elastic and geometric stiffness\n");
  fprintf(stderr," http://frame3dd.sourceforge.net\n");
- fprintf(stderr," GPL Copyright (C) 1992-2014, Henri P. Gavin \n");
+ fprintf(stderr," GPL Copyright (C) 1992-2015, Henri P. Gavin \n");
  fprintf(stderr," Frame3DD is distributed in the hope that it will be useful");
  fprintf(stderr," but with no warranty.\n");
  fprintf(stderr," For details see the GNU Public Licence:");
@@ -1620,9 +1620,9 @@ void read_mass_data (
 		fprintf(stdout," number of modes to be animated ");
 		dots(stdout,21);	fprintf(stdout," nA = %3d\n",nA);
 	}
-	if (nA > 20)
-	  fprintf(stderr," nA = %d, only 20 or fewer modes may be animated\n", nA );
-	for ( m = 0; m < 20; m++ )	anim[m] = 0;
+	if (nA > 100)
+	  fprintf(stderr," nA = %d, only 100 or fewer modes may be animated\n", nA );
+	for ( m = 0; m < 100; m++ )	anim[m] = 0;
 	for ( m = 1; m <= nA; m++ ) {
 		sfrv=fscanf ( fp, "%d", &anim[m] );
 		if (sfrv != 1) sferr("mode number in mode animation data");
@@ -1788,7 +1788,7 @@ void write_input_data (
 	for (i=1; i<=80; i++)	fprintf(fp,"_");
   	fprintf(fp,"\nFrame3DD version: %s ", VERSION );
 	fprintf(fp,"              http://frame3dd.sf.net/\n");
-	fprintf(fp,"GPL Copyright (C) 1992-2014, Henri P. Gavin \n");
+	fprintf(fp,"GPL Copyright (C) 1992-2015, Henri P. Gavin \n");
 	fprintf(fp,"Frame3DD is distributed in the hope that it will be useful");
 	fprintf(fp," but with no warranty.\n");
 	fprintf(fp,"For details see the GNU Public Licence:");
@@ -2100,7 +2100,7 @@ void write_static_csv (
 	if ( lc == 1 ) {
   	 fprintf(fpcsv,"\" Frame3DD version: %s ", VERSION );
 	 fprintf(fpcsv,"              http://frame3dd.sf.net/\"\n");
-	 fprintf(fpcsv,"\"GPL Copyright (C) 1992-2014, Henri P. Gavin \"\n");
+	 fprintf(fpcsv,"\"GPL Copyright (C) 1992-2015, Henri P. Gavin \"\n");
 	 fprintf(fpcsv,"\"Frame3DD is distributed in the hope that it will be useful");
 	 fprintf(fpcsv," but with no warranty.\"\n");
 	 fprintf(fpcsv,"\"For details see the GNU Public Licence:");
@@ -2271,7 +2271,7 @@ void write_static_mfile (
 	if ( lc == 1 ) {
   	 fprintf(fpm,"%% Frame3DD version: %s ", VERSION );
 	 fprintf(fpm,"              http://frame3dd.sf.net/\n");
-	 fprintf(fpm,"%%GPL Copyright (C) 1992-2014, Henri P. Gavin \n");
+	 fprintf(fpm,"%%GPL Copyright (C) 1992-2015, Henri P. Gavin \n");
 	 fprintf(fpm,"%%Frame3DD is distributed in the hope that it will be useful");
 	 fprintf(fpm," but with no warranty.\n");
 	 fprintf(fpm,"%%For details see the GNU Public Licence:");
@@ -3595,7 +3595,7 @@ void animate(
 		exit(26);
 	}
 	i = 1;
-	while ( (m = anim[i]) != 0 && i < 20) {
+	while ( (m = anim[i]) != 0 && i < 100) {
 	 if ( i==1 ) {
 
 	   fprintf(fpm,"\n# --- M O D E   S H A P E   A N I M A T I O N ---\n");

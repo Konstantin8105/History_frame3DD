@@ -1,3 +1,12 @@
+* Thu Jun  4 16:33:00 EST 2015 Henri Gavin <hpgavin> 0.20140514
+- increase limit on number of animated modes from 20 to 100.
+- function name changes in main.c frame3dd_io.c frame3dd.c ...
+-- rename conden to static_condensation
+-- rename guyan to paz_condensation
+-- rename dynamic_conden to modal_condensation
+- associated updates to user manual
+
+
 * Fri Dec  5 13:11:00 EST 2014 Henri Gavin <hpgavin> 0.20140514
 - require "anlyz ~= 0" in order to run matrix condensation
 
