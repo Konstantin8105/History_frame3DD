@@ -9,6 +9,7 @@ https://sourceforge.net/projects/frame3dd/files/
 http://sourceforge.net/project/platformdownload.php?group_id=221386
 ... this link finds the latest .zip file in the archive.
 ... not yet sure if the download stats are updating correctly.
+- small style formatting changes to user manual
 
 
 * Thu Jun  4 16:33:00 EST 2015 Henri Gavin <hpgavin> 0.20140514+
