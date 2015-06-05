@@ -164,8 +164,10 @@ via <a href="http://www.gnuplot.info/">gnuplot</a> version 4.6.
 <ol>
 <li>Read the User Manual and Reference (this file).
 <li>
-<!-- a href="http://sourceforge.net/project/platformdownload.php?group_id=221386" -->
-<a href="https://sourceforge.net/projects/frame3dd/files/frame3dd/">Download</a>
+<!-- a href="https://sourceforge.net/projects/frame3dd/files/"-->
+<!-- a href="https://sourceforge.net/projects/frame3dd/files/latest/download?source=files" -->
+<a href="http://sourceforge.net/project/platformdownload.php?group_id=221386" -->
+Download</a>
 Frame3DD and save the Frame3DD folder to your Desktop (more details below).
 <li>Optionally, obtain a copy of gnuplot for your operating system (more details below).
 <li>Open a terminal window, go to the Frame3DD directory, and run the program on one of the examples using a command like ...
@@ -262,17 +264,18 @@ The additional output files will then appear in the folder you have specified.
 <p>
 Compiled executable programs are updated with some regularity.  
 Frame3DD installation packages are available for download for Linux,
-for OS X, and for Windows operating systems as .ZIP archives.
-These installation .ZIP archives include:
+for OS X, and for Windows operating systems as a .ZIP archive.
+This installation .ZIP archive includes:
 <ul>
 <li> A copy of the GPL license (LICENSE.txt)
-<li> The executable program (frame3dd) for the selected operating system (Linux, OS X, or Windows)
+<li> Executable programs (frame3dd) for Linux, OS X, and Windows
 <li> This manual, (doc/user-manual.html) 
 <li> Some general information (README.txt)
 <li> Some Windows-specific issues (README-win32.txt)
 <li> The Matlab interface code (matlab/)
 <li> A summary of recent updates to the program (ChangeLog.txt)
 <li> A set of example Input Data files (examples/)
+<li> The complete source code (src/)
 </ul>
 </p>
 
@@ -287,8 +290,8 @@ The date stamp at the beginning of the manual corresponds to the release date of
 <a name="runlinux"/><h3>3.1 Linux</h3>
 
 <p>
-For Linux you may install Frame3DD from a .ZIP archive 
-or you may compile for Linux or Unix from the source code.
+You may install Frame3DD from the .ZIP archive 
+or you may compile Frame3DD from the source code.
 The following instructions install Frame3DD to the <b>Desktop</b> but other directories may be substituted, if so desired.  
 </p>
 
@@ -296,9 +299,11 @@ The following instructions install Frame3DD to the <b>Desktop</b> but other dire
 
 <ol>
 <li>
-<a href="https://sourceforge.net/projects/frame3dd/files/frame3dd/">Download</a>
-<!-- a href="http://sourceforge.net/project/platformdownload.php?group_id=221386" -->
-the Frame3DD .ZIP archive (Frame3DD_VERSION_linux.zip) and save it in your <b>Desktop</b>.<br>
+<!-- a href="https://sourceforge.net/projects/frame3dd/files/"-->
+<!-- a href="https://sourceforge.net/projects/frame3dd/files/latest/download?source=files" -->
+<a href="http://sourceforge.net/project/platformdownload.php?group_id=221386" >
+Download</a>
+the Frame3DD .ZIP archive (Frame3DD_VERSION.zip) and save it in your <b>Desktop</b>.<br>
 If the .ZIP archive was not automatically unzipped, 
 double-click the icon to extract it to your <b>Desktop</b>. 
 <li>
@@ -313,7 +318,7 @@ Copy-and-paste the following ten lines into the beginning of <b>~/.profile</b>
 <pre>
 # for Frame3DD ... http://frame3dd.sourceforge.net/
 # add Frame3DD executable directory to the path
-export PATH=$PATH:$HOME/Desktop/Frame3DD/       
+export PATH=$PATH:$HOME/Desktop/Frame3DD/linux/ 
 # create a Frame3DD output directory
 if [ ! -d /tmp/frame3dd_temp_$USER ]; then
     mkdir /tmp/frame3dd_temp_$USER
@@ -330,7 +335,7 @@ Copy-and-paste the following ten lines into the beginning of <b>~/.login</b>
 <pre>
 # for Frame3DD ... http://frame3dd.sourceforge.net/
 # add Frame3DD executable directory to the path
-set path = ( $path $home/Desktop/Frame3DD )
+set path = ( $path $home/Desktop/Frame3DD/linux )
 # create a Frame3DD output directory
 if ( ! -d /tmp/frame3dd_temp_$user ) then
     mkdir /tmp/frame3dd_temp_$user
@@ -449,19 +454,13 @@ There are two options for compiling under Linux:
 <ol> 
 <li> Compiling using <b>make</b>.
 <ol>
-<li>
-<a href="https://sourceforge.net/projects/frame3dd/files/frame3dd/">Download</a>
-the Frame3DD source-code zip-file (frame3dd_VERSION_src.zip)
-and save it in your home directory.<br>
-If the .ZIP archive was not automatically unzipped, 
-double-click the icon to extract it to your <b>Desktop</b>. 
 <li> Open a Terminal window,
 (Right-click on an open part of the Desktop and select <b>Open Terminal</b>.) 
 and compile the code
 <pre>
 cd ~/Desktop/Frame3DD/src/
 make
-mv frame3dd ..
+mv frame3dd ../linux/
 </pre>
 </ol>
 <li> Compiling using SCONS: 
@@ -476,10 +475,13 @@ sudo apt-get install build-essential scons
 <pre>
 sudo apt-get install libsoqt-dev4
 </pre>
-<!-- http://sourceforge.net/project/platformdownload.php?group_id=221386" -->
-<li><a href="https://sourceforge.net/projects/frame3dd/files/frame3dd/">Download</a>
+<li>
+
+<!--
+<a href="http://sourceforge.net/project/platformdownload.php?group_id=221386">Download</a>
 the Frame3DD source-code tarball (frame3dd-VERSION.tar.bz2)
 and save it in your home directory.
+-->
 
 <li>Open a Terminal, unpack the source code, enter the source directory,
 and build the code, as follows:
@@ -496,7 +498,7 @@ sudo scons install
 or you may install frame3dd in another system directory if your choosing, 
 such as, ...
 <pre>
-sudo scons install INSTALL_PREFIX=/usr/bin/
+sudo scons install INSTALL_PREFIX=/usr/local/bin/
 </pre>
 <li>If you do not have root privileges, you can run Frame3dd directly from the build tree:
 <pre>
@@ -515,8 +517,7 @@ from source following the instructions for Linux or Unix.</div>
 -->
 
 <p>
-For OS X running on an Intel processor,
-you may install Frame3DD from a .ZIP archive 
+For OS X running on an Intel processor, you may install Frame3DD from the .ZIP archive 
 or you may compile from the source code.
 The following instructions install Frame3DD to the <b>Desktop</b> but other directories may be substituted, if so desired.  
 </p>
@@ -525,13 +526,16 @@ The following instructions install Frame3DD to the <b>Desktop</b> but other dire
 
 <ol>
 <li>
-<!-- a href="http://sourceforge.net/project/platformdownload.php?group_id=221386" -->
-<li><a href="https://sourceforge.net/projects/frame3dd/files/frame3dd/">Download</a>
-the Frame3DD .ZIP archive (Frame3DD_VERSION_osx.zip) and save it in your <b>Desktop</b>.<br>
+<li>
+<!-- a href="https://sourceforge.net/projects/frame3dd/files/" -->
+<!-- a href="https://sourceforge.net/projects/frame3dd/files/latest/download?source=files" -->
+<a href="http://sourceforge.net/project/platformdownload.php?group_id=221386">
+Download</a>
+the Frame3DD .ZIP archive (Frame3DD_VERSION.zip) and save it in your <b>Desktop</b>.<br>
 If the .ZIP archive was not automatically unzipped, 
 simply drag the <b>Frame3DD</b> folder icon to your <b>Desktop</b>. 
 <li><b><i>Optional</i></b><br>
- Download the <b>Sketchup</b> interface for <b>Frame3DD</b>, available
+Download the <b>Sketchup</b> interface for <b>Frame3DD</b>, available
 <a href="http://sketchucation.com/forums/viewtopic.php?t=46405">here</a>.
 <li><b><i>Recommended</i></b><br>
 Put the <b>Frame3DD</b> directory in your path and set the <b>FRAME3DD_OUTDIR</b> location.<br>
@@ -547,7 +551,7 @@ open  -a  TextEdit  ~/.profile
 <pre>
 # for Frame3DD ... http://frame3dd.sourceforge.net/
 # add Frame3DD executable directory to the path
-export PATH=$PATH:$HOME/Desktop/Frame3DD/
+export PATH=$PATH:$HOME/Desktop/Frame3DD/osx/
 # create a Frame3DD output directory
 if [ ! -d /tmp/frame3dd_temp_$USER ]; then
     mkdir /tmp/frame3dd_temp_$USER
@@ -686,16 +690,11 @@ and animations until the <b>gnuplot></b> prompt returns.
 
 <ol>
 <li>Install <a href="https://developer.apple.com/xcode/">Xcode</a>.
-<li><a href="https://sourceforge.net/projects/frame3dd/files/frame3dd/">Download</a>
-the Frame3DD source-code zip file (frame3dd_VERSION_src.zip)
-and save it in your home directory.<br>
-If the .ZIP archive was not automatically unzipped, 
-simply drag the <b>Frame3DD</b> folder icon to your <b>Desktop</b>. 
 <li> Compile and install the code, as follows:
 <pre>
 cd ~/Desktop/Frame3DD/src/
 make
-mv frame3dd ..
+mv frame3dd ../osx/.
 </pre>
 </ol>
 
@@ -704,7 +703,7 @@ mv frame3dd ..
 
 <p>
 For Microsoft Windows, 
-you may install Frame3DD from a .ZIP archive
+you may install Frame3DD from the .ZIP archive
 <!-- (recommended), you may use a binary installer (which is currently out of date), -->
 or you may compile from the source code.
 The following instructions install Frame3DD to the <b>Desktop</b> but other directories may be substituted, if so desired.  
@@ -714,20 +713,22 @@ The following instructions install Frame3DD to the <b>Desktop</b> but other dire
 
 <ol>
 <li>
-<!-- a href="http://sourceforge.net/project/platformdownload.php?group_id=221386" -->
-<a href="https://sourceforge.net/projects/frame3dd/files/frame3dd/">Download</a>
-the Frame3DD .ZIP archive (Frame3DD_VERSION_win32.zip) and save it to your <b>Desktop</b>.<br>
+<!-- a href="https://sourceforge.net/projects/frame3dd/files/" -->
+<!-- a href="https://sourceforge.net/projects/frame3dd/files/latest/download?source=files" -->
+<a href="http://sourceforge.net/project/platformdownload.php?group_id=221386">
+Download</a>
+the Frame3DD .ZIP archive (Frame3DD_VERSION.zip) and save it to your <b>Desktop</b>.<br>
 If the .ZIP archive was not automatically unzipped, 
 simply drag <b>Frame3DD</b> folder icon to your <b>Desktop</b>. 
 <li><b><i>Optional</i></b><br>
- Download the <b>Sketchup</b> interface for <b>Frame3DD</b>, now available <a href="http://sketchucation.com/forums/viewtopic.php?t=46405">here</a>.
+Download the <b>Sketchup</b> interface for <b>Frame3DD</b>, now available <a href="http://sketchucation.com/forums/viewtopic.php?t=46405">here</a>.
 <li> <b><i>Recommended</i></b><br>
 Put the <b>Frame3DD</b> directory in your path and set the 
 <b>PATH</b> and <b>FRAME3DD_OUTDIR</b> environment variables.<br>
 To do this,
 <b> right-click My Computer > Properties > Advanced > Environment Variables</b><br>
 Set a new user variable name <b>PATH</b>
-with variable value <b>%HOMEPATH%\Desktop\Frame3DD</b></br>
+with variable value <b>%HOMEPATH%\Desktop\Frame3DD\windows</b></br>
 Set a new user variable name <b>FRAME3DD_OUTDIR</b> 
 with variable value <b>%HOMEPATH%\Desktop\Frame3DD\temp</b></br>
 (The <b>Desktop\Frame3DD\temp</b> folder should already exist.)<br>
@@ -896,16 +897,11 @@ Data files used primarily for plotting are stored in the <b>Desktop\Frame3DD\tem
 the <a href="http://www.cs.virginia.edu/~lcc-win32/"> LCC-win32 compiler</a>,
 or the <a href="http://www.mingw.org/"> MinGW compiler</a>.
 <!-- http://sourceforge.net/project/platformdownload.php?group_id=221386" -->
-<li><a href="https://sourceforge.net/projects/frame3dd/files/">
-Download</a> the Frame3DD source-code zip-file (frame3dd_VERSION_src.zip)
-and save it in your home directory.<br>
-If the .ZIP archive was not automatically unzipped, 
-double-click the icon to extract it to your <b>Desktop</b>. 
-and compile the code, as follows:
+<li> Compile the code as follows:
 <pre>
-cd ~/Desktop/Frame3DD/src/
+chdir Desktop\Frame3DD\src\
 make
-mv frame3dd ..
+move frame3dd ..\windows\.
 </pre>
 </ol>
 
@@ -1345,7 +1341,7 @@ do account for Poisson's effect and have been experimentally validated
 with prismatic beams of materials 
 having a Poisson ratio, <i>v</i>, of 0.16 to 0.38. 
 (See references <a href="http://www.sciencedirect.com/science/article/pii/S0020768310000685">8</a>, 
-<a href="http://iopscience.iop.org/0022-3727/11/14/010">10</a>, and <a href="http://iopscience.iop.org/0022-3727/10/11/009">18</a>.)
+<a href="http://iopscience.iop.org/0022-3727/11/14/010">10</a>, and <a href="http://iopscience.iop.org/0022-3727/10/11/009">19</a>.)
 </p>
 <p>
 Regardless of the section shape and Poisson ratio, the shear areas <i>Asy</i> and <i>Asz</i> are less than the cross section area <i>Ax</i>. 
@@ -1491,7 +1487,7 @@ Asz coefficients
 
 <p>
 Approximate formulae for the effective shear areas of solid circular and rectangular cross sections including the Poisson effect have been experimentally validated for Poisson ratio, <i>v</i>, from 0.16 to 0.38.  
-(See references <a href="http://iopscience.iop.org/0022-3727/11/14/010">10</a> and <a href="http://iopscience.iop.org/0022-3727/10/11/009">18</a>.)
+(See references <a href="http://iopscience.iop.org/0022-3727/11/14/010">10</a> and <a href="http://iopscience.iop.org/0022-3727/10/11/009">19</a>.)
 
 <ul>
 <li> <b> Solid Circular Section:</b> <i> Asy = Asz = Ax (6+12v+6v<sup>2</sup>)/(7+12v+4v<sup>2</sup>) </i>
@@ -1927,6 +1923,7 @@ condensation, dynamic condensation, or modal condensation.  The condensed mass
 and stiffness matrices are saved as text files called Kc and Mc.  
 The dynamic condensation 
 method is Paz's generalization of Guyan condensation so that the condensed matrices match the fundamental frequency of the original structure exactly. 
+(See reference <a href="http://dx.doi.org/10.2514/3.48498">15</a>.)
 The modal condensation method
 is a pseudo-inverse-modal-matrix method, and the resulting condensed mass and
 stiffness matrices may be ill-conditioned.
@@ -3028,6 +3025,10 @@ Engineering Computations, vol. 17, no. 3, pp. 274-351,  2000.
 <a href="http://www.amazon.com/Structural-Analysis-MASTAN2-William-McGuire/dp/0471376515/ref=pd_bbs_sr_1?ie=UTF8&s=books&qid=1198185313&sr=8-1">
 Matrix Structural Analysis, 2nd ed.</a> John Wiley, 1999.
 ISBN: 0471376515
+
+<li> M. Paz,
+<a href="http://dx.doi.org/10.2514/3.48498">
+Dynamic condensation</a>, AIAA Journal, vol. 22, no. 5, pp. 724-727, 1984.
 
 <li> W.D. Pilkey, Weize Kang and Uwe Schramm,
 <a href="http://www.sciencedirect.com/science?_ob=ArticleURL&_udi=B6V36-3YB56X8-9&_user=10&_coverDate=02%2F28%2F1995&_rdoc=5&_fmt=high&_orig=browse&_srch=doc-info(%23toc%235722%231995%23999809998%23154123%23FLP%23display%23Volume)&_cdi=5722&_sort=d&_docanchor=&_ct=11&_acct=C000050221&_version=1&_urlVersion=0&_userid=10&md5=6e4bfbc9d1ce188436efb35e9a9e444d">
