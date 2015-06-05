@@ -1,4 +1,17 @@
-* Thu Jun  4 16:33:00 EST 2015 Henri Gavin <hpgavin> 0.20140514
+* Fri Jun  5 16:33:00 EST 2015 Henri Gavin <hpgavin> 0.20140514+
+- changed format of the .zip file distributions.  now all binary applications
+are in a single distribution .zip file.   
+- change installation instructions to comply with the new distribution file
+structure
+- change sourceforge location of download .zip archive to
+https://sourceforge.net/projects/frame3dd/files/
+- did not change the link used to the download .zip archive ... still ...
+http://sourceforge.net/project/platformdownload.php?group_id=221386
+... this link finds the latest .zip file in the archive.
+... not yet sure if the download stats are updating correctly.
+
+
+* Thu Jun  4 16:33:00 EST 2015 Henri Gavin <hpgavin> 0.20140514+
 - increase limit on number of animated modes from 20 to 100.
 - function name changes in main.c frame3dd_io.c frame3dd.c ...
 -- rename conden to static_condensation
@@ -10,15 +23,15 @@ download .zip files ... the platformdownload option at sourceforge appears to
 be no longer implemented.
 
 
-* Fri Dec  5 13:11:00 EST 2014 Henri Gavin <hpgavin> 0.20140514
+* Fri Dec  5 13:11:00 EST 2014 Henri Gavin <hpgavin> 0.20140514+
 - require "anlyz ~= 0" in order to run matrix condensation
 
-* Fri Nov  7 13:11:00 EST 2014 Henri Gavin <hpgavin> 0.20140514
+* Fri Nov  7 13:11:00 EST 2014 Henri Gavin <hpgavin> 0.20140514+
 - update Frame3DD-manual.html with instructions on how to zoom, pan, and shift
 3D images in gnuplot.
 - update saveplot and saveplot_w32 for gnuplot version 4.6
 
-* Sat May 17 07:00:00 EST 2014 Henri Gavin <hpgavin> 0.20140514
+* Sat May 17 07:00:00 EST 2014 Henri Gavin <hpgavin> 0.20140514+
 - clear a few warnings when compiling with -Wall
 - add more precision to the description of the numerical method in the
 user-manual.html
