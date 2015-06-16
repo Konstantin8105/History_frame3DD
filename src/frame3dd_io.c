@@ -1747,8 +1747,11 @@ void read_condensation_data (
 
 	for (i=1; i<= *Cdof; i++) {
 	 sfrv=fscanf( fp, "%d", &m[i] );
-	 if (sfrv != 1 && *Cmethod == 3)
+	 if (sfrv != 1 && *Cmethod == 3) {
 		sferr("mode number in condensation data");
+		sprintf(errMsg,"condensed mode %d = %d", i, m[i] );
+		errorMsg(errMsg);
+	 }
 	 if ( (m[i] < 0 || m[i] > nM) && *Cmethod == 3 ) {
 	  sprintf(errMsg,"\n  error in matrix condensation data: \n  m[%d] = %d \n The condensed mode number must be between   1 and %d (modes).\n", 
 	  i, m[i], nM );
