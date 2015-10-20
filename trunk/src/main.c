@@ -168,7 +168,9 @@ For compilation/installation, see README.txt.
 		*m=NULL,	// vector of modes to condense
 		filetype=0,	// 1 if .CSV, 2 if file is Matlab
 		debug=0,	// 1: debugging screen output, 0: none
-		verbose=1;	// 1: copious screen output, 0: none
+		verbose=1,	// 1: copious screen output, 0: none
+		axial_strain_warning = 0, // 0: "ok", 1: strain > 0.001
+		ExitCode = 0;	// error code returned by Frame3DD
 
 	int	shear_flag= -1,	//   over-ride input file value	
 		geom_flag = -1,	//   over-ride input file value
@@ -468,7 +470,8 @@ For compilation/installation, see README.txt.
 			 /* compute   {Q}={Q_t} ... temp.-induced forces     */
 			 element_end_forces ( Q, nE, xyz, L, Le, N1,N2,
 				Ax, Asy,Asz, Jx,Iy,Iz, E,G, p,
-				eqF_temp[lc], eqF_mech[lc], D, shear, geom );
+				eqF_temp[lc], eqF_mech[lc], D, shear, geom,
+				&axial_strain_warning );
 
 			 /* assemble temp.-stressed stiffness [K({D_t})]     */
 			 assemble_K ( K, DoF, nE, xyz, rj, L, Le, N1, N2,
@@ -504,7 +507,8 @@ For compilation/installation, see README.txt.
 		/*  element forces {Q} for displacements {D}	*/ 
 		element_end_forces ( Q, nE, xyz, L, Le, N1,N2,
 				Ax, Asy,Asz, Jx,Iy,Iz, E,G, p, 
-				eqF_temp[lc], eqF_mech[lc], D, shear, geom );
+				eqF_temp[lc], eqF_mech[lc], D, shear, geom,
+				&axial_strain_warning );
 
 		/*  check the equilibrium error	*/
 		error = equilibrium_error ( dF, F, K, D, DoF, q,r );
@@ -548,6 +552,7 @@ For compilation/installation, see README.txt.
 			if ( ok < 0 ) {	/*  K is not positive definite	      */
 				fprintf(stderr,"   The stiffness matrix is not pos-def. \n");
 				fprintf(stderr,"   Reduce loads and re-run the analysis.\n");
+				ExitCode = 181;
 				break;
 			}
 
@@ -557,13 +562,19 @@ For compilation/installation, see README.txt.
 			/*  element forces {Q} for displacements {D}^(i)      */ 
 			element_end_forces ( Q, nE, xyz, L, Le, N1,N2,
 				Ax, Asy,Asz, Jx,Iy,Iz, E,G, p, 
-				eqF_temp[lc], eqF_mech[lc], D, shear, geom );
+				eqF_temp[lc], eqF_mech[lc], D, shear, geom,
+				&axial_strain_warning );
 
 			if ( verbose ) { /*  display equilibrium error        */
 			 fprintf(stdout,"   NR iteration %3d ---", iter);
 			 fprintf(stdout," RMS relative equilibrium error = %8.2e \n",error);
 			}
 		}			/* end quasi Newton-Raphson iteration */
+
+		/*  strain limit failure ... */
+		if (axial_strain_warning > 0 && ExitCode == 0)   ExitCode = 182;
+		/*  strain limit _and_ buckling failure ... */
+		if (axial_strain_warning > 0 && ExitCode == 181) ExitCode = 183;
 
  		if ( geom )	compute_reaction_forces( R,F,K, D, DoF, r );
 
@@ -755,5 +766,5 @@ For compilation/installation, see README.txt.
 	}
 	color(0);
 
-	return(0);
+	return( ExitCode );
 }

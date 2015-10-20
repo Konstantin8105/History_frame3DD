@@ -1,3 +1,15 @@
+* Tue Oct 20 15:53:00 EST 2015 Henri Gavin <hpgavin> 0.20140514+
+- in testing for large average strains, check for large positive _and_ negative strains 
+frame3dd.c line 450 changed ... 
+if ( fabs(axial_strain > 0.001 ) ) {
+... to ... 
+if ( fabs(axial_strain) > 0.001 ) {
+- new Exit Codes:
+181 : stiffness matrix not positive definite
+182 : large strain
+183 : stiffness matrix not positive definite _and_ large strains
+- Frame3DD-manual.html updated with new Exit Codes
+
 * Fri Jun  5 16:33:00 EST 2015 Henri Gavin <hpgavin> 0.20140514+
 - changed format of the .zip file distributions.  now all binary applications
 are in a single distribution .zip file.   

@@ -133,7 +133,8 @@ void element_end_forces(
 	double **eqF_mech, /**< equivalent mech loads on elements, global */
 	double *D,	/**< displacement vector			*/
 	int shear,	/**< 1: include shear deformation, 0: don't	*/
-	int geom	/**< 1: include goemetric stiffness, 0: don't	*/
+	int geom,	/**< 1: include goemetric stiffness, 0: don't	*/
+	int *axial_strain_warning /**< 0: strains < 0.001         */
 );
 
 
