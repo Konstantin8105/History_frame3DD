@@ -1,5 +1,11 @@
+* Sun Oct 31 15:15:00 EST 2015 Henri Gavin <hpgavin> 0.20140514+
+- add the peak element internal forces to the .CSV output data file
+- update Frame3DD-manual.html re. the inclusion of peak element internal
+forces in the .CSV output data file
+
 * Tue Oct 20 15:53:00 EST 2015 Henri Gavin <hpgavin> 0.20140514+
-- in testing for large average strains, check for large positive _and_ negative strains 
+- in testing for large average strains, check for large positive _and_
+negative strains 
 frame3dd.c line 450 changed ... 
 if ( fabs(axial_strain > 0.001 ) ) {
 ... to ... 
@@ -39,12 +45,14 @@ be no longer implemented.
 * Fri Dec  5 13:11:00 EST 2014 Henri Gavin <hpgavin> 0.20140514+
 - require "anlyz ~= 0" in order to run matrix condensation
 
+
 * Fri Nov  7 13:11:00 EST 2014 Henri Gavin <hpgavin> 0.20140514+
 - update Frame3DD-manual.html with instructions on how to zoom, pan, and shift
 3D images in gnuplot.
 - update saveplot and saveplot_w32 for gnuplot version 4.6
 
-* Sat May 17 07:00:00 EST 2014 Henri Gavin <hpgavin> 0.20140514+
+
+* Sat May 17 07:00:00 EST 2014 Henri Gavin <hpgavin> 0.20140514
 - clear a few warnings when compiling with -Wall
 - add more precision to the description of the numerical method in the
 user-manual.html

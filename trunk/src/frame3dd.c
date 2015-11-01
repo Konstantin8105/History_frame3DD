@@ -430,14 +430,12 @@ void element_end_forces(
 	float *Jx, float *Iy, float *Iz, float *E, float *G, float *p,
 	double **eqF_temp, // equivalent element end forces from temp loads
 	double **eqF_mech, // equivalent element end forces from mech loads
-	double *D, int shear, int geom, int *axial_strain_warning
+	double *D, int shear, int geom
 ){
-	double	*s, axial_strain = 0; 
+	double	*s, axial_strain;
 	int	m,j;
 
 	s = dvector(1,12);
-
-	*axial_strain_warning = 0;
 
 	for(m=1; m <= nE; m++) {
 
@@ -447,10 +445,8 @@ void element_end_forces(
 
 		for(j=1; j<=12; j++)	Q[m][j] = s[j];
 
-		if ( fabs(axial_strain) > 0.001 ) {
+		if ( fabs(axial_strain > 0.001) )
 		 fprintf(stderr," Warning! Frame element %2d has an average axial strain of %8.6f\n", m, axial_strain ); 
-		 ++(*axial_strain_warning);
-		}
 
 	}
 
@@ -875,9 +871,9 @@ void consistent_M(
 
 
 /*
- * STATIC_CONDENSATION - of stiffness matrix from NxN to nxn    30aug01
+ * CONDENSE - static condensation of stiffness matrix from NxN to nxn    30aug01
  */
-void static_condensation(
+void condense(
 	double **A, int N, int *c, int n, double **Ac, int verbose
 ){
 	double	**Arr, **Arc;
@@ -934,11 +930,12 @@ void static_condensation(
 
 
 /*
- * PAZ_CONDENSATION -   Paz condensation of mass and stiffness matrices 6jun07
+ * GUYAN  -   generalized Guyan reduction of mass and stiffness matrices    6jun07
  *          matches the response at a particular frequency, sqrt(L)/2/pi
- *          Paz M. Dynamic condensation. AIAA J 1984;22(5):724-727.
+ *          Guyan, Robert J., ``Reduction of Stiffness and Mass Matrices,''
+ *          AIAA Journal, Vol. 3, No. 2 (1965) p 380.
  */
-void paz_condensation(
+void guyan(
 	double **M, double **K, int N,
 	int *c, int n,
 	double **Mc, double **Kc, double w2, 
@@ -1013,12 +1010,11 @@ void paz_condensation(
 
 
 /*
- * MODAL_CONDENSATION -
- *      dynamic condensation of mass and stiffness matrices    8oct01
- * 	matches the response at a set of frequencies and modes 
+ * DYN_CONDEN - dynamic condensation of mass and stiffness matrices    8oct01
+ * 	     matches the response at a set of frequencies
  * WARNING: Kc and Mc may be ill-conditioned, and xyzsibly non-positive def.
  */
-void modal_condensation(
+void dyn_conden(
 	double **M, double **K, int N, int *R, int *p, int n,
 	double **Mc, double **Kc, double **V, double *f, int *m,
 	int verbose

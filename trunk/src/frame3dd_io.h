@@ -292,6 +292,14 @@ void write_static_results(
 );
 
 
+/* 
+ * CSV_filename - return the file name for the .CSV file and 
+ * whether the file should be written or appended (wa)
+ * 1 Nov 2015
+*/
+void CSV_filename( char CSV_file[], char wa[], char OUT_file[], int lc );
+
+
 /*
  * WRITE_STATIC_CSV
  * save node displacements, reactions, and  element end forces in a .CSV file   
@@ -304,6 +312,7 @@ void write_static_csv(
 	double *F, double *D, double *R, int *r, double **Q,
 	double err, int ok
 );
+
 
 
 /*
@@ -356,6 +365,7 @@ void peak_internal_forces (
  *	4jan10
  */
 void write_internal_forces(
+	char *OUT_file, /**< output data filename                       */
 	FILE *fp,	/**< pointer to output data file		*/
 	char infcpath[],/**< interior force data file			*/
 	int lc,		/**< load case number				*/

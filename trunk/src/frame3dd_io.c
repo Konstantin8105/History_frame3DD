@@ -5,7 +5,7 @@
  ---------------------------------------------------------------------------
  http://frame3dd.sourceforge.net/
  ---------------------------------------------------------------------------
- Copyright (C) 1992-2015  Henri P. Gavin
+ Copyright (C) 1992-2014  Henri P. Gavin
 
  FRAME3DD is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -341,7 +341,7 @@ void display_version_about()
  fprintf(stderr," Frame3DD version: %s\n", VERSION);
  fprintf(stderr," Analysis of 2D and 3D structural frames with elastic and geometric stiffness\n");
  fprintf(stderr," http://frame3dd.sourceforge.net\n");
- fprintf(stderr," GPL Copyright (C) 1992-2015, Henri P. Gavin \n");
+ fprintf(stderr," GPL Copyright (C) 1992-2014, Henri P. Gavin \n");
  fprintf(stderr," Frame3DD is distributed in the hope that it will be useful");
  fprintf(stderr," but with no warranty.\n");
  fprintf(stderr," For details see the GNU Public Licence:");
@@ -1620,9 +1620,9 @@ void read_mass_data (
 		fprintf(stdout," number of modes to be animated ");
 		dots(stdout,21);	fprintf(stdout," nA = %3d\n",nA);
 	}
-	if (nA > 100)
-	  fprintf(stderr," nA = %d, only 100 or fewer modes may be animated\n", nA );
-	for ( m = 0; m < 100; m++ )	anim[m] = 0;
+	if (nA > 20)
+	  fprintf(stderr," nA = %d, only 20 or fewer modes may be animated\n", nA );
+	for ( m = 0; m < 20; m++ )	anim[m] = 0;
 	for ( m = 1; m <= nA; m++ ) {
 		sfrv=fscanf ( fp, "%d", &anim[m] );
 		if (sfrv != 1) sferr("mode number in mode animation data");
@@ -1747,11 +1747,8 @@ void read_condensation_data (
 
 	for (i=1; i<= *Cdof; i++) {
 	 sfrv=fscanf( fp, "%d", &m[i] );
-	 if (sfrv != 1 && *Cmethod == 3) {
+	 if (sfrv != 1 && *Cmethod == 3)
 		sferr("mode number in condensation data");
-		sprintf(errMsg,"condensed mode %d = %d", i, m[i] );
-		errorMsg(errMsg);
-	 }
 	 if ( (m[i] < 0 || m[i] > nM) && *Cmethod == 3 ) {
 	  sprintf(errMsg,"\n  error in matrix condensation data: \n  m[%d] = %d \n The condensed mode number must be between   1 and %d (modes).\n", 
 	  i, m[i], nM );
@@ -1791,7 +1788,7 @@ void write_input_data (
 	for (i=1; i<=80; i++)	fprintf(fp,"_");
   	fprintf(fp,"\nFrame3DD version: %s ", VERSION );
 	fprintf(fp,"              http://frame3dd.sf.net/\n");
-	fprintf(fp,"GPL Copyright (C) 1992-2015, Henri P. Gavin \n");
+	fprintf(fp,"GPL Copyright (C) 1992-2014, Henri P. Gavin \n");
 	fprintf(fp,"Frame3DD is distributed in the hope that it will be useful");
 	fprintf(fp," but with no warranty.\n");
 	fprintf(fp,"For details see the GNU Public Licence:");
@@ -2049,26 +2046,13 @@ void write_static_results (
 
 
 /*
- * WRITE_STATIC_CSV -  save node displacements and frame element end forces
- * 31 Dec 2008
+ * CSV_filename - return the file name for the .CSV file and 
+ * whether the file should be written or appended (wa)
+ * 1 Nov 2015
  */
-void write_static_csv (
-		char *OUT_file,
-		char *title,
-		int nN, int nE, int nL, int lc, int DoF,
-		int *J1, int *J2,
-		double *F, double *D, double *R, int *r, double **Q,
-		double err, int ok
-){
-
-	FILE	*fpcsv;
-	int	i,j,n;
-	char	*wa;
-	char	CSV_file[FILENMAX];
-	time_t  now;		/* modern time variable type	*/
-	char	errMsg[MAXL];
-
-	(void) time(&now);
+void CSV_filename( char CSV_file[], char wa[], char OUT_file[], int lc )
+{
+	int i,j;
 
 	i=0;
 	j=0;
@@ -2089,9 +2073,38 @@ void write_static_csv (
 	CSV_file[++j] = '\0';
 	strcat(CSV_file,"out.CSV");
 
+	wa[0] = 'a';
+	if (lc == 1) wa[0] = 'w';
+	wa[1] = '\0';
 
-	wa  = "a";
-	if (lc == 1) wa = "w";
+fprintf(stderr," 1. CSV_file = %s  wa = %s \n", CSV_file, wa );
+
+
+}
+
+
+/*
+ * WRITE_STATIC_CSV -  save node displacements and frame element end forces
+ * 31 Dec 2008
+ */
+void write_static_csv (
+		char OUT_file[],
+		char title[],
+		int nN, int nE, int nL, int lc, int DoF,
+		int *J1, int *J2,
+		double *F, double *D, double *R, int *r, double **Q,
+		double err, int ok
+){
+	FILE	*fpcsv;
+	int	i,j,n;
+	char	wa[4];
+	char	CSV_file[FILENMAX];
+	time_t  now;		/* modern time variable type	*/
+	char	errMsg[MAXL];
+
+	(void) time(&now);
+
+	CSV_filename( CSV_file, wa, OUT_file, lc );
 
 	if ((fpcsv = fopen (CSV_file, wa)) == NULL) {
 	  sprintf (errMsg,"\n  error: cannot open CSV output data file: %s \n", CSV_file);
@@ -2103,7 +2116,7 @@ void write_static_csv (
 	if ( lc == 1 ) {
   	 fprintf(fpcsv,"\" Frame3DD version: %s ", VERSION );
 	 fprintf(fpcsv,"              http://frame3dd.sf.net/\"\n");
-	 fprintf(fpcsv,"\"GPL Copyright (C) 1992-2015, Henri P. Gavin \"\n");
+	 fprintf(fpcsv,"\"GPL Copyright (C) 1992-2014, Henri P. Gavin \"\n");
 	 fprintf(fpcsv,"\"Frame3DD is distributed in the hope that it will be useful");
 	 fprintf(fpcsv," but with no warranty.\"\n");
 	 fprintf(fpcsv,"\"For details see the GNU Public Licence:");
@@ -2112,18 +2125,20 @@ void write_static_csv (
 	 fprintf(fpcsv,"\" %s \"\n", ctime(&now) );
 
 	 fprintf(fpcsv,"\" .CSV formatted results of Frame3DD analysis \"\n");
-	 fprintf(fpcsv,"\n , Load Case , Displacements , End Forces , Reactions \n");
+	 fprintf(fpcsv,"\n , Load Case , Displacements , End Forces , Reactions , Internal Forces \n");
 	 for (i = 1; i <= nL; i++) {
-	 	fprintf(fpcsv," First Row , %d , %d , %d , %d  \n",
+	 	fprintf(fpcsv," First Row , %d , %d , %d , %d  , %d  \n",
 			i,
-			15+(i-1)*(nN*2+nE*2+10) + 2*nL,
-			17+(i-1)*(nN*2+nE*2+10) + 2*nL+ nN,
-			19+(i-1)*(nN*2+nE*2+10) + 2*nL+ nN + 2*nE );
-	 	fprintf(fpcsv," Last Row , %d , %d , %d , %d  \n",
+			15+(i-1)*(nN*2+nE*4+13) + 2*nL,
+			17+(i-1)*(nN*2+nE*4+13) + 2*nL + nN,
+			19+(i-1)*(nN*2+nE*4+13) + 2*nL + nN + 2*nE,
+			23+(i-1)*(nN*2+nE*4+13) + 2*nL + 2*nN + 2*nE );
+	 	fprintf(fpcsv," Last Row , %d , %d , %d , %d , %d \n",
 			i,
-			15+(i-1)*(nN*2+nE*2+10) + 2*nL + nN - 1,
-			17+(i-1)*(nN*2+nE*2+10) + 2*nL + nN + 2*nE - 1,
-			19+(i-1)*(nN*2+nE*2+10) + 2*nL + 2*nN + 2*nE - 1 );
+			15+(i-1)*(nN*2+nE*4+13) + 2*nL + nN - 1,
+			17+(i-1)*(nN*2+nE*4+13) + 2*nL + nN + 2*nE - 1,
+			19+(i-1)*(nN*2+nE*4+13) + 2*nL + 2*nN + 2*nE - 1, 
+			23+(i-1)*(nN*2+nE*4+13) + 2*nL + 2*nN + 4*nE - 1 );
 	 }
 
 	}
@@ -2274,7 +2289,7 @@ void write_static_mfile (
 	if ( lc == 1 ) {
   	 fprintf(fpm,"%% Frame3DD version: %s ", VERSION );
 	 fprintf(fpm,"              http://frame3dd.sf.net/\n");
-	 fprintf(fpm,"%%GPL Copyright (C) 1992-2015, Henri P. Gavin \n");
+	 fprintf(fpm,"%%GPL Copyright (C) 1992-2014, Henri P. Gavin \n");
 	 fprintf(fpm,"%%Frame3DD is distributed in the hope that it will be useful");
 	 fprintf(fpm," but with no warranty.\n");
 	 fprintf(fpm,"%%For details see the GNU Public Licence:");
@@ -2420,10 +2435,10 @@ void peak_internal_forces (
 	if (dx == -1.0)	return;	// skip calculation of internal forces and displ
 
 	for ( m=1; m <= nE; m++ ) {	// initialize peak values to zero
-			pkNx[lc][m] = pkVy[lc][m] = pkVz[lc][m] = 0.0; 
-			pkTx[lc][m] = pkMy[lc][m] = pkMz[lc][m] = 0.0;
-			pkDx[lc][m] = pkDy[lc][m] = pkDz[lc][m] = 0.0;
-			pkRx[lc][m] = pkSy[lc][m] = pkSz[lc][m] = 0.0;
+		pkNx[lc][m] = pkVy[lc][m] = pkVz[lc][m] = 0.0; 
+		pkTx[lc][m] = pkMy[lc][m] = pkMz[lc][m] = 0.0;
+		pkDx[lc][m] = pkDy[lc][m] = pkDz[lc][m] = 0.0;
+		pkRx[lc][m] = pkSy[lc][m] = pkSz[lc][m] = 0.0;
 	}
 
 	for ( m=1; m <= nE; m++ ) {	// loop over all frame elements
@@ -2654,6 +2669,7 @@ void peak_internal_forces (
  * 4jan10, 7mar11, 21jan14
  */
 void write_internal_forces (
+		char OUT_file[],
 		FILE *fp, char infcpath[], int lc, int nL, char title[], float dx,
 		vec3 *xyz, 
 		double **Q, int nN, int nE, double *L, int *J1, int *J2, 
@@ -2702,13 +2718,25 @@ void write_internal_forces (
 		n1,n2,i1,i2;	/* starting and stopping node no's	*/
 
 	char	fnif[FILENMAX];/* file name    for internal force data	*/
+	char	CSV_file[FILENMAX];
 	char	errMsg[MAXL];
-	FILE	*fpif;		/* file pointer for internal force data */
+	char	wa[4];          /* indicate 'write' or 'append' to file */
+	FILE	*fpif,		/* file pointer for internal force data */
+		*fpcsv;         /* file pointer to .CSV output data file */
 	time_t  now;		/* modern time variable type		*/
 
 	if (dx == -1.0)	return;	// skip calculation of internal forces and displ
 
 	(void) time(&now);
+
+ 
+	CSV_filename( CSV_file, wa, OUT_file, lc );
+
+	if ((fpcsv = fopen (CSV_file, "a")) == NULL) {
+	  sprintf (errMsg,"\n  error: cannot open CSV output data file: %s \n", CSV_file);
+	  errorMsg(errMsg);
+	  exit(17);
+	}  
 
 	/* file name for internal force data for load case "lc" */
 	sprintf(fnif,"%s%02d",infcpath,lc);
@@ -2729,11 +2757,18 @@ void write_internal_forces (
 	fprintf(fpif,"# F R A M E   E L E M E N T   I N T E R N A L   F O R C E S (local)\n");
 	fprintf(fpif,"# F R A M E   E L E M E N T   T R A N S V E R S E   D I S P L A C E M E N T S (local)\n\n");
 
-	// write header information for each frame element
+	// write header information for each frame element to txt output data file 
 	fprintf(fp,"\nP E A K   F R A M E   E L E M E N T   I N T E R N A L   F O R C E S");
-	fprintf(fp,"\t(local)\n");
-	fprintf(fp,"  Elmnt             Nx          Vy         Vz");
+	fprintf(fp,"(local)\", \n");
+	fprintf(fp,"  Elmnt   .         Nx          Vy         Vz");
 	fprintf(fp,"        Txx        Myy        Mzz\n");
+
+	// write header information for each frame element to CSV output data file
+	fprintf(fpcsv,"\n\"P E A K   F R A M E   E L E M E N T   I N T E R N A L   F O R C E S ");
+	fprintf(fpcsv,"   (local)\",\n");
+	fprintf(fpcsv," \"Elmnt\",  \".\", \"Nx\", \"Vy\", \"Vz\", ");
+	fprintf(fpcsv," \"Txx\", \"Myy\", \"Mzz\", \n");
+
 
 /*	fprintf(fp,"\n P E A K   I N T E R N A L   D I S P L A C E M E N T S");
  *	fprintf(fp,"\t\t\t(local)\n");
@@ -3034,10 +3069,16 @@ void write_internal_forces (
 		}
 		fprintf(fpif,"#---------------------------------------\n\n\n");
 
-	// write max and min element forces to the Frame3DD output data file
+	// write max and min element forces to the Frame3DD text output data file
 		fprintf(fp," %5d   max  %10.3f  %10.3f %10.3f %10.3f %10.3f %10.3f\n",
 				m, maxNx, maxVy, maxVz, maxTx, maxMy, maxMz );
 		fprintf(fp," %5d   min  %10.3f  %10.3f %10.3f %10.3f %10.3f %10.3f\n",
+				m, minNx, minVy, minVz, minTx, minMy, minMz );
+
+	// write max and min element forces to the Frame3DD CSV output data file
+		fprintf(fpcsv," %5d, \"max\", %10.3f,  %10.3f, %10.3f, %10.3f, %10.3f, %10.3f\n",
+				m, maxNx, maxVy, maxVz, maxTx, maxMy, maxMz );
+		fprintf(fpcsv," %5d, \"min\", %10.3f,  %10.3f, %10.3f, %10.3f, %10.3f, %10.3f\n",
 				m, minNx, minVy, minVz, minTx, minMy, minMz );
 	
 /*
@@ -3065,6 +3106,7 @@ void write_internal_forces (
 	}				// end of loop over all frame elements
 
 	fclose(fpif);
+	fclose(fpcsv);
 }
 
 
@@ -3598,7 +3640,7 @@ void animate(
 		exit(26);
 	}
 	i = 1;
-	while ( (m = anim[i]) != 0 && i < 100) {
+	while ( (m = anim[i]) != 0 && i < 20) {
 	 if ( i==1 ) {
 
 	   fprintf(fpm,"\n# --- M O D E   S H A P E   A N I M A T I O N ---\n");
