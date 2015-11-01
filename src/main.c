@@ -161,16 +161,14 @@ For compilation/installation, see README.txt.
 		lump=1,		// 1: lumped, 0: consistent mass matrix
 		iter=0,		// number of iterations	
 		ok=1,		// number of (-ve) diag. terms of L D L'
-		anim[128],	// the modes to be animated
+		anim[32],	// the modes to be animated
 		Cdof=0,		// number of condensed degrees o freedom
 		Cmethod=0,	// matrix condensation method
 		*c=NULL,	// vector of DoF's to condense
 		*m=NULL,	// vector of modes to condense
 		filetype=0,	// 1 if .CSV, 2 if file is Matlab
 		debug=0,	// 1: debugging screen output, 0: none
-		verbose=1,	// 1: copious screen output, 0: none
-		axial_strain_warning = 0, // 0: "ok", 1: strain > 0.001
-		ExitCode = 0;	// error code returned by Frame3DD
+		verbose=1;	// 1: copious screen output, 0: none
 
 	int	shear_flag= -1,	//   over-ride input file value	
 		geom_flag = -1,	//   over-ride input file value
@@ -470,8 +468,7 @@ For compilation/installation, see README.txt.
 			 /* compute   {Q}={Q_t} ... temp.-induced forces     */
 			 element_end_forces ( Q, nE, xyz, L, Le, N1,N2,
 				Ax, Asy,Asz, Jx,Iy,Iz, E,G, p,
-				eqF_temp[lc], eqF_mech[lc], D, shear, geom,
-				&axial_strain_warning );
+				eqF_temp[lc], eqF_mech[lc], D, shear, geom );
 
 			 /* assemble temp.-stressed stiffness [K({D_t})]     */
 			 assemble_K ( K, DoF, nE, xyz, rj, L, Le, N1, N2,
@@ -507,8 +504,7 @@ For compilation/installation, see README.txt.
 		/*  element forces {Q} for displacements {D}	*/ 
 		element_end_forces ( Q, nE, xyz, L, Le, N1,N2,
 				Ax, Asy,Asz, Jx,Iy,Iz, E,G, p, 
-				eqF_temp[lc], eqF_mech[lc], D, shear, geom,
-				&axial_strain_warning );
+				eqF_temp[lc], eqF_mech[lc], D, shear, geom );
 
 		/*  check the equilibrium error	*/
 		error = equilibrium_error ( dF, F, K, D, DoF, q,r );
@@ -552,7 +548,6 @@ For compilation/installation, see README.txt.
 			if ( ok < 0 ) {	/*  K is not positive definite	      */
 				fprintf(stderr,"   The stiffness matrix is not pos-def. \n");
 				fprintf(stderr,"   Reduce loads and re-run the analysis.\n");
-				ExitCode = 181;
 				break;
 			}
 
@@ -562,19 +557,13 @@ For compilation/installation, see README.txt.
 			/*  element forces {Q} for displacements {D}^(i)      */ 
 			element_end_forces ( Q, nE, xyz, L, Le, N1,N2,
 				Ax, Asy,Asz, Jx,Iy,Iz, E,G, p, 
-				eqF_temp[lc], eqF_mech[lc], D, shear, geom,
-				&axial_strain_warning );
+				eqF_temp[lc], eqF_mech[lc], D, shear, geom );
 
 			if ( verbose ) { /*  display equilibrium error        */
 			 fprintf(stdout,"   NR iteration %3d ---", iter);
 			 fprintf(stdout," RMS relative equilibrium error = %8.2e \n",error);
 			}
 		}			/* end quasi Newton-Raphson iteration */
-
-		/*  strain limit failure ... */
-		if (axial_strain_warning > 0 && ExitCode == 0)   ExitCode = 182;
-		/*  strain limit _and_ buckling failure ... */
-		if (axial_strain_warning > 0 && ExitCode == 181) ExitCode = 183;
 
  		if ( geom )	compute_reaction_forces( R,F,K, D, DoF, r );
 
@@ -608,7 +597,7 @@ For compilation/installation, see README.txt.
  *		 " and re-run the analysis. \n");
  */
 
-		write_internal_forces ( fp, infcpath, lc, nL, title, dx, xyz,
+		write_internal_forces ( OUT_file, fp, infcpath, lc, nL, title, dx, xyz,
 					Q, nN, nE, L, N1, N2, 
 					Ax, Asy, Asz, Jx, Iy, Iz, E, G, p,
 					d, gX[lc], gY[lc], gZ[lc],
@@ -634,7 +623,8 @@ For compilation/installation, see README.txt.
 			exagg_static, D3_flag, anlyz, dx, scale );
 	}
 
-	if ( nM > 0 ) { /* carry out modal analysis */
+
+	if (nM > 0) { /* carry out modal analysis */
 
 		if(verbose & anlyz) fprintf(stdout,"\n\n Modal Analysis ...\n");
 
@@ -700,9 +690,9 @@ For compilation/installation, see README.txt.
 				V, exagg_modal, D3_flag, pan, scale );
 	}
 
-	if ( nC > 0 ) {  /* matrix condensation of stiffness and mass */
+	if ( nC > 0 ) {		/* matrix condensation of stiffness and mass */
 
-		if ( verbose && anlyz ) fprintf(stdout,"\n Matrix Condensation ...\n");
+		if ( verbose ) fprintf(stdout,"\n Matrix Condensation ...\n");
 
 		if(Cdof > nM && Cmethod == 3){
 			fprintf(stderr,"  Cdof > nM ... Cdof = %d  nM = %d \n",
@@ -718,22 +708,22 @@ For compilation/installation, see README.txt.
 
 		if ( m[1] > 0 && nM > 0 )	Cfreq = f[m[1]];
 
-		if ( Cmethod == 1 && anlyz ) {	/* static condensation only	*/
-			static_condensation(K, DoF, c, Cdof, Kc, 0 );
+		if ( Cmethod == 1 ) {	/* static condensation only	*/
+			condense(K, DoF, c, Cdof, Kc, 0 );
 			if ( verbose )
 				fprintf(stdout,"   static condensation of K complete\n");
 		}
-		if ( Cmethod == 2 && anlyz ) {  /* dynamic condensation  */
-			paz_condensation(M, K, DoF, c, Cdof, Mc,Kc, Cfreq, 0 );
+		if ( Cmethod == 2 ) {
+			guyan(M, K, DoF, c, Cdof, Mc,Kc, Cfreq, 0 );
 			if ( verbose ) {
-				fprintf(stdout,"   Paz condensation of K and M complete");
+				fprintf(stdout,"   Guyan condensation of K and M complete");
 				fprintf(stdout," ... dynamics matched at %f Hz.\n", Cfreq );
 			}
 		}
-		if ( Cmethod == 3 && nM > 0 && anlyz ) {
-			modal_condensation(M,K, DoF, r, c, Cdof, Mc,Kc, V,f, m, 0 );
+		if ( Cmethod == 3 && nM > 0 ) {
+			dyn_conden(M,K, DoF, r, c, Cdof, Mc,Kc, V,f, m, 0 );
 			if ( verbose ) 
-				fprintf(stdout,"   modal condensation of K and M complete\n");
+				fprintf(stdout,"   dynamic condensation of K and M complete\n");
 		}
 		save_dmatrix("Kc", Kc, 1,Cdof, 1,Cdof, 0, "w" );
 		save_dmatrix("Mc", Mc, 1,Cdof, 1,Cdof, 0, "w" );
@@ -766,5 +756,5 @@ For compilation/installation, see README.txt.
 	}
 	color(0);
 
-	return( ExitCode );
+	return(0);
 }
