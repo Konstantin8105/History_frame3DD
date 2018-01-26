@@ -15,7 +15,7 @@
 #include <math.h>
 #include <time.h>
 #define NR_END 1
-#define FREE_ARG char*
+#define FREE_ARG void * //char*
 
 void NRerror(char error_text[])
 /* Numerical Recipes standard error handler */
@@ -376,15 +376,15 @@ double ***D3dmatrix(int nrl, int nrh, int ncl, int nch, int nzl, int nzh)
 
 void free_Cvector(fcomplex *v, int nl, int nh)
 {
-	free((char*) (v+nl));
+	free((void*)/*(char*)*/ (v+nl));
 }
 
 void free_Cmatrix(fcomplex **m, int nrl, int nrh, int ncl, int nch)
 {
 	int	i;
 
-	for(i=nrh;i>=nrl;i--) free((char*) (m[i]+ncl));
-	free((char*) (m+nrl));
+	for(i=nrh;i>=nrl;i--) free((void*)/*(char*)*/ (m[i]+ncl));
+	free((void*)/*(char*)*/ (m+nrl));
 }
 
 void free_D3matrix(float ***m, int nrl, int nrh, int ncl, int nch, int nzl, int nzh)
@@ -393,7 +393,7 @@ void free_D3matrix(float ***m, int nrl, int nrh, int ncl, int nch, int nzl, int 
 
 	for(i=nrh;i>=nrl;i--) {
 		for(j=nch;j>=ncl;j--) {
-			free((char*) (m[i][j]+nzl));
+			free((void*)/*(char*)*/ (m[i][j]+nzl));
 		}
 	}
 }
@@ -404,7 +404,7 @@ void free_D3dmatrix(double ***m, int nrl, int nrh, int ncl, int nch, int nzl, in
 
 	for(i=nrh;i>=nrl;i--) {
 		for(j=nch;j>=ncl;j--) {
-			free((char*) (m[i][j]+nzl));
+			free((void*)/*(char*)*/ (m[i][j]+nzl));
 		}
 	}
 }
