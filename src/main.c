@@ -192,13 +192,16 @@ For compilation/installation, see README.txt.
 
 	char	extn[16];	// Input Data file name extension
 
-
+/*
 	parse_options ( argc, argv, IN_file, OUT_file, 
 			&shear_flag, &geom_flag, &anlyz_flag, &exagg_flag, 
 			&D3_flag, 
 			&lump_flag, &modal_flag, &tol_flag, &shift_flag, 
 			&pan_flag, &write_matrix, &axial_sign, &condense_flag,
 			&verbose, &debug);
+*/
+	strcpy(IN_file,"exA.3dd\0");
+	strcpy(OUT_file,"exA.3dd.out\0");
 
 	if ( verbose ) { /*  display program name, version and license type */
 		textColor('w','b','b','x');
@@ -225,21 +228,33 @@ For compilation/installation, see README.txt.
 		exit(11);
 	}
 
+	printf("strat filetype");
 	filetype = get_file_ext( IN_file, extn ); /* .CSV or .FMM or other? */
+	printf("ed of filetype\n");
 
 //	temp_file_location("frame3dd.3dd",strippedInputFile,FRAME3DD_PATHMAX);
 	output_path("frame3dd.3dd",strippedInputFile,FRAME3DD_PATHMAX,NULL);
 
+	printf("C001\n");
+	
 	parse_input(fp, strippedInputFile);	/* strip comments from input data */
+	printf("C002\n");
 	fclose(fp);
+	printf("C003\n");
 
 	if ((fp = fopen (strippedInputFile, "r")) == NULL) { /* open stripped input file */
+	printf("C004\n");
 		sprintf(errMsg,"\n ERROR: cannot open stripped input data file '%s'\n", strippedInputFile);
 		errorMsg(errMsg); 
 		exit(13);
 	}
 
+	printf("before getline");
+
 	frame3dd_getline(fp, title, MAXL);
+
+	printf("title = %s\n",title);
+
 	if ( verbose ) {	/*  display analysis title */
 		textColor('w','g','b','x');
 		fprintf(stdout,"\n");

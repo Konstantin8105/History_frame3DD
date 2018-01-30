@@ -96,7 +96,7 @@ void assemble_K(
 ){
 	double	**k;		/* element stiffness matrix in global coord */
 	int	**ind,		/* member-structure DoF index table	*/
-		res=0,
+		/* res=0, */
 		i, j, ii, jj, l, ll;
 	char	stiffness_fn[FILENMAX];
 
@@ -127,7 +127,7 @@ void assemble_K(
                            E[i],G[i], p[i], -Q[i][1], shear);
 
 		if (debug) {
-			res = sprintf(stiffness_fn,"k_%03d",i);
+			/* res = sprintf(stiffness_fn,"k_%03d",i); */
 			save_dmatrix(stiffness_fn,k,1,12,1,12,0, "w");
 		}
 
@@ -687,7 +687,7 @@ void assemble_M(
 		**dmatrix();
 	int     **ind,	  /* member-structure DoF index table     */
 		**imatrix(),
-		res=0, 
+		/* res=0,  */
 		i, j, ii, jj, l, ll;
 	char	mass_fn[FILENMAX];
 
@@ -714,7 +714,7 @@ void assemble_M(
 				Ax[i], Jx[i], Iy[i], Iz[i], p[i], d[i], EMs[i]);
 
 		if (debug) {
-			res = sprintf(mass_fn,"m_%03d",i);
+			/* res = sprintf(mass_fn,"m_%03d",i); */
 			save_dmatrix(mass_fn, m, 1,12, 1,12, 0, "w");
 		}
 
