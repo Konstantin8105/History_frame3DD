@@ -213,6 +213,13 @@ For compilation/installation, see README.txt.
 
 	/* open the input data file */
 
+	strcpy(IN_file ,"exB.3dd\0");
+	strcpy(OUT_file,"exB.3dd.out\0");
+	
+	printf("IN_file  = %s\n",IN_file );
+	printf("OUT_file = %s\n",OUT_file);
+
+
 	if ((fp = fopen (IN_file, "r")) == NULL) {printf("%s:%d\n",__FILE__,__LINE__); /* open input data file */
 		sprintf (errMsg,"\n ERROR: cannot open input data file '%s'\n", IN_file);
 		errorMsg(errMsg); 
@@ -227,7 +234,8 @@ For compilation/installation, see README.txt.
 
 	filetype = get_file_ext( IN_file, extn ); /* .CSV or .FMM or other? */
 
-//	temp_file_location("frame3dd.3dd",strippedInputFile,FRAME3DD_PATHMAX);
+	(void)(strippedInputFile);
+	temp_file_location("frame3dd.3dd",strippedInputFile,FRAME3DD_PATHMAX);
 	output_path("frame3dd.3dd",strippedInputFile,FRAME3DD_PATHMAX,NULL);
 
 	parse_input(fp, strippedInputFile);	/* strip comments from input data */
@@ -240,13 +248,19 @@ For compilation/installation, see README.txt.
 	}
 
 	frame3dd_getline(fp, title, MAXL);
-	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);	/*  display analysis title */
+
+	/* printf("\n\ntitle = %s\n\n",title); */
+
+	if ( verbose ) {
+		printf("%s:%d\n",__FILE__,__LINE__);	/*  display analysis title */
 		textColor('w','g','b','x');
 		fprintf(stdout,"\n");
 		fprintf(stdout," ** %s ** \n", title );
 		color(0);
 		fprintf(stdout,"\n");
 	}
+
+	/* nN = 5; */
 
 	sfrv=fscanf(fp, "%d", &nN );		/* number of nodes	*/
 	if (sfrv != 1)	sferr("nN value for number of nodes");
@@ -260,16 +274,34 @@ For compilation/installation, see README.txt.
 	xyz = (vec3 *)malloc(sizeof(vec3)*(1+nN));	/* node coordinates */
 
 	read_node_data ( fp, nN, xyz, rj );
+	/* xyz[0].x = 0; xyz[0].y = 0; xyz[0].z = 0; rj[0] = 0.0; */
+	/* xyz[1].x = -1200; xyz[1].y = -900; xyz[1].z = 0; rj[1] = 0.0; */
+	/* xyz[2].x =  1200; xyz[2].y = -900; xyz[2].z = 0; rj[2] = 0.0; */
+	/* xyz[3].x =  1200; xyz[3].y =    0; xyz[3].z = 0; rj[3] = 0.0; */
+	/* xyz[4].x = -1200; xyz[4].y =    0; xyz[4].z = 0; rj[4] = 0.0; */
+
 	if ( verbose )	printf(" ... complete\n");
 
 	DoF = 6*nN;		/* total number of degrees of freedom	*/
 
 	q   = ivector(1,DoF);	/* allocate memory for reaction data ... */
 	r   = ivector(1,DoF);	/* allocate memory for reaction data ... */
+
 	read_reaction_data ( fp, DoF, nN, &nR, q, r, &sumR, verbose );
+	/* nR = 4; */
+	/* {int j = 2; r[6*j-5] = 1; r[6*j-4] = 1; r[6*j-3] = 1; r[6*j-2] = 1; r[6*j-1] = 1; r[6*j-0] = 1;} */
+	/* {int j = 3; r[6*j-5] = 1; r[6*j-4] = 1; r[6*j-3] = 1; r[6*j-2] = 1; r[6*j-1] = 1; r[6*j-0] = 1;} */
+	/* {int j = 4; r[6*j-5] = 1; r[6*j-4] = 1; r[6*j-3] = 1; r[6*j-2] = 1; r[6*j-1] = 1; r[6*j-0] = 1;} */
+	/* {int j = 5; r[6*j-5] = 1; r[6*j-4] = 1; r[6*j-3] = 1; r[6*j-2] = 1; r[6*j-1] = 1; r[6*j-0] = 1;} */
+	/* *sumR = 24; */
+	/* q[0] = 1; q[1] = 1; q[2] = 1; q[3] = 1; */
+	
 	if ( verbose )	fprintf(stdout," ... complete\n");
 
 	sfrv=fscanf(fp, "%d", &nE );	/* number of frame elements	*/
+
+	/* nE = 4; */
+
 	if (sfrv != 1)	sferr("nE value for number of frame elements");
 	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);	/* display nE */
 		fprintf(stdout," number of frame elements");
@@ -301,6 +333,8 @@ For compilation/installation, see README.txt.
 
 	read_frame_element_data( fp, nN, nE, xyz,rj, L, Le, N1, N2,
 					Ax, Asy, Asz, Jx, Iy, Iz, E, G, p, d );
+
+	
 	if ( verbose) 	fprintf(stdout," ... complete\n");
 
 

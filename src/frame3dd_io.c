@@ -75,9 +75,9 @@ void parse_options (
 	int *debug
 ){printf("%s:%d\n",__FILE__,__LINE__);
 
-	char	option;
-	char	errMsg[MAXL];
-	int	sfrv=0;		/* *scanf return value	*/
+	/* char	option; */
+	/* char	errMsg[MAXL]; */
+	/* int	sfrv=0;		#<{(| *scanf return value	|)}># */
 
 	/* default values */
 
@@ -90,149 +90,159 @@ void parse_options (
 	*axial_sign = 1;
 	*debug = 0; *verbose = 1;
 
-	strcpy(  IN_file , "\0" );
-	strcpy( OUT_file , "\0" );
+	/* strcpy(  IN_file , "\0" ); */
+	/* strcpy( OUT_file , "\0" ); */
 
 	/* set up file names for the the input data and the output data */
 
-	switch ( argc ) {printf("%s:%d\n",__FILE__,__LINE__);
-	 case 1: {printf("%s:%d\n",__FILE__,__LINE__);
- 		fprintf(stderr,"\n Frame3DD version: %s\n", VERSION);
-		fprintf(stderr," Analysis of 2D and 3D structural frames with elastic and geometric stiffness.\n");
-		fprintf(stderr," http://frame3dd.sourceforge.net\n\n");
-		fprintf (stderr," Please enter the  input data file name: ");
+	/* switch ( argc ) {printf("%s:%d\n",__FILE__,__LINE__); */
+	/*  case 1: {printf("%s:%d\n",__FILE__,__LINE__); */
+ 	/* 	fprintf(stderr,"\n Frame3DD version: %s\n", VERSION); */
+	/* 	fprintf(stderr," Analysis of 2D and 3D structural frames with elastic and geometric stiffness.\n"); */
+	/* 	fprintf(stderr," http://frame3dd.sourceforge.net\n\n"); */
+	/* 	fprintf (stderr," Please enter the  input data file name: "); */
+				 /*
 		sfrv=scanf("%s", IN_file );
 		if (sfrv != 1) sferr("IN_file");
 		fprintf (stderr," Please enter the output data file name: ");
 		sfrv=scanf("%s", OUT_file );
 		if (sfrv != 1) sferr("OUT_file");
-		return;
-	 }
-	 case 3: {printf("%s:%d\n",__FILE__,__LINE__);
-		if ( argv[1][0] != '-' ) {printf("%s:%d\n",__FILE__,__LINE__);
-			strcpy(  IN_file , argv[1] );
-			strcpy( OUT_file , argv[2] );
-			return;
-		}
-	 }
-	}
+		*/
+
+	/* char d[20]  = "exA.3dd\0"; */
+	/* IN_file = d; */
+	/* #<{(| IN_file  = "exA.3dd\0"; |)}># */
+	/* printf("IN = %s\n",IN_file); */
+	/* OUT_file = "1.out\0"; */
+
+		/* return; */
+	/*  } */
+	/*  case 3: {printf("%s:%d\n",__FILE__,__LINE__); */
+	/* 	if ( argv[1][0] != '-' ) {printf("%s:%d\n",__FILE__,__LINE__); */
+	/* 		strcpy(  IN_file , argv[1] ); */
+	/* 		strcpy( OUT_file , argv[2] ); */
+	/* 		return; */
+	/* 	} */
+	/*  } */
+	/* } */
 
 	// remaining unused flags ... b j k n u y 
+    /*  */
+	/* while ((option=getopt(argc,argv, "i:o:acdhqvwxzs:e:f:g:l:m:p:r:t:")) != -1){printf("%s:%d\n",__FILE__,__LINE__); */
+	/* 	switch ( option ) {printf("%s:%d\n",__FILE__,__LINE__); */
+	/* 		case 'i':		#<{(| input data file name |)}># */
+	/* 			strcpy(IN_file,optarg); */
+	/* 			break; */
+	/* 		case 'o':		#<{(| output data file name |)}># */
+	/* 			strcpy(OUT_file,optarg); */
+	/* 			break; */
+	/* 		case 'h':		#<{(| help	|)}># */
+	/* 			display_help(); */
+	/* 			exit(0); */
+	/* 		case 'v':		#<{(| version |)}># */
+	/* 			display_version(); */
+	/* 			exit(0); */
+	/* 		case 'a':		#<{(| about |)}># */
+	/* 			display_version_about(); */
+	/* 			exit(0); */
+	/* 		case 'q':		#<{(| quiet |)}># */
+	/* 			*verbose = 0; */
+	/* 			break; */
+	/* 		case 'c':		#<{(| data check only |)}># */
+	/* 			*anlyz_flag = 0; */
+	/* 			break; */
+	/* 		case 'd':		#<{(| debug |)}># */
+	/* 			*debug = 1; */
+	/* 			break; */
+	/* 		case 'w':		#<{(| write stiffness and mass |)}># */
+	/* 			*write_matrix = 1; */
+	/* 			break; */
+	/* 		case 'x':		#<{(| write sign of axial forces |)}># */
+	/* 			*axial_sign = 0; */
+	/* 			break; */
+	/* 		case 's':		#<{(| shear deformation |)}># */
+	/* 			if (strcmp(optarg,"Off")==0) */
+	/* 				*shear_flag = 0; */
+	/* 			else if (strcmp(optarg,"On")==0) */
+	/* 				*shear_flag = 1; */
+	/* 			else {printf("%s:%d\n",__FILE__,__LINE__); */
+	/* 			 errorMsg("\n frame3dd command-line error: argument to -s option should be either On or Off\n"); */
+	/* 			 exit(3); */
+	/* 			} */
+	/* 			break; */
+	/* 		case 'g':		#<{(| geometric stiffness |)}># */
+	/* 			if (strcmp(optarg,"Off")==0) */
+	/* 				*geom_flag = 0; */
+	/* 			else if (strcmp(optarg,"On")==0) */
+	/* 				*geom_flag = 1; */
+	/* 			else {printf("%s:%d\n",__FILE__,__LINE__); */
+	/* 			 errorMsg("\n frame3dd command-line error: argument to -g option should be either On or Off\n"); */
+	/* 			 exit(4); */
+	/* 			} */
+	/* 			break; */
+	/* 		case 'e':		#<{(| static mesh exagg. factor |)}># */
+	/* 			*exagg_flag = atof(optarg); */
+	/* 			break; */
+	/* 		case 'z':		#<{(| force 3D plotting |)}># */
+	/* 			*D3_flag = 1; */
+	/* 			break; */
+	/* 		case 'l':		#<{(| lumped or consistent mass |)}># */
+	/* 			if (strcmp(optarg,"Off")==0) */
+	/* 				*lump_flag = 0; */
+	/* 			else if (strcmp(optarg,"On")==0) */
+	/* 				*lump_flag = 1; */
+	/* 			else {printf("%s:%d\n",__FILE__,__LINE__); */
+	/* 			 errorMsg("\n frame3dd command-line error: argument to -l option should be either On or Off\n"); */
+	/* 			 exit(5); */
+	/* 			} */
+	/* 			break; */
+	/* 		case 'm':		#<{(| modal analysis method |)}># */
+	/* 			if (strcmp(optarg,"J")==0) */
+	/* 				*modal_flag = 1; */
+	/* 			else if (strcmp(optarg,"S")==0) */
+	/* 				*modal_flag = 2; */
+	/* 			else {printf("%s:%d\n",__FILE__,__LINE__); */
+	/* 			 errorMsg("\n frame3dd command-line error: argument to -m option should be either J or S\n"); */
+	/* 			 exit(6); */
+	/* 			} */
+	/* 			break; */
+	/* 		case 't':		#<{(| modal analysis tolerence |)}># */
+	/* 			*tol_flag = atof(optarg); */
+	/* 			if (*tol_flag == 0.0) {printf("%s:%d\n",__FILE__,__LINE__); */
+	/* 			 errorMsg("\n frame3dd command-line error: argument to -t option should be a number.\n"); */
+	/* 			 exit(7); */
+	/* 			} */
+	/* 			break; */
+	/* 		case 'f':		#<{(| modal analysis freq. shift |)}># */
+	/* 			*shift_flag = atof(optarg); */
+	/* 			if (*shift_flag == 0.0) {printf("%s:%d\n",__FILE__,__LINE__); */
+	/* 			 errorMsg("\n frame3dd command-line error: argument to -f option should be a number.\n"); */
+	/* 			 exit(8); */
+	/* 			} */
+	/* 			break; */
+	/* 		case 'p':		#<{(| pan rate	|)}># */
+	/* 			*pan_flag = atof(optarg); */
+	/* 			if (*pan_flag < 0.0) {printf("%s:%d\n",__FILE__,__LINE__); */
+	/* 			 errorMsg("\n frame3dd command-line error: argument to -p option should be a positive number.\n"); */
+	/* 			 exit(9); */
+	/* 			} */
+	/* 			break; */
+	/* 		case 'r':		#<{(| matrix condensation method |)}># */
+	/* 			*condense_flag = atoi(optarg); */
+	/* 			if (*condense_flag < 0 || *condense_flag > 3) {printf("%s:%d\n",__FILE__,__LINE__); */
+	/* 			 errorMsg("\n frame3dd command-line error: argument to -r option should be 0, 1, or 2.\n"); */
+	/* 			 exit(10); */
+	/* 			} */
+	/* 			break; */
+	/* 		case '?': */
+	/* 			sprintf(errMsg,"  Missing argument or Unknown option: -%c\n\n", option ); */
+	/* 			errorMsg(errMsg); */
+	/* 			display_help(); */
+	/* 			exit(2); */
+	/* 	} */
+	/* } */
 
-	while ((option=getopt(argc,argv, "i:o:acdhqvwxzs:e:f:g:l:m:p:r:t:")) != -1){printf("%s:%d\n",__FILE__,__LINE__);
-		switch ( option ) {printf("%s:%d\n",__FILE__,__LINE__);
-			case 'i':		/* input data file name */
-				strcpy(IN_file,optarg);
-				break;
-			case 'o':		/* output data file name */
-				strcpy(OUT_file,optarg);
-				break;
-			case 'h':		/* help	*/
-				display_help();
-				exit(0);
-			case 'v':		/* version */
-				display_version();
-				exit(0);
-			case 'a':		/* about */
-				display_version_about();
-				exit(0);
-			case 'q':		/* quiet */
-				*verbose = 0;
-				break;
-			case 'c':		/* data check only */
-				*anlyz_flag = 0;
-				break;
-			case 'd':		/* debug */
-				*debug = 1;
-				break;
-			case 'w':		/* write stiffness and mass */
-				*write_matrix = 1;
-				break;
-			case 'x':		/* write sign of axial forces */
-				*axial_sign = 0;
-				break;
-			case 's':		/* shear deformation */
-				if (strcmp(optarg,"Off")==0)
-					*shear_flag = 0;
-				else if (strcmp(optarg,"On")==0)
-					*shear_flag = 1;
-				else {printf("%s:%d\n",__FILE__,__LINE__);
-				 errorMsg("\n frame3dd command-line error: argument to -s option should be either On or Off\n");
-				 exit(3);
-				}
-				break;
-			case 'g':		/* geometric stiffness */
-				if (strcmp(optarg,"Off")==0)
-					*geom_flag = 0;
-				else if (strcmp(optarg,"On")==0)
-					*geom_flag = 1;
-				else {printf("%s:%d\n",__FILE__,__LINE__);
-				 errorMsg("\n frame3dd command-line error: argument to -g option should be either On or Off\n");
-				 exit(4);
-				}
-				break;
-			case 'e':		/* static mesh exagg. factor */
-				*exagg_flag = atof(optarg);
-				break;
-			case 'z':		/* force 3D plotting */
-				*D3_flag = 1;
-				break;
-			case 'l':		/* lumped or consistent mass */
-				if (strcmp(optarg,"Off")==0)
-					*lump_flag = 0;
-				else if (strcmp(optarg,"On")==0)
-					*lump_flag = 1;
-				else {printf("%s:%d\n",__FILE__,__LINE__);
-				 errorMsg("\n frame3dd command-line error: argument to -l option should be either On or Off\n");
-				 exit(5);
-				}
-				break;
-			case 'm':		/* modal analysis method */
-				if (strcmp(optarg,"J")==0)
-					*modal_flag = 1;
-				else if (strcmp(optarg,"S")==0)
-					*modal_flag = 2;
-				else {printf("%s:%d\n",__FILE__,__LINE__);
-				 errorMsg("\n frame3dd command-line error: argument to -m option should be either J or S\n");
-				 exit(6);
-				}
-				break;
-			case 't':		/* modal analysis tolerence */
-				*tol_flag = atof(optarg);
-				if (*tol_flag == 0.0) {printf("%s:%d\n",__FILE__,__LINE__);
-				 errorMsg("\n frame3dd command-line error: argument to -t option should be a number.\n");
-				 exit(7);
-				}
-				break;
-			case 'f':		/* modal analysis freq. shift */
-				*shift_flag = atof(optarg);
-				if (*shift_flag == 0.0) {printf("%s:%d\n",__FILE__,__LINE__);
-				 errorMsg("\n frame3dd command-line error: argument to -f option should be a number.\n");
-				 exit(8);
-				}
-				break;
-			case 'p':		/* pan rate	*/
-				*pan_flag = atof(optarg);
-				if (*pan_flag < 0.0) {printf("%s:%d\n",__FILE__,__LINE__);
-				 errorMsg("\n frame3dd command-line error: argument to -p option should be a positive number.\n");
-				 exit(9);
-				}
-				break;
-			case 'r':		/* matrix condensation method */
-				*condense_flag = atoi(optarg);
-				if (*condense_flag < 0 || *condense_flag > 3) {printf("%s:%d\n",__FILE__,__LINE__);
-				 errorMsg("\n frame3dd command-line error: argument to -r option should be 0, 1, or 2.\n");
-				 exit(10);
-				}
-				break;
-			case '?':
-				sprintf(errMsg,"  Missing argument or Unknown option: -%c\n\n", option );
-				errorMsg(errMsg);
-				display_help();
-				exit(2);
-		}
-	}
-
+	/*
 	if ( strcmp(IN_file,"\0") == 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf (stderr," Please enter the  input data file name: ");
 		sfrv=scanf("%s", IN_file );
@@ -241,6 +251,14 @@ void parse_options (
 		sfrv=scanf("%s", OUT_file );
 		if (sfrv != 1) sferr("OUT_file");
 	}
+	*/
+    /*  */
+	/* IN_file  = "./exA.3dd"; */
+	/* OUT_file = "./1.out"; */
+    /*  */
+    /*  */
+
+    /*  */
 	if ( strcmp(IN_file,"\0") != 0 && strcmp(OUT_file,"\0") == 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		strcpy( OUT_file, IN_file );
 		strcat( OUT_file, ".out" );
@@ -359,10 +377,14 @@ void read_node_data( FILE *fp, int nN, vec3 *xyz, float *r )
 		sfrv=0;		/* *scanf return value	*/
 	char	errMsg[MAXL];
 
-	for (i=1;i<=nN;i++) {printf("%s:%d\n",__FILE__,__LINE__);		/* read node coordinates	*/
+	for (i=1;i<=nN;i++) {
+		printf("%s:%d\n",__FILE__,__LINE__);		/* read node coordinates	*/
 		sfrv=fscanf(fp, "%d", &j );
 		if (sfrv != 1) sferr("node number in node data");
-		if ( j <= 0 || j > nN ) {printf("%s:%d\n",__FILE__,__LINE__);
+		printf("%s:%d\n",__FILE__,__LINE__);		/* read node coordinates	*/
+		printf("j = %d\n",j);
+		if ( j <= 0 || j > nN ) {
+			printf("%s:%d\n",__FILE__,__LINE__);
 		    sprintf(errMsg,"\nERROR: in node coordinate data, node number out of range\n(node number %d is <= 0 or > %d)\n", j, nN);
 		    errorMsg(errMsg);
 		    exit(41);
@@ -396,6 +418,10 @@ void read_frame_element_data (
 	epn = ivector(1,nN);
 
 	for (n=1;n<=nN;n++)	epn[n] = 0;
+
+// #e n1 n2 Ax    Asy     Asz     Jxx     Iyy     Izz       E      G  roll density
+
+
 
 	for (i=1;i<=nE;i++) {printf("%s:%d\n",__FILE__,__LINE__);		/* read frame element properties */
 		sfrv=fscanf(fp, "%d", &b );
@@ -715,7 +741,9 @@ void parse_input(FILE *fp, const char *tpath){printf("%s:%d\n",__FILE__,__LINE__
 	do {printf("%s:%d\n",__FILE__,__LINE__);
 		getline_no_comment(fp, line, 256);
 		fprintf(fpc, "%s \n", line );
-	} while ( line[0] != '_' && line[0] != EOF );
+		printf("line = %s\n",line);
+		printf("line = %d\n",line[0]);
+	} while ( line[0] != '_' && (int)(line[0]) != EOF && (int)(line[0]) != 255 );
 
 	fclose(fpc);
 
@@ -777,6 +805,7 @@ void read_reaction_data (
 		dots(stdout,21);
 		fprintf(stdout," nR =%4d ", *nR );
 	}
+	printf("\n\nDoF = %d\n\n",DoF);
 	if ( *nR < 0 || *nR > DoF/6 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stderr," number of nodes with reactions ");
 		dots(stderr,21);
