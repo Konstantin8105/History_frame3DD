@@ -263,7 +263,10 @@ For compilation/installation, see README.txt.
 		fprintf(stdout,"\n");
 	}
 
+	printf("START OF nN \n");
 	sfrv=fscanf(fp, "%d", &nN );		/* number of nodes	*/
+	printf("nN = %d\n",nN);
+	printf("END   OF nN \n");
 	if (sfrv != 1)	sferr("nN value for number of nodes");
 	if ( verbose ) {	/* display nN */
 		fprintf(stdout," number of nodes ");
