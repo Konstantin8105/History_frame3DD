@@ -71,7 +71,7 @@ void subspace(
 	int *iter,	/**< sub-space iterations		*/
 	int *ok,	/**< Sturm check result			*/
 	int verbose
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double	**Kb, **Mb, **Xb, **Qb, *d, *u, *v, km, km_old,
 		error=1.0, w_old = 0.0;
 
@@ -81,7 +81,7 @@ void subspace(
 		*idx;
 	char	errMsg[MAXL];
 	
-	if ( m > n ) {
+	if ( m > n ) {printf("%s:%d\n",__FILE__,__LINE__);
 		sprintf(errMsg,"subspace: Number of eigen-values must be less than the problem dimension.\n Desired number of eigen-values=%d \n Dimension of the problem= %d \n", m, n);
 		errorMsg(errMsg);
 		exit(32);
@@ -96,7 +96,7 @@ void subspace(
 	Qb = dmatrix(1,m,1,m);
 	idx = ivector(1,m);
 
-	for (i=1; i<=m; i++) {
+	for (i=1; i<=m; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 	 idx[i] = 0;
 	 for (j=i; j<=m; j++)
 	  Kb[i][j]=Kb[j][i] = Mb[i][j]=Mb[j][i] = Qb[i][j]=Qb[j][i] = 0.0;
@@ -112,8 +112,8 @@ void subspace(
 
 	ldl_dcmp ( K, n, u, v, v, 1, 0, ok );	/* use L D L' decomp  */
 
-	for (i=1; i<=n; i++) {
-		if ( M[i][i] <= 0.0 )  {
+	for (i=1; i<=n; i++) {printf("%s:%d\n",__FILE__,__LINE__);
+		if ( M[i][i] <= 0.0 )  {printf("%s:%d\n",__FILE__,__LINE__);
 		 sprintf(errMsg," subspace: M[%d][%d] = %e \n", i,i, M[i][i] );
 		 errorMsg(errMsg);
 		 exit(32);
@@ -122,19 +122,19 @@ void subspace(
 	}
 
 	km_old = 0.0;
-	for (k=1; k<=m; k++) {
+	for (k=1; k<=m; k++) {printf("%s:%d\n",__FILE__,__LINE__);
 	    km = d[1];
-	    for (i=1; i<=n; i++) {
-		if ( km_old <= d[i] && d[i] <= km ) {
+	    for (i=1; i<=n; i++) {printf("%s:%d\n",__FILE__,__LINE__);
+		if ( km_old <= d[i] && d[i] <= km ) {printf("%s:%d\n",__FILE__,__LINE__);
 			*ok = 1;
 			for (j=1; j<=k-1; j++) if ( i == idx[j] ) *ok = 0;
-			if (*ok) {
+			if (*ok) {printf("%s:%d\n",__FILE__,__LINE__);
 				km = d[i];
 				idx[k] = i;
 			}
 		}
 	    }
-	    if ( idx[k] == 0 ) {
+	    if ( idx[k] == 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 			i = idx[1];
 			for ( j=1; j<k; j++ ) if ( i < idx[j] ) i = idx[j]; 
 			idx[k] = i+1;
@@ -144,11 +144,11 @@ void subspace(
 	}
 
 //	for (k=1; k<=m; k++) printf(" idx[%d] = %d \n", k, idx[k] ); /*debug*/
-	for (k=1; k<=m; k++) {
+	for (k=1; k<=m; k++) {printf("%s:%d\n",__FILE__,__LINE__);
 		V[idx[k]][k] = 1.0;
 		*ok = idx[k] % 6; 
 //		printf(" idx[%3d] = %3d   ok = %d \n", k , idx[k], *ok); /*debug*/
-		switch ( *ok ) {
+		switch ( *ok ) {printf("%s:%d\n",__FILE__,__LINE__);
 			case 1:	i =  1;	j =  2;	break;
 			case 2:	i = -1;	j =  1;	break;
 			case 3:	i = -1;	j = -2;	break;
@@ -162,16 +162,16 @@ void subspace(
 /*	for (i=1; i<=n; i++)	V[i][1] = M[i][i];	// diag(M)	*/
 	
 	*iter = 0;
-	do { 					/* Begin sub-space iterations */
+	do {printf("%s:%d\n",__FILE__,__LINE__); 					/* Begin sub-space iterations */
 
-		for (k=1; k<=m; k++) {		/* K Xb = M V	(12.10) */
+		for (k=1; k<=m; k++) {printf("%s:%d\n",__FILE__,__LINE__);		/* K Xb = M V	(12.10) */
 			prodABj ( M, V, v, n, k );
 			ldl_dcmp ( K, n, u, v, d, 0, 1, ok ); /* LDL bk-sub */
 
                                         /* improve the solution iteratively */
 			if (disp) fprintf(stdout,"  RMS matrix error:");
 			error = *ok = 1;
-			do {
+			do {printf("%s:%d\n",__FILE__,__LINE__);
 				ldl_mprove ( K, n, u, v, d, &error, ok );
 				if (disp) fprintf(stdout,"%9.2e", error );
 			} while ( *ok );
@@ -189,7 +189,7 @@ void subspace(
 
 		eigsort ( w, V, n, m );
 
-		if (w[modes] == 0.0) {
+		if (w[modes] == 0.0) {printf("%s:%d\n",__FILE__,__LINE__);
 		 sprintf(errMsg," subspace: Zero frequency found! \n w[%d] = %e \n", modes, w[modes] );
 		 errorMsg(errMsg);
 		 exit(32);
@@ -201,7 +201,7 @@ void subspace(
 						*iter, modes, w[modes], error );
 		w_old = w[modes];
 
-		if ( *iter > 1000 ) {
+		if ( *iter > 1000 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		    sprintf(errMsg,"  subspace: Iteration limit exceeded\n rel. error = %e > %e\n", error, tol );
 		    errorMsg(errMsg);
 		    exit(32);
@@ -210,12 +210,12 @@ void subspace(
 	} while	( error > tol );		/* End   sub-space iterations */
 			
 
-	for (k=1; k<=m; k++) {			/* shift eigen-values */
+	for (k=1; k<=m; k++) {printf("%s:%d\n",__FILE__,__LINE__);			/* shift eigen-values */
 	    if ( w[k] > shift )	w[k] = w[k] - shift;
 	    else		w[k] = shift - w[k];
 	}
 
-	if ( verbose ) {
+	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stdout," %4d sub-space iterations,   error: %.4e \n", *iter, error );
 		for ( k=1; k<=m; k++ ) 
 			fprintf(stdout,"  mode: %2d\tDoF: %5d\t %9.4lf Hz\n",
@@ -248,7 +248,7 @@ void subspace(
  Bathe, Finite Element Procecures in Engineering Analysis, Prentice Hall, 1982
 -----------------------------------------------------------------------------*/
 void jacobi ( double **K, double **M, double *E, double **V, int n )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int	iter,
 		d,i,j,k;
 	double	Kii, Kjj, Kij, Mii, Mjj, Mij, Vki, Vkj, 
@@ -260,20 +260,20 @@ void jacobi ( double **K, double **M, double *E, double **V, int n )
 	for (i=1; i<=n; i++) for (j=i+1; j<=n; j++)	V[i][j] = V[j][i] = 0.0;
 	for (d=1; d<=n; d++)	V[d][d] = 1.0;
 
-	for (iter=1; iter<=2*n; iter++) {	/* Begin Sweep Iteration */
+	for (iter=1; iter<=2*n; iter++) {printf("%s:%d\n",__FILE__,__LINE__);	/* Begin Sweep Iteration */
 
 	  tol = pow(0.01,(2*iter));
 	  tol = 0.0;
 
-	  for (d=1; d<=(n-1); d++) {	/* sweep along upper diagonals */
-	    for (i=1; i<=(n-d); i++) {		/* row */
+	  for (d=1; d<=(n-1); d++) {printf("%s:%d\n",__FILE__,__LINE__);	/* sweep along upper diagonals */
+	    for (i=1; i<=(n-d); i++) {printf("%s:%d\n",__FILE__,__LINE__);		/* row */
 	      j = i+d;				/* column */
 
 	      Kij = K[i][j];
 	      Mij = M[i][j];
 
 	      if ( Kij*Kij/(K[i][i]*K[j][j]) > tol ||
-		   Mij*Mij/(M[i][i]*M[j][j]) > tol ) {      /* do a rotation */
+		   Mij*Mij/(M[i][i]*M[j][j]) > tol ) {printf("%s:%d\n",__FILE__,__LINE__);      /* do a rotation */
 
 		Kii = K[i][i] * Mij     -   Kij     * M[i][i];
 		Kjj = K[j][j] * Mij     -   Kij     * M[j][j];
@@ -288,7 +288,7 @@ void jacobi ( double **K, double **M, double *E, double **V, int n )
 		rotate(K,n,alpha,beta,i,j);		/* make Kij zero */
 		rotate(M,n,alpha,beta,i,j);		/* make Mij zero */
 
-		for (k=1; k<=n; k++) {	/*  update eigen-vectors  V = V * P */
+		for (k=1; k<=n; k++) {printf("%s:%d\n",__FILE__,__LINE__);	/*  update eigen-vectors  V = V * P */
 			Vki = V[k][i];
 			Vkj = V[k][j];
 			V[k][i] = Vki + beta *Vkj;
@@ -299,7 +299,7 @@ void jacobi ( double **K, double **M, double *E, double **V, int n )
 	  }					/* diagonal */
 	}					/* End Sweep Iteration */
 
-	for (j=1; j<=n; j++) {			/* scale eigen-vectors */
+	for (j=1; j<=n; j++) {printf("%s:%d\n",__FILE__,__LINE__);			/* scale eigen-vectors */
 		Mjj = sqrt(M[j][j]);
 		for (i=1; i<=n; i++)	V[i][j] /= Mjj;
 	}
@@ -317,7 +317,7 @@ ROTATE - rotate an n by n symmetric matrix A such that A[i][j] = A[j][i] = 0
      Since P is sparse, this matrix multiplcation can be done efficiently.  
 -----------------------------------------------------------------------------*/
 void rotate ( double **A, int n, double alpha, double beta, int i, int j )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	double	Aii, Ajj, Aij,			/* elements of A	*/
 		*Ai, *Aj;		/* i-th and j-th rows of A */
 	int	k;
@@ -326,7 +326,7 @@ void rotate ( double **A, int n, double alpha, double beta, int i, int j )
 	Ai = dvector(1,n);
 	Aj = dvector(1,n);
 
-	for (k=1; k<=n; k++) {
+	for (k=1; k<=n; k++) {printf("%s:%d\n",__FILE__,__LINE__);
 		Ai[k] = A[i][k];
 		Aj[k] = A[j][k];
 	}
@@ -338,8 +338,8 @@ void rotate ( double **A, int n, double alpha, double beta, int i, int j )
 	A[i][i] = Aii + 2*beta *Aij + beta *beta *Ajj ;
 	A[j][j] = Ajj + 2*alpha*Aij + alpha*alpha*Aii ;
 
-	for (k=1; k<=n; k++) {
-		if ( k != i && k != j ) {
+	for (k=1; k<=n; k++) {printf("%s:%d\n",__FILE__,__LINE__);
+		if ( k != i && k != j ) {printf("%s:%d\n",__FILE__,__LINE__);
 			A[k][i] = A[i][k] = Ai[k] + beta *Aj[k];
 			A[k][j] = A[j][k] = Aj[k] + alpha*Ai[k];
 		}
@@ -365,7 +365,7 @@ void stodola (
 	int n, int m, /* DoF and number of required modes	*/
 	double *w, double **V, double tol, double shift, int *iter, int *ok, 
 	int verbose
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double	**D,		/* the dynamics matrix, D = K^(-1) M	*/
 		d_min = 0.0,	/* minimum value of D[i][i]		*/
 		d_max = 0.0,	/* maximum value of D[i][i]		*/
@@ -396,13 +396,13 @@ void stodola (
 	for (i=1;i<=n;i++) for (j=i;j<=n;j++) K[i][j] += shift*M[i][j];
 
 	ldl_dcmp ( K, n, u, v, v, 1, 0, ok );	/* use L D L' decomp	*/
-	if (*ok<0) {
+	if (*ok<0) {printf("%s:%d\n",__FILE__,__LINE__);
 		sprintf(errMsg," Make sure that all six rigid body translation are restrained.\n");
 		errorMsg(errMsg);
 		exit(32); 
 	}
 						/* calculate  D = K^(-1) M */
-	for (j=1; j<=n; j++) {
+	for (j=1; j<=n; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 		for (i=1; i<=n; i++)	v[i] = M[i][j];
 
 		ldl_dcmp ( K, n, u, v, d, 0, 1, ok );	/* L D L' bk-sub */
@@ -410,7 +410,7 @@ void stodola (
 					/* improve the solution iteratively */
 		if (disp) fprintf(stdout,"  RMS matrix error:");
 		error = *ok = 1;
-		do {
+		do {printf("%s:%d\n",__FILE__,__LINE__);
 			ldl_mprove ( K, n, u, v, d, &error, ok );
 			if (disp) fprintf(stdout,"%9.2e", error );
 		} while ( *ok );
@@ -428,12 +428,12 @@ void stodola (
 	d_old = d_min = d_max;
 	for (i=1; i<=n; i++) if ( D[i][i] < d_min )	d_min = D[i][i];
 
-	for (k=1; k<=m; k++) {			/* loop over lowest m modes */
+	for (k=1; k<=m; k++) {printf("%s:%d\n",__FILE__,__LINE__);			/* loop over lowest m modes */
 
 	    d_max = d_min;
-	    for (i=1; i<=n; i++) {			/* initial guess */
+	    for (i=1; i<=n; i++) {printf("%s:%d\n",__FILE__,__LINE__);			/* initial guess */
 		u[i] = 0.0;
-		if ( D[i][i] < d_old && D[i][i] > d_max ) {
+		if ( D[i][i] < d_old && D[i][i] > d_max ) {printf("%s:%d\n",__FILE__,__LINE__);
 			d_max = D[i][i];
 			i_ex = i;
 		}
@@ -444,7 +444,7 @@ void stodola (
 	    vMv = xtAy ( u, M, u, n, d );		/* mass-normalize */
 	    for (i=1; i<=n; i++)	u[i] /= sqrt ( vMv ); 
 
-	    for (j=1; j<k; j++) {			/* purge lower modes */
+	    for (j=1; j<k; j++) {printf("%s:%d\n",__FILE__,__LINE__);			/* purge lower modes */
 		for (i=1; i<=n; i++)	v[i] = V[i][j];
 		c[j] = xtAy ( v, M, u, n, d );
 	    }
@@ -455,8 +455,8 @@ void stodola (
 	    for (i=1; i<=n; i++)	u[i] /= sqrt ( vMv ); 
 	    RQ  = xtAy ( u, K, u, n, d );		/* Raleigh quotient */
 
-	    do {					/* iterate	*/
-		for (i=1; i<=n; i++) {			/* v = D u	*/
+	    do {printf("%s:%d\n",__FILE__,__LINE__);					/* iterate	*/
+		for (i=1; i<=n; i++) {printf("%s:%d\n",__FILE__,__LINE__);			/* v = D u	*/
 			v[i] = 0.0;
 			for (j=1; j<=n; j++)	v[i] += D[i][j] * u[j];
 		}
@@ -464,7 +464,7 @@ void stodola (
 		vMv = xtAy ( v, M, v, n, d );		/* mass-normalize */
 		for (i=1; i<=n; i++)	v[i] /= sqrt ( vMv ); 
 
-		for (j=1; j<k; j++) {			/* purge lower modes */
+		for (j=1; j<k; j++) {printf("%s:%d\n",__FILE__,__LINE__);			/* purge lower modes */
 			for (i=1; i<=n; i++)	u[i] = V[i][j];
 			c[j] = xtAy ( u, M, v, n, d );
 		}
@@ -478,7 +478,7 @@ void stodola (
 		RQ = xtAy ( u, K, u, n, d );		/* Raleigh quotient */
 		(*iter)++;
 
-		if ( *iter > 1000 ) {
+		if ( *iter > 1000 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		    sprintf(errMsg,"  stodola: Iteration limit exceeded\n  rel. error = %e > %e\n", (fabs(RQ - RQold)/RQ) , tol );
 		    errorMsg(errMsg);
 		    exit(32);
@@ -522,20 +522,20 @@ the columns of v correspondingly.  The method is straight insertion.
 Adapted from Numerical Recipes in C, Ch 11
 ------------------------------------------------------------------------------*/
 void eigsort ( double *e, double **v, int n, int m )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int	k,j,i;
 	double   p=0;
 
-	for (i=1;i<m;i++) {
+	for (i=1;i<m;i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		k=i;
 		p=e[k];
 		for (j=i+1;j<=m;j++)
 			if ( e[j] <= p )
 				p=e[k=j];	/* find smallest eigen-value */
-		if (k != i) {
+		if (k != i) {printf("%s:%d\n",__FILE__,__LINE__);
 			e[k]=e[i];		/* swap eigen-values	*/
 			e[i]=p;
-			for (j=1;j<=n;j++) {	/* swap eigen-vectors	*/
+			for (j=1;j<=n;j++) {printf("%s:%d\n",__FILE__,__LINE__);	/* swap eigen-vectors	*/
 				p=v[j][i];
 				v[j][i]=v[j][k];
 				v[j][k]=p;
@@ -563,7 +563,7 @@ STURM  -  Determine the number of eigenvalues, w, of the general eigen-problem
 int sturm(
 	double **K, double **M, int n, int m,
 	double shift, double ws, int verbose
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double	ws_shift, *d;
 	int	ok=0, i,j, modes;
 	
@@ -579,7 +579,7 @@ int sturm(
 	if ( verbose )
 	 fprintf(stdout,"  There are %d modes below %f Hz.", -ok, sqrt(ws)/(2.0*PI) );
 
-	if ( -ok > modes ) {
+	if ( -ok > modes ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stderr," ... %d modes were not found.\n", -ok-modes );
 		fprintf(stderr," Try increasing the number of modes in \n");
 		fprintf(stderr," order to get the missing modes below %f Hz.\n",
@@ -599,11 +599,11 @@ int sturm(
 CHECK_NON_NEGATIVE -  checks that a value is non-negative
 -----------------------------------------------------------------------------*/
 void check_non_negative( double x, int i)
-{
-	if ( x <= 1.0e-100 )  {
+{printf("%s:%d\n",__FILE__,__LINE__);
+	if ( x <= 1.0e-100 )  {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stderr," value %e is less than or equal to zero ", x );
 		fprintf(stderr," i = %d \n", i );
-	} else {
+	} else {printf("%s:%d\n",__FILE__,__LINE__);
 		return;
 	}
 }

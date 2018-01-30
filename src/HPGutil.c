@@ -33,7 +33,7 @@
  * http://en.wikipedia.org/wiki/ANSI_escape_code
  */
 void color ( const int colorCode )	/*  change the screen color      */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 #if ANSI_SYS
 	fprintf (stderr, "\033[%02dm", colorCode );
 	(void) fflush(stderr);
@@ -51,7 +51,7 @@ void color ( const int colorCode )	/*  change the screen color      */
  * http://en.wikipedia.org/wiki/ANSI_escape_code
  */
 void textColor ( const char tColor, const char bColor, const char nbf, const char uline )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 #if ANSI_SYS
 	fprintf (stderr, "\033[%02d",0);// Control Sequence Introducer & reset		
 	// background colors
@@ -92,7 +92,7 @@ void textColor ( const char tColor, const char bColor, const char nbf, const cha
  * ERRORMSG -  write a diagnostic error message in color
  */
 void errorMsg ( const char *errString )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	fprintf(stderr,"\n\n");
 	fflush(stderr);
 #if ANSI_SYS
@@ -112,7 +112,7 @@ void errorMsg ( const char *errString )
  * OPENFILE  -  open a file or print a diagnostic error message 
  */
 FILE *openFile ( const char *path, const char *fileName, const char *mode, char *usage )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	FILE	*fp;
 	char	pathToFile[MAXL], errMsg[MAXL];
 
@@ -122,8 +122,8 @@ FILE *openFile ( const char *path, const char *fileName, const char *mode, char 
 #if DEBUG
 	printf(" openFile ... file name = %s\n", pathToFile);
 #endif
-	if ((fp=fopen(pathToFile,mode)) == NULL ) { // open file 
-		switch (*mode) {
+	if ((fp=fopen(pathToFile,mode)) == NULL ) {printf("%s:%d\n",__FILE__,__LINE__); // open file 
+		switch (*mode) {printf("%s:%d\n",__FILE__,__LINE__);
 		   sprintf(errMsg," openFile: ");
 		   case 'w':
 			sprintf(errMsg,"%s%s\n  usage: %s","cannot write to file: ", pathToFile, usage );
@@ -139,7 +139,7 @@ FILE *openFile ( const char *path, const char *fileName, const char *mode, char 
 		}
 		errorMsg ( errMsg );
 		exit(1);
-	} else {
+	} else {printf("%s:%d\n",__FILE__,__LINE__);
 #if DEBUG
 	printf(" openFile ... fp = %x\n", fp);
 #endif
@@ -153,7 +153,7 @@ FILE *openFile ( const char *path, const char *fileName, const char *mode, char 
  * SCANLINE -  scan through a line until a 'a' is reached, like getline() 3feb94
  */
 int scanLine ( FILE *fp, int lim, char *s, const char a ) 
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
        	int     c=0,  i=-1;
 
 	while (--lim > 0 && (c=getc(fp)) != EOF && c != a)  s[++i] = c;
@@ -166,7 +166,7 @@ int scanLine ( FILE *fp, int lim, char *s, const char a )
  * SCANLABEL -  scan through a line until a '"' is reached, like getline()
  */
 int scanLabel ( FILE *fp, int lim, char *s, const char a )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
        	int     c=0,  i=-1;
 
 	while (--lim > 0 && (c=getc(fp)) != EOF && c != a)
@@ -183,7 +183,7 @@ int scanLabel ( FILE *fp, int lim, char *s, const char a )
  * skipping over "head_lines" lines of header information 
  */
 int scanFile ( FILE *fp, int head_lines, int start_chnl, int stop_chnl )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int	points = 0,
 		i, chn, ok=1;	
 	float	data_value;
@@ -193,8 +193,8 @@ int scanFile ( FILE *fp, int head_lines, int start_chnl, int stop_chnl )
 	for (i=1;i<=head_lines;i++)     while (( ch = getc(fp)) != '\n') ;
 
 	// count the number of lines of data
-	do {
-		for ( chn=start_chnl; chn <= stop_chnl; chn++ ) {
+	do {printf("%s:%d\n",__FILE__,__LINE__);
+		for ( chn=start_chnl; chn <= stop_chnl; chn++ ) {printf("%s:%d\n",__FILE__,__LINE__);
 			ok=fscanf(fp,"%f",&data_value);
 			if (ok==1)      ++points;
 		}
@@ -215,7 +215,7 @@ int scanFile ( FILE *fp, int head_lines, int start_chnl, int stop_chnl )
  * from K&R	       3feb94
  */  
 int getLine ( FILE *fp, int lim, char *s )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int     c=0, i=0;
 
 	while (--lim > 0 && (c=getc(fp)) != EOF && c != '\n' )
@@ -233,7 +233,7 @@ int getLine ( FILE *fp, int lim, char *s )
  * The corresponding time is returned in "time_t" format.
  */  
 time_t getTime( char s[], int y, int m, int d, int hr, int mn, int sc, int os )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
         char   temp[16];
 
 	struct tm t_tm;
@@ -263,7 +263,7 @@ time_t getTime( char s[], int y, int m, int d, int hr, int mn, int sc, int os )
  * SHOW_PROGRESS  -   show the progress of long computations
  */
 void showProgress ( int i, int n, int count )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int	k,j, line_length = 55;
 	float	percent_done;
 
@@ -286,7 +286,7 @@ void showProgress ( int i, int n, int count )
  * SFERR  -  Display error message upon an erronous *scanf operation
  */
 void sferr ( char s[] )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	char    errMsg[MAXL];
 
 	sprintf(errMsg,">> Input Data file error while reading %s\n",s);

@@ -33,7 +33,11 @@ int	nJ=0,	/* number of joints				*/
 void main(argc, argv)
 int	 argc;
 char    *argv[];
-{ 
+{printf("%s:%d\n",__FILE__,__LINE__); 
+	////////////////
+	// DEBUG INFO //
+	printf("main\n");
+	////////////////
  char	ans;
  int	j, m;		/* a joint number, a member number	*/
  float	x, y, z, r;	/* joint coordinates 			*/  
@@ -44,20 +48,20 @@ char    *argv[];
  float	E,G;		/* member material property constants	*/
 
 
- if (argc <= 2) {
-    if ((fpout = fopen (argv[1], "w")) == 0) {
+ if (argc <= 2) {printf("%s:%d\n",__FILE__,__LINE__);
+    if ((fpout = fopen (argv[1], "w")) == 0) {printf("%s:%d\n",__FILE__,__LINE__);
 	  fprintf (stderr," error: cannot open file '%s'\n", argv[2]);
 	  fprintf (stderr," usage: preframe output_file\n");
 	  exit(0);
      }
- } else {
+ } else {printf("%s:%d\n",__FILE__,__LINE__);
 	  fprintf (stderr," usage: preframe output_file\n"); 
 	  exit(0);
  }
 
 /********* Start Execution  **********/
 
- do {	 
+ do {printf("%s:%d\n",__FILE__,__LINE__);	 
 	printf("How many  joints do you have?  ");	scanf ("%d",&nJ);
 	printf("How many members do you have?  ");	scanf ("%d",&nM);
 	printf("\n\t%5d joints   %5d members ", nJ, nM );
@@ -69,8 +73,8 @@ char    *argv[];
 /***** Joint Data  *****/
 
  printf("\nFor each joint, enter its x,y,z coordinates and its radius, r .\n");
- for (j=1; j<=nJ ; j++) {
-    do { 
+ for (j=1; j<=nJ ; j++) {printf("%s:%d\n",__FILE__,__LINE__);
+    do {printf("%s:%d\n",__FILE__,__LINE__); 
 	printf("\n For joint %i, enter coordinate values ... \n", j );
 	printf("   input x[%i] : ",j);	scanf ("%f",&x);
 	printf("   input y[%i] : ",j);	scanf ("%f",&y);
@@ -89,8 +93,8 @@ char    *argv[];
  printf("\nFor each member, enter its geometric and material properties.\n");
  printf("Members connect joints 'J1' to 'J2' \n");
  fprintf(fpout,"\n");
- for (m=1; m<=nM ; m++) {
-   do {
+ for (m=1; m<=nM ; m++) {printf("%s:%d\n",__FILE__,__LINE__);
+   do {printf("%s:%d\n",__FILE__,__LINE__);
     printf("\n For member %i, enter values for the ... \n", m);
     printf("   joint number               J1[%i] : ",m); scanf ("%d", &J1);
     printf("   joint number               J2[%i] : ",m); scanf ("%d", &J2);
@@ -130,8 +134,12 @@ char    *argv[];
 
 /***** Mesh, shear, analysis, and annotation file name *****/
 void file_names(void)
-{ float exagg		     /*exagg mesh deformations*/;
+{printf("%s:%d\n",__FILE__,__LINE__); float exagg		     /*exagg mesh deformations*/;
 
+	////////////////
+	// DEBUG INFO //
+	printf("file_names\n");
+	////////////////
  int	shear,			/*include shear deformations*/
 	anlyz;			/*1:stiff analysis 0:data check only*/
 
@@ -139,33 +147,33 @@ void file_names(void)
 	mesh_file[MAXLINE],		  /* mesh file name */
 	ann_file[MAXLINE];
 
- do {
+ do {printf("%s:%d\n",__FILE__,__LINE__);
 	printf("\nEnter \"1\" to include shear deformation.  ");
 	printf(" Otherwise, enter \"0\" : ");
 	scanf ("%i",&shear);}
  while (shear !=1 && shear != 0);
 
- do {
+ do {printf("%s:%d\n",__FILE__,__LINE__);
 	printf("\nWhat is the mesh file name?  ");	scanf ("%s", mesh_file);
 	printf(" The file name you input is %s", mesh_file );
 	printf("  ... Is this okay? (y/n) ");	scanf ("%s", &ans);
  } while (ans != 'y');
 
- do {
+ do {printf("%s:%d\n",__FILE__,__LINE__);
 	printf("\nWhat is the annotation file name?  ");
 	scanf ("%s", ann_file);
 	printf(" The file name you input is %s", ann_file);
 	printf("  ... Is this okay? (y/n) ");	scanf ("%s", &ans);
  } while (ans != 'y');
 
- do {
+ do {printf("%s:%d\n",__FILE__,__LINE__);
 	printf("\nBy what factor do you want to exaggerate mesh deformation? ");
 	scanf ("%f", &exagg);
 	printf(" The number you input is %f ", exagg );
 	printf("  ... Is this okay? (y/n) ");	scanf ("%s", &ans);
  } while ( ans != 'y');
 
- do {
+ do {printf("%s:%d\n",__FILE__,__LINE__);
 	printf("\nEnter \"1\" to include stiffness analysis. ");
 	printf("Enter \"0\" to data check only. ");	scanf ("%i",&anlyz);
  } while ( anlyz != 1 && anlyz != 0 );
@@ -177,13 +185,17 @@ void file_names(void)
 
 /***** Loaded Joints *****/
 void joint_loads(void)
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
+	////////////////
+	// DEBUG INFO //
+	printf("joint_loads\n");
+	////////////////
  char	ans;
  int	j, f;
  float	Fx, Fy, Fz, Mxx, Myy, Mzz; /*loaded joints*/
 
  printf ("\nYour frame may have concentrated loads at the joints.\n");
- do {
+ do {printf("%s:%d\n",__FILE__,__LINE__);
 	printf (" Input the number of joint loads : "); scanf ("%d",&nF);
 	printf(" %5d joint loads", nF );
 	printf("\t\t\t\t     ... Is this okay? (y/n) ");
@@ -192,8 +204,8 @@ void joint_loads(void)
 
  fprintf(fpout,"\n%d\n", nF);
 
- for ( f=1; f<=nF ; f++ ) {
-    do {
+ for ( f=1; f<=nF ; f++ ) {printf("%s:%d\n",__FILE__,__LINE__);
+    do {printf("%s:%d\n",__FILE__,__LINE__);
 	printf(" Enter the joint number for joint load number %d : ", f);
 	scanf("%d", &j);
 	printf(" For joint %d, input values for the ... \n", j);
@@ -223,13 +235,17 @@ void joint_loads(void)
 
 /***** Uniform Distributed Loads *****/
 void distrb_loads(void)
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
+	////////////////
+	// DEBUG INFO //
+	printf("distrb_loads\n");
+	////////////////
  int	m, f;
  char	ans;
  float	Wx, Wy, Wz;    /*Uniform Distributed loads*/
 
  printf ("\nYour frame may have distributed loads on the members.\n");
- do {
+ do {printf("%s:%d\n",__FILE__,__LINE__);
 	printf (" Input the number of distributed loads : "); scanf ("%d",&nW);
 	printf(" %5d distributed loads", nW );
 	printf("\t\t\t     ... Is this okay? (y/n) ");
@@ -238,8 +254,8 @@ void distrb_loads(void)
 
  fprintf(fpout,"\n%d\n", nW); 
 
- for (f=1; f<=nW ; f++) {
-    do {
+ for (f=1; f<=nW ; f++) {printf("%s:%d\n",__FILE__,__LINE__);
+    do {printf("%s:%d\n",__FILE__,__LINE__);
 	printf(" Enter the member number for distributed load number %d : ", f);
 	scanf("%d", &m);
 	printf(" For member %d, input values for the ... \n", m);
@@ -262,7 +278,11 @@ void distrb_loads(void)
 
 /***** Concentrated Point Loads On Members *****/
 void concen_loads (void)
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
+	////////////////
+	// DEBUG INFO //
+	printf("concen_loads\n");
+	////////////////
  char	ans;
  int	m=0,f=0;
  float	Px, Py, Pz, x;  
@@ -272,7 +292,7 @@ void concen_loads (void)
  printf(" (Px, Py, Pz),\n");
  printf("and a distance (x) along the member from joint J1.\n");
 
- do {
+ do {printf("%s:%d\n",__FILE__,__LINE__);
 	printf (" Input the number of point loads : "); scanf ("%d",&nP);
 	printf(" %5d concentrated point loads", nP );
 	printf("\t\t\t     ... Is this okay? (y/n) ");
@@ -281,8 +301,8 @@ void concen_loads (void)
 
  fprintf(fpout,"\n%d\n", nP); 
 
- for (f=1; f<=nP ; f++) {
-    do {
+ for (f=1; f<=nP ; f++) {printf("%s:%d\n",__FILE__,__LINE__);
+    do {printf("%s:%d\n",__FILE__,__LINE__);
 	printf(" Enter the member number for concentrated load number %d : ",f);
 	scanf("%d", &m);
 	printf(" For member %d, input values for the ... \n", m);
@@ -306,7 +326,11 @@ void concen_loads (void)
 
 /***** Temperature Changes *****/
 void temperature(void)
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
+	////////////////
+	// DEBUG INFO //
+	printf("temperature\n");
+	////////////////
  int	m, t;
  char	ans;
  float	a, hy, hz,			/* member properties	*/
@@ -318,7 +342,7 @@ void temperature(void)
  printf("member depths (hy,hz) and surface temperatures ");
  printf("(Ty+, Ty-, Tz+, Tz-).\n");
 
- do {
+ do {printf("%s:%d\n",__FILE__,__LINE__);
 	printf (" Input the number of members with temperature changes : ");
 	scanf ("%d", &nT);
 	printf(" %5d members with temperature changes", nT );
@@ -327,8 +351,8 @@ void temperature(void)
 
  fprintf(fpout,"\n%d\n", nT); 
 
- for ( t=1; t <= nT; t++ ) {
-    do {
+ for ( t=1; t <= nT; t++ ) {printf("%s:%d\n",__FILE__,__LINE__);
+    do {printf("%s:%d\n",__FILE__,__LINE__);
 	printf(" Enter the member number for temperature change %d : ",t);
 	scanf("%d", &m);
 	printf(" For member %d, input values for the ... \n", m);
@@ -359,14 +383,18 @@ void temperature(void)
 
 /***** Reactions *****/
 void reactions(void)
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
+	////////////////
+	// DEBUG INFO //
+	printf("reactions\n");
+	////////////////
  int	j, r;
  char	ans;
  int	Rx, Ry, Rz, Rxx, Ryy, Rzz; /*Restrained Joints */
 
  printf("\nYou must specify enough reactions ");
  printf("to restrain your frame in all six directions.\n");
- do {
+ do {printf("%s:%d\n",__FILE__,__LINE__);
 	printf (" Input the number of restrained joints : "); scanf ("%d",&nR);
 	printf(" %5d restrained joints", nR );
 	printf("\t\t\t     ... Is this okay? (y/n) ");	scanf("%s", &ans);
@@ -374,8 +402,8 @@ void reactions(void)
 
  fprintf(fpout,"\n%d\n", nR);
 
- for (r=1; r <= nR; r++) {
-   do {  
+ for (r=1; r <= nR; r++) {printf("%s:%d\n",__FILE__,__LINE__);
+   do {printf("%s:%d\n",__FILE__,__LINE__);  
 	printf(" Enter the joint number for reaction number %d : ", r);
 	scanf ("%d", &j);
 	printf(" For joint %d, input values for the ... \n", j);
@@ -404,14 +432,18 @@ void reactions(void)
 
 /***** Prescribed Displacements *****/
 void displacements(void)
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
+	////////////////
+	// DEBUG INFO //
+	printf("displacements\n");
+	////////////////
  int	j, d;
  char	ans;
  float	Dx, Dy, Dz, Dxx, Dyy, Dzz; 
 
  printf("\nYou may prescribe a displacement ");
  printf("at any coordinate that has a reaction.\n");
- do {
+ do {printf("%s:%d\n",__FILE__,__LINE__);
 	printf (" Input the number of joints with prescribed displacements : ");
 	scanf ("%d",&nD);
 	printf(" %5d prescribed displacements", nD );
@@ -420,8 +452,8 @@ void displacements(void)
 
  fprintf(fpout,"\n%d\n", nD);
 
- for (d=1; d <= nD; d++) {
-   do {  
+ for (d=1; d <= nD; d++) {printf("%s:%d\n",__FILE__,__LINE__);
+   do {printf("%s:%d\n",__FILE__,__LINE__);  
 	printf(" Enter the joint number for displacement number %d : ", d);
 	scanf ("%d", &j);
 	printf(" For joint %d, input values for the ... \n", j);
@@ -445,16 +477,20 @@ void displacements(void)
 
 /***** DYNAMIC INERTIA DATA INPUT *****/
 void modal_files(void)
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
+	////////////////
+	// DEBUG INFO //
+	printf("modal_files\n");
+	////////////////
  char	ans, mode_file[MAXLINE];
  int	lump, modes;
  float	tol;
 
  printf("\nYou may compute dynamic vibrational properties for your frame.\n");
- do {
+ do {printf("%s:%d\n",__FILE__,__LINE__);
      printf(" Input the number of desired modes         : ");
      scanf("%d", &modes);
-     do {
+     do {printf("%s:%d\n",__FILE__,__LINE__);
 	printf(" Input 0 for consistent mass, 1 for lumped : ");
 	scanf("%d",&lump);
      } while( lump!=0 && lump!=1 );
@@ -473,15 +509,19 @@ void modal_files(void)
 
 /***** Member Density and extra masses, not including self masses *****/
 void inertia(void)
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
+	////////////////
+	// DEBUG INFO //
+	printf("inertia\n");
+	////////////////
  int	m;
  char	ans;
  float	d, Ms;
 	 
  printf(" You must specify density and lumped masses for each member\n");
  
- for (m=1; m<=nM ; m++) {
-    do {
+ for (m=1; m<=nM ; m++) {printf("%s:%d\n",__FILE__,__LINE__);
+    do {printf("%s:%d\n",__FILE__,__LINE__);
 	printf(" For member %i, input values for the ...\n", m);
 	printf("   mass density,  d[%i] : ",m);	scanf ("%f",&d );
 	printf("   lumped mass,  Ms[%i] : ",m);	scanf ("%f",&Ms );

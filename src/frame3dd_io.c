@@ -73,7 +73,7 @@ void parse_options (
 	int *condense_flag,
 	int *verbose,
 	int *debug
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 
 	char	option;
 	char	errMsg[MAXL];
@@ -95,8 +95,8 @@ void parse_options (
 
 	/* set up file names for the the input data and the output data */
 
-	switch ( argc ) {
-	 case 1: {
+	switch ( argc ) {printf("%s:%d\n",__FILE__,__LINE__);
+	 case 1: {printf("%s:%d\n",__FILE__,__LINE__);
  		fprintf(stderr,"\n Frame3DD version: %s\n", VERSION);
 		fprintf(stderr," Analysis of 2D and 3D structural frames with elastic and geometric stiffness.\n");
 		fprintf(stderr," http://frame3dd.sourceforge.net\n\n");
@@ -108,8 +108,8 @@ void parse_options (
 		if (sfrv != 1) sferr("OUT_file");
 		return;
 	 }
-	 case 3: {
-		if ( argv[1][0] != '-' ) {
+	 case 3: {printf("%s:%d\n",__FILE__,__LINE__);
+		if ( argv[1][0] != '-' ) {printf("%s:%d\n",__FILE__,__LINE__);
 			strcpy(  IN_file , argv[1] );
 			strcpy( OUT_file , argv[2] );
 			return;
@@ -119,8 +119,8 @@ void parse_options (
 
 	// remaining unused flags ... b j k n u y 
 
-	while ((option=getopt(argc,argv, "i:o:acdhqvwxzs:e:f:g:l:m:p:r:t:")) != -1){
-		switch ( option ) {
+	while ((option=getopt(argc,argv, "i:o:acdhqvwxzs:e:f:g:l:m:p:r:t:")) != -1){printf("%s:%d\n",__FILE__,__LINE__);
+		switch ( option ) {printf("%s:%d\n",__FILE__,__LINE__);
 			case 'i':		/* input data file name */
 				strcpy(IN_file,optarg);
 				break;
@@ -156,7 +156,7 @@ void parse_options (
 					*shear_flag = 0;
 				else if (strcmp(optarg,"On")==0)
 					*shear_flag = 1;
-				else {
+				else {printf("%s:%d\n",__FILE__,__LINE__);
 				 errorMsg("\n frame3dd command-line error: argument to -s option should be either On or Off\n");
 				 exit(3);
 				}
@@ -166,7 +166,7 @@ void parse_options (
 					*geom_flag = 0;
 				else if (strcmp(optarg,"On")==0)
 					*geom_flag = 1;
-				else {
+				else {printf("%s:%d\n",__FILE__,__LINE__);
 				 errorMsg("\n frame3dd command-line error: argument to -g option should be either On or Off\n");
 				 exit(4);
 				}
@@ -182,7 +182,7 @@ void parse_options (
 					*lump_flag = 0;
 				else if (strcmp(optarg,"On")==0)
 					*lump_flag = 1;
-				else {
+				else {printf("%s:%d\n",__FILE__,__LINE__);
 				 errorMsg("\n frame3dd command-line error: argument to -l option should be either On or Off\n");
 				 exit(5);
 				}
@@ -192,35 +192,35 @@ void parse_options (
 					*modal_flag = 1;
 				else if (strcmp(optarg,"S")==0)
 					*modal_flag = 2;
-				else {
+				else {printf("%s:%d\n",__FILE__,__LINE__);
 				 errorMsg("\n frame3dd command-line error: argument to -m option should be either J or S\n");
 				 exit(6);
 				}
 				break;
 			case 't':		/* modal analysis tolerence */
 				*tol_flag = atof(optarg);
-				if (*tol_flag == 0.0) {
+				if (*tol_flag == 0.0) {printf("%s:%d\n",__FILE__,__LINE__);
 				 errorMsg("\n frame3dd command-line error: argument to -t option should be a number.\n");
 				 exit(7);
 				}
 				break;
 			case 'f':		/* modal analysis freq. shift */
 				*shift_flag = atof(optarg);
-				if (*shift_flag == 0.0) {
+				if (*shift_flag == 0.0) {printf("%s:%d\n",__FILE__,__LINE__);
 				 errorMsg("\n frame3dd command-line error: argument to -f option should be a number.\n");
 				 exit(8);
 				}
 				break;
 			case 'p':		/* pan rate	*/
 				*pan_flag = atof(optarg);
-				if (*pan_flag < 0.0) {
+				if (*pan_flag < 0.0) {printf("%s:%d\n",__FILE__,__LINE__);
 				 errorMsg("\n frame3dd command-line error: argument to -p option should be a positive number.\n");
 				 exit(9);
 				}
 				break;
 			case 'r':		/* matrix condensation method */
 				*condense_flag = atoi(optarg);
-				if (*condense_flag < 0 || *condense_flag > 3) {
+				if (*condense_flag < 0 || *condense_flag > 3) {printf("%s:%d\n",__FILE__,__LINE__);
 				 errorMsg("\n frame3dd command-line error: argument to -r option should be 0, 1, or 2.\n");
 				 exit(10);
 				}
@@ -233,7 +233,7 @@ void parse_options (
 		}
 	}
 
-	if ( strcmp(IN_file,"\0") == 0 ) {
+	if ( strcmp(IN_file,"\0") == 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf (stderr," Please enter the  input data file name: ");
 		sfrv=scanf("%s", IN_file );
 		if (sfrv != 1) sferr("IN_file");
@@ -241,7 +241,7 @@ void parse_options (
 		sfrv=scanf("%s", OUT_file );
 		if (sfrv != 1) sferr("OUT_file");
 	}
-	if ( strcmp(IN_file,"\0") != 0 && strcmp(OUT_file,"\0") == 0 ) {
+	if ( strcmp(IN_file,"\0") != 0 && strcmp(OUT_file,"\0") == 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		strcpy( OUT_file, IN_file );
 		strcat( OUT_file, ".out" );
 	}
@@ -253,7 +253,7 @@ void parse_options (
  * 04 Mar 2009, 22 Sep 2009
  */
 void display_help()
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
  textColor('g','x','x','x');
  fprintf(stderr,"\n Frame3DD version: %s\n", VERSION);
  fprintf(stderr," Analysis of 2D and 3D structural frames with elastic and geometric stiffness.\n");
@@ -302,7 +302,7 @@ void display_help()
  * 04 Mar 2009
  */
 void display_usage()
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
  fprintf(stderr,"\n Frame3DD version: %s\n", VERSION);
  fprintf(stderr," Analysis of 2D and 3D structural frames with elastic and geometric stiffness.\n");
  fprintf(stderr," http://frame3dd.sourceforge.net\n\n");
@@ -319,7 +319,7 @@ void display_usage()
  * 04 Mar 2009
  */
 void display_version()
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
  fprintf(stderr,"\n Frame3DD version: %s\n", VERSION);
  fprintf(stderr," Analysis of 2D and 3D structural frames with elastic and geometric stiffness.\n");
  fprintf(stderr," http://frame3dd.sourceforge.net\n\n");
@@ -337,7 +337,7 @@ void display_version()
  * Contributed by Barry Sanford, barry.sanford@trimjoist.com
  */
 void display_version_about()
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
  fprintf(stderr," Frame3DD version: %s\n", VERSION);
  fprintf(stderr," Analysis of 2D and 3D structural frames with elastic and geometric stiffness\n");
  fprintf(stderr," http://frame3dd.sourceforge.net\n");
@@ -354,15 +354,15 @@ void display_version_about()
  * 04 Jan 2009
  */
 void read_node_data( FILE *fp, int nN, vec3 *xyz, float *r )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int	i, j,
 		sfrv=0;		/* *scanf return value	*/
 	char	errMsg[MAXL];
 
-	for (i=1;i<=nN;i++) {		/* read node coordinates	*/
+	for (i=1;i<=nN;i++) {printf("%s:%d\n",__FILE__,__LINE__);		/* read node coordinates	*/
 		sfrv=fscanf(fp, "%d", &j );
 		if (sfrv != 1) sferr("node number in node data");
-		if ( j <= 0 || j > nN ) {
+		if ( j <= 0 || j > nN ) {printf("%s:%d\n",__FILE__,__LINE__);
 		    sprintf(errMsg,"\nERROR: in node coordinate data, node number out of range\n(node number %d is <= 0 or > %d)\n", j, nN);
 		    errorMsg(errMsg);
 		    exit(41);
@@ -387,7 +387,7 @@ void read_frame_element_data (
 	int *N1, int *N2,
 	float *Ax, float *Asy, float *Asz,
 	float *Jx, float *Iy, float *Iz, float *E, float *G, float *p, float *d
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	int	n1, n2, i, n, b;
 	int	*epn, epn0=0;	/* vector of elements per node */
 	int	sfrv=0;		/* *scanf return value */
@@ -397,10 +397,10 @@ void read_frame_element_data (
 
 	for (n=1;n<=nN;n++)	epn[n] = 0;
 
-	for (i=1;i<=nE;i++) {		/* read frame element properties */
+	for (i=1;i<=nE;i++) {printf("%s:%d\n",__FILE__,__LINE__);		/* read frame element properties */
 		sfrv=fscanf(fp, "%d", &b );
 		if (sfrv != 1) sferr("frame element number in element data");
-		if ( b <= 0 || b > nE ) {
+		if ( b <= 0 || b > nE ) {printf("%s:%d\n",__FILE__,__LINE__);
 		    sprintf(errMsg,"\n  error in frame element property data: Element number out of range  \n Frame element number: %d  \n", b);
 		    errorMsg(errMsg);
 		    exit(51);
@@ -410,7 +410,7 @@ void read_frame_element_data (
 		epn[N1[b]] += 1;        epn[N2[b]] += 1;
 
 		if (sfrv != 2) sferr("node numbers in frame element data");
-		if ( N1[b] <= 0 || N1[b] > nN || N2[b] <= 0 || N2[b] > nN ) {
+		if ( N1[b] <= 0 || N1[b] > nN || N2[b] <= 0 || N2[b] > nN ) {printf("%s:%d\n",__FILE__,__LINE__);
 		    sprintf(errMsg,"\n  error in frame element property data: node number out of range  \n Frame element number: %d \n", b);
 		    errorMsg(errMsg);
 		    exit(52);
@@ -430,44 +430,44 @@ void read_frame_element_data (
 		if (sfrv != 1) sferr("mass density in frame element data");
 
 		if ( Ax[b] < 0 || Asy[b] < 0 || Asz[b] < 0 ||
-		     Jx[b] < 0 ||  Iy[b] < 0 ||  Iz[b] < 0	) {
+		     Jx[b] < 0 ||  Iy[b] < 0 ||  Iz[b] < 0	) {printf("%s:%d\n",__FILE__,__LINE__);
 		 sprintf(errMsg,"\n  error in frame element property data: section property < 0 \n  Frame element number: %d  \n", b);
 		 errorMsg(errMsg);
 		 exit(53);
 		}
-		if ( Ax[b] == 0 ) {
+		if ( Ax[b] == 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		 sprintf(errMsg,"\n  error in frame element property data: cross section area is zero   \n  Frame element number: %d  \n", b);
 		 errorMsg(errMsg);
 		 exit(54);
 		}
-		if ( (Asy[b] == 0 || Asz[b] == 0) && G[b] == 0 ) {
+		if ( (Asy[b] == 0 || Asz[b] == 0) && G[b] == 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		 sprintf(errMsg,"\n  error in frame element property data: a shear area and shear modulus are zero   \n  Frame element number: %d  \n", b);
 		 errorMsg(errMsg);
 		 exit(55);
 		}
-		if ( Jx[b] == 0 ) {
+		if ( Jx[b] == 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		 sprintf(errMsg,"\n  error in frame element property data: torsional moment of inertia is zero   \n  Frame element number: %d  \n", b);
 		 errorMsg(errMsg);
 		 exit(56);
 		}
-		if ( Iy[b] == 0 || Iz[b] == 0 ) {
+		if ( Iy[b] == 0 || Iz[b] == 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		 sprintf(errMsg,"\n  error: cross section bending moment of inertia is zero   \n  Frame element number : %d  \n", b);
 		 errorMsg(errMsg);
 		 exit(57);
 		}
-		if ( E[b] <= 0 || G[b] <= 0 ) {
+		if ( E[b] <= 0 || G[b] <= 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		 sprintf(errMsg,"\n  error : material elastic modulus E or G is not positive   \n  Frame element number: %d  \n", b);
 		 errorMsg(errMsg);
 		 exit(58);
 		}
-		if ( d[b] <= 0 ) {
+		if ( d[b] <= 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		 sprintf(errMsg,"\n  error : mass density d is not positive   \n  Frame element number: %d  \n", b);
 		 errorMsg(errMsg);
 		 exit(59);
 		}
 	}
 
-	for (b=1;b<=nE;b++) {		/* calculate frame element lengths */
+	for (b=1;b<=nE;b++) {printf("%s:%d\n",__FILE__,__LINE__);		/* calculate frame element lengths */
 		n1 = N1[b];
 		n2 = N2[b];
 
@@ -479,14 +479,14 @@ void read_frame_element_data (
 
 		L[b] = sqrt( L[b] );
 		Le[b] = L[b] - r[n1] - r[n2];
-		if ( n1 == n2 || L[b] == 0.0 ) {
+		if ( n1 == n2 || L[b] == 0.0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		   sprintf(errMsg,
 			" Frame elements must start and stop at different nodes\n  frame element %d  N1= %d N2= %d L= %e\n   Perhaps frame element number %d has not been specified.\n  or perhaps the Input Data file is missing expected data.\n",
 		   b, n1,n2, L[b], i );
 		   errorMsg(errMsg);
 		   exit(60);
 		}
-		if ( Le[b] <= 0.0 ) {
+		if ( Le[b] <= 0.0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		   sprintf(errMsg, " Node  radii are too large.\n  frame element %d  N1= %d N2= %d L= %e \n  r1= %e r2= %e Le= %e \n",
 		   b, n1,n2, L[b], r[n1], r[n2], Le[b] );
 		   errorMsg(errMsg);
@@ -494,8 +494,8 @@ void read_frame_element_data (
 		}
 	}
 
-	for ( n=1; n<=nN; n++ ) {
-	 if ( epn[n] == 0 ) {
+	for ( n=1; n<=nN; n++ ) {printf("%s:%d\n",__FILE__,__LINE__);
+	 if ( epn[n] == 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 	  sprintf(errMsg,"node or frame element property data:\n     node number %3d is unconnected. \n", n);
 	  sferr(errMsg);
 	  epn0 += 1;
@@ -531,7 +531,7 @@ void read_run_data (
 	int	*anlyz,
 	int	anlyz_flag,
 	int	debug
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	int	full_len=0, len=0, i;
 	char	base_file[96] = "EMPTY_BASE";
 	char	mesh_file[96] = "EMPTY_MESH";
@@ -561,7 +561,7 @@ void read_run_data (
 	strcat(mesh_file,"-msh");
 	output_path(mesh_file,meshpath,FRAME3DD_PATHMAX,NULL);
 
-	if ( debug) {
+	if ( debug) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stderr,"OUT_FILE  = %s \n", OUT_file);
 		fprintf(stderr,"BASE_FILE = %s \n", base_file);
 		fprintf(stderr,"PLOTPATH  = %s \n", plotpath);
@@ -572,22 +572,22 @@ void read_run_data (
 	sfrv=fscanf( fp, "%d %d %lf %f %f", shear,geom, exagg_static,scale,dx );
 	if (sfrv != 5) sferr("shear, geom, exagg_static, scale, or dx variables");
 
-	if (*shear != 0 && *shear != 1) {
+	if (*shear != 0 && *shear != 1) {printf("%s:%d\n",__FILE__,__LINE__);
 	    errorMsg(" Rember to specify shear deformations with a 0 or a 1 \n after the frame element property info.\n");
 	    exit(71);
 	}
 
-	if (*geom != 0 && *geom != 1) {
+	if (*geom != 0 && *geom != 1) {printf("%s:%d\n",__FILE__,__LINE__);
 	    errorMsg(" Rember to specify geometric stiffness with a 0 or a 1 \n after the frame element property info.\n");
 	    exit(72);
 	}
 
-	if ( *exagg_static < 0.0 ) {
+	if ( *exagg_static < 0.0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 	    errorMsg(" Remember to specify an exageration factor greater than zero.\n");
 	    exit(73);
 	}
 
-	if ( *dx <= 0.0 && *dx != -1 ) {
+	if ( *dx <= 0.0 && *dx != -1 ) {printf("%s:%d\n",__FILE__,__LINE__);
 	    errorMsg(" Remember to specify a frame element increment greater than zero.\n");
 	    exit(74);
 	}
@@ -611,7 +611,7 @@ int frame3dd_getline (
 FILE	*fp,
 char    *s,
 int     lim
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
     int     c=0, i=0;
 
     while (--lim > 0 && (c=getc(fp)) != EOF && c != '\n' )
@@ -635,11 +635,11 @@ static const char sep = '/';
  * return platform-specific temp file location -- 
  * John Pye, Feb 2009
  */
-static const char *temp_dir(){
+static const char *temp_dir(){printf("%s:%d\n",__FILE__,__LINE__);
 #if defined(WIN32) || defined(DJGPP)
 	char *tmp;
 	tmp = getenv("TEMP");
-	if ( tmp==NULL ) {
+	if ( tmp==NULL ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stderr,
 "ERROR: Environment Variables %%TEMP%% and %%FRAME3DD_OUTDIR%% are not set.  "
 "At least one of these variables must be set so that Frame3DD knows where to "
@@ -660,7 +660,7 @@ static const char *temp_dir(){
  * if specified. -- 
  * John Pye, Feb 2009.
  */
-void output_path(const char *fname, char fullpath[], const int len, const char *default_outdir) {
+void output_path(const char *fname, char fullpath[], const int len, const char *default_outdir) {printf("%s:%d\n",__FILE__,__LINE__);
 	int res;
 	assert(fname!=NULL);
 
@@ -675,7 +675,7 @@ void output_path(const char *fname, char fullpath[], const int len, const char *
 //		fprintf(stderr,"Generating output path for file '%s'\n",fname);
 		const char *outdir;
 		outdir = getenv("FRAME3DD_OUTDIR");
-		if (outdir==NULL) {
+		if (outdir==NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 			if (default_outdir==NULL)
 				outdir = temp_dir();
 			else
@@ -688,7 +688,7 @@ void output_path(const char *fname, char fullpath[], const int len, const char *
 	}
 	*/
 
-	if ( res > len ) {
+	if ( res > len ) {printf("%s:%d\n",__FILE__,__LINE__);
 		errorMsg("ERROR: unable to construct output filename: overflow.\n");
 		exit(16);
 	}
@@ -701,18 +701,18 @@ void output_path(const char *fname, char fullpath[], const int len, const char *
  * strip comments from the input file, and write a stripped input file
  * 07 May 2003
  */
-void parse_input(FILE *fp, const char *tpath){
+void parse_input(FILE *fp, const char *tpath){printf("%s:%d\n",__FILE__,__LINE__);
 	FILE	*fpc;		/* stripped input file pointer	*/
 	char	line[256];
 	char	errMsg[MAXL];
 
-	if ((fpc = fopen (tpath, "w")) == NULL) {
+	if ((fpc = fopen (tpath, "w")) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 		sprintf (errMsg,"\n  error: cannot open parsed input data file: '%s' \n", tpath );
 		errorMsg(errMsg);
 		exit(12);
 	}
 
-	do {
+	do {printf("%s:%d\n",__FILE__,__LINE__);
 		getline_no_comment(fp, line, 256);
 		fprintf(fpc, "%s \n", line );
 	} while ( line[0] != '_' && line[0] != EOF );
@@ -735,11 +735,11 @@ void getline_no_comment (
 	FILE *fp,   /**< pointer to the file from which to read */
 	char *s,    /**< pointer to the string to which to write */
 	int lim    /**< the longest anticipated line length  */
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	int     c=0, i=0;
 
 	while (--lim > 0 && (c=getc(fp)) != EOF && 
-		c != '\n' && c != '%' && c != '#' && c != '?' ) {
+		c != '\n' && c != '%' && c != '#' && c != '?' ) {printf("%s:%d\n",__FILE__,__LINE__);
 		if (c != ',' && c != '"' && c != ';')
 			s[i++] = c;
 		else
@@ -763,7 +763,7 @@ void getline_no_comment (
  */
 void read_reaction_data (
 	FILE *fp, int DoF, int nN, int *nR, int *q, int *r, int *sumR, int verbose
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	int	i,j,l;
 	int	sfrv=0;		/* *scanf return value */
 	char	errMsg[MAXL];
@@ -772,12 +772,12 @@ void read_reaction_data (
 
 	sfrv=fscanf(fp,"%d", nR );	/* read restrained degrees of freedom */
 	if (sfrv != 1) sferr("number of reactions in reaction data");
-	if ( verbose ) {
+	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stdout," number of nodes with reactions ");
 		dots(stdout,21);
 		fprintf(stdout," nR =%4d ", *nR );
 	}
-	if ( *nR < 0 || *nR > DoF/6 ) {
+	if ( *nR < 0 || *nR > DoF/6 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stderr," number of nodes with reactions ");
 		dots(stderr,21);
 		fprintf(stderr," nR = %3d ", *nR );
@@ -786,20 +786,20 @@ void read_reaction_data (
 		exit(80);
 	}
 
-	for (i=1; i <= *nR; i++) {
+	for (i=1; i <= *nR; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 	    sfrv=fscanf(fp,"%d", &j);
 	    if (sfrv != 1) sferr("node number in reaction data");
-	    for (l=5; l >=0; l--) {
+	    for (l=5; l >=0; l--) {printf("%s:%d\n",__FILE__,__LINE__);
 
 		sfrv=fscanf(fp,"%d", &r[6*j-l] );
 		if (sfrv != 1) sferr("reaction value in reaction data");
 
-		if ( j > nN ) {
+		if ( j > nN ) {printf("%s:%d\n",__FILE__,__LINE__);
 		    sprintf(errMsg,"\n  error in reaction data: node number %d is greater than the number of nodes, %d \n", j, nN );
 		    errorMsg(errMsg);
 		    exit(81);
 		}
-		if ( r[6*j-l] != 0 && r[6*j-l] != 1 ) {
+		if ( r[6*j-l] != 0 && r[6*j-l] != 1 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		    sprintf(errMsg,"\n  error in reaction data: Reaction data must be 0 or 1\n   Data for node %d, DoF %d is %d\n", j, 6-l, r[6*j-l] );
 		    errorMsg(errMsg);
 		    exit(82);
@@ -807,7 +807,7 @@ void read_reaction_data (
 	    }
 	    *sumR = 0;
 	    for (l=5; l >=0; l--) 	*sumR += r[6*j-l];
-	    if ( *sumR == 0 ) {
+	    if ( *sumR == 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		sprintf(errMsg,"\n  error: node %3d has no reactions\n   Remove node %3d from the list of reactions\n   and set nR to %3d \n",
 		j, j, *nR-1 );
 		errorMsg(errMsg);
@@ -815,12 +815,12 @@ void read_reaction_data (
 	    }
 	}
 	*sumR=0;	for (i=1;i<=DoF;i++)	*sumR += r[i];
-	if ( *sumR < 4 ) {
+	if ( *sumR < 4 ) {printf("%s:%d\n",__FILE__,__LINE__);
 	    sprintf(errMsg,"\n  Warning:  un-restrained structure   %d imposed reactions.\n  At least 4 reactions are required to support static loads.\n", *sumR );
 	    errorMsg(errMsg);
 	    /*	exit(84); */
 	}
-	if ( *sumR >= DoF ) {
+	if ( *sumR >= DoF ) {printf("%s:%d\n",__FILE__,__LINE__);
 	    sprintf(errMsg,"\n  error in reaction data:  Fully restrained structure\n   %d imposed reactions >= %d degrees of freedom\n", *sumR, DoF );
 	    errorMsg(errMsg);
 	    exit(85);
@@ -860,7 +860,7 @@ void read_and_assemble_loads (
 		double ***eqF_mech, // equivalent mech loads, global coord 
 		double ***eqF_temp, // equivalent temp loads, global coord 
 		int verbose
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	float	hy, hz;			/* section dimensions in local coords */
 
 	float	x1,x2, w1,w2;
@@ -891,9 +891,9 @@ void read_and_assemble_loads (
 
 	for (i=1;i<=nE;i++)	for(j=1;j<=12;j++)	Q[i][j] = 0.0;
 
-	for (lc = 1; lc <= nL; lc++) {		/* begin load-case loop */
+	for (lc = 1; lc <= nL; lc++) {printf("%s:%d\n",__FILE__,__LINE__);		/* begin load-case loop */
 
-	  if ( verbose ) {	/*  display the load case number */
+	  if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);	/*  display the load case number */
 		textColor('y','g','b','x');
 		fprintf(stdout," load case %d of %d: ", lc, nL );
 		fprintf(stdout,"                                            ");
@@ -906,7 +906,7 @@ void read_and_assemble_loads (
 	  sfrv=fscanf(fp,"%f %f %f", &gX[lc], &gY[lc], &gZ[lc] );
 	  if (sfrv != 3) sferr("gX gY gZ values in load data");
 
-	  for (n=1; n<=nE; n++) {
+	  for (n=1; n<=nE; n++) {printf("%s:%d\n",__FILE__,__LINE__);
 
 		n1 = J1[n];	n2 = J2[n];
 
@@ -948,20 +948,20 @@ void read_and_assemble_loads (
 	  /* node point loads -------------------------------------------- */
 	  sfrv=fscanf(fp,"%d", &nF[lc] );
 	  if (sfrv != 1) sferr("nF value in load data");
-	  if ( verbose ) {
+	  if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stdout,"  number of loaded nodes ");
 	  	dots(stdout,28);	fprintf(stdout," nF = %3d\n", nF[lc]);
 	  }
-	  for (i=1; i <= nF[lc]; i++) {	/* ! global structural coordinates ! */
+	  for (i=1; i <= nF[lc]; i++) {printf("%s:%d\n",__FILE__,__LINE__);	/* ! global structural coordinates ! */
 		sfrv=fscanf(fp,"%d", &j);
 		if (sfrv != 1) sferr("node value in point load data");
-		if ( j < 1 || j > nN ) {
+		if ( j < 1 || j > nN ) {printf("%s:%d\n",__FILE__,__LINE__);
 		    sprintf(errMsg,"\n  error in node load data: node number out of range ... Node : %d\n   Perhaps you did not specify %d node loads \n  or perhaps the Input Data file is missing expected data.\n", j, nF[lc] );
 		    errorMsg(errMsg);
 		    exit(121);
 		}
 
-		for (l=5; l>=0; l--) {
+		for (l=5; l>=0; l--) {printf("%s:%d\n",__FILE__,__LINE__);
 			sfrv=fscanf(fp,"%lf", &F_mech[lc][6*j-l] );
 			if (sfrv != 1) sferr("force value in point load data");
 		}
@@ -973,11 +973,11 @@ void read_and_assemble_loads (
 	  /* uniformly distributed loads --------------------------------- */
 	  sfrv=fscanf(fp,"%d", &nU[lc] );
 	  if (sfrv != 1) sferr("nU value in uniform load data");
-	  if ( verbose ) {
+	  if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stdout,"  number of uniformly distributed loads ");
 	  	dots(stdout,13);	fprintf(stdout," nU = %3d\n", nU[lc]);
 	  }
-	  if ( nU[lc] < 0 || nU[lc] > nE ) {
+	  if ( nU[lc] < 0 || nU[lc] > nE ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stderr,"  number of uniformly distributed loads ");
 	  	dots(stderr,13);
 	  	fprintf(stderr," nU = %3d\n", nU[lc]);
@@ -985,16 +985,16 @@ void read_and_assemble_loads (
 		errorMsg(errMsg);
 		exit(131);
 	  }
-	  for (i=1; i <= nU[lc]; i++) {	/* ! local element coordinates ! */
+	  for (i=1; i <= nU[lc]; i++) {printf("%s:%d\n",__FILE__,__LINE__);	/* ! local element coordinates ! */
 		sfrv=fscanf(fp,"%d", &n );
 	  	if (sfrv != 1) sferr("frame element number in uniform load data");
-		if ( n < 1 || n > nE ) {
+		if ( n < 1 || n > nE ) {printf("%s:%d\n",__FILE__,__LINE__);
 		    sprintf(errMsg,"\n  error in uniform distributed loads: element number %d is out of range\n",n);
 		    errorMsg(errMsg); 
 		    exit(132);
 		}
 		U[lc][i][1] = (double) n;
-		for (l=2; l<=4; l++) {
+		for (l=2; l<=4; l++) {printf("%s:%d\n",__FILE__,__LINE__);
 			sfrv=fscanf(fp,"%f", &U[lc][i][l] );
 	  		if (sfrv != 1) sferr("load value in uniform load data");
 		}
@@ -1025,7 +1025,7 @@ void read_and_assemble_loads (
 		printf("t7=%5.2f t8=%5.2f t9=%5.2f \n", t7, t8, t9 );
 		*/
 
-		/* {F} = [T]'{Q} */
+		/* {printf("%s:%d\n",__FILE__,__LINE__);F} = [T]'{Q} */
 		eqF_mech[lc][n][1]  += ( Nx1*t1 + Vy1*t4 + Vz1*t7 );
 		eqF_mech[lc][n][2]  += ( Nx1*t2 + Vy1*t5 + Vz1*t8 );
 		eqF_mech[lc][n][3]  += ( Nx1*t3 + Vy1*t6 + Vz1*t9 );
@@ -1057,21 +1057,21 @@ void read_and_assemble_loads (
 		fprintf(stdout,"  number of trapezoidally distributed loads ");
 	  	dots(stdout,9);	fprintf(stdout," nW = %3d\n", nW[lc]);
 	  }
-	  if ( nW[lc] < 0 || nW[lc] > 10*nE ) {
+	  if ( nW[lc] < 0 || nW[lc] > 10*nE ) {printf("%s:%d\n",__FILE__,__LINE__);
 		sprintf(errMsg,"\n  error: valid ranges for nW is 0 ... %d \n", 10*nE );
 		errorMsg(errMsg);
 		exit(140);
 	  }
-	  for (i=1; i <= nW[lc]; i++) {	/* ! local element coordinates ! */
+	  for (i=1; i <= nW[lc]; i++) {printf("%s:%d\n",__FILE__,__LINE__);	/* ! local element coordinates ! */
 		sfrv=fscanf(fp,"%d", &n );
 	  	if (sfrv != 1) sferr("frame element number in trapezoidal load data");
-		if ( n < 1 || n > nE ) {
+		if ( n < 1 || n > nE ) {printf("%s:%d\n",__FILE__,__LINE__);
 		    sprintf(errMsg,"\n  error in trapezoidally-distributed loads: element number %d is out of range\n",n);
 		    errorMsg(errMsg);
 		    exit(141);
 		}
 		W[lc][i][1] = (double) n;
-		for (l=2; l<=13; l++) {
+		for (l=2; l<=13; l++) {printf("%s:%d\n",__FILE__,__LINE__);
 			sfrv=fscanf(fp,"%f", &W[lc][i][l] );
 			if (sfrv != 1) sferr("value in trapezoidal load data");
 		}
@@ -1082,66 +1082,66 @@ void read_and_assemble_loads (
 
 		if ( W[lc][i][ 4]==0 && W[lc][i][ 5]==0 &&
 		     W[lc][i][ 8]==0 && W[lc][i][ 9]==0 &&
-		     W[lc][i][12]==0 && W[lc][i][13]==0 ) {
+		     W[lc][i][12]==0 && W[lc][i][13]==0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		  fprintf(stderr,"\n   Warning: All trapezoidal loads applied to frame element %d  are zero\n", n );
 		  fprintf(stderr,"     load case: %d , element %d , load %d\n ", lc, n, i );
 		}
 
-		if ( W[lc][i][ 2] < 0 ) {
+		if ( W[lc][i][ 2] < 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		  sprintf(errMsg,"\n   error in x-axis trapezoidal loads, load case: %d , element %d , load %d\n  starting location = %f < 0\n",
 		  lc, n, i , W[lc][i][2]);
 		  errorMsg(errMsg);
 		  exit(142);
 		}
-		if ( W[lc][i][ 2] > W[lc][i][3] ) {
+		if ( W[lc][i][ 2] > W[lc][i][3] ) {printf("%s:%d\n",__FILE__,__LINE__);
 		  sprintf(errMsg,"\n   error in x-axis trapezoidal loads, load case: %d , element %d , load %d\n  starting location = %f > ending location = %f \n", 
 		  lc, n, i , W[lc][i][2], W[lc][i][3] );
 		  errorMsg(errMsg);
 		  exit(143);
 		}
-		if ( W[lc][i][ 3] > Ln ) {
+		if ( W[lc][i][ 3] > Ln ) {printf("%s:%d\n",__FILE__,__LINE__);
 		  sprintf(errMsg,"\n   error in x-axis trapezoidal loads, load case: %d , element %d , load %d\n ending location = %f > L (%f) \n",
 		  lc, n, i, W[lc][i][3], Ln );
 		  errorMsg(errMsg);
 		  exit(144);
 		}
-		if ( W[lc][i][ 6] < 0 ) {
+		if ( W[lc][i][ 6] < 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		  sprintf(errMsg,"\n   error in y-axis trapezoidal loads, load case: %d , element %d , load %d\n starting location = %f < 0\n",
 		  lc, n, i, W[lc][i][6]);
 		  errorMsg(errMsg);
 		  exit(142);
 		}
-		if ( W[lc][i][ 6] > W[lc][i][7] ) {
+		if ( W[lc][i][ 6] > W[lc][i][7] ) {printf("%s:%d\n",__FILE__,__LINE__);
 		  sprintf(errMsg,"\n   error in y-axis trapezoidal loads, load case: %d , element %d , load %d\n starting location = %f > ending location = %f \n",
 		  lc, n, i, W[lc][i][6], W[lc][i][7] );
 		  errorMsg(errMsg);
 		  exit(143);
 		}
-		if ( W[lc][i][ 7] > Ln ) {
+		if ( W[lc][i][ 7] > Ln ) {printf("%s:%d\n",__FILE__,__LINE__);
 		  sprintf(errMsg,"\n   error in y-axis trapezoidal loads, load case: %d , element %d , load %d\n ending location = %f > L (%f) \n",
 		  lc, n, i, W[lc][i][7],Ln );
 		  errorMsg(errMsg);
 		  exit(144);
 		}
-		if ( W[lc][i][10] < 0 ) {
+		if ( W[lc][i][10] < 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		  sprintf(errMsg,"\n   error in z-axis trapezoidal loads, load case: %d , element %d , load %d\n starting location = %f < 0\n",
 		  lc, n, i, W[lc][i][10]);
 		  errorMsg(errMsg);
 		  exit(142);
 		}
-		if ( W[lc][i][10] > W[lc][i][11] ) {
+		if ( W[lc][i][10] > W[lc][i][11] ) {printf("%s:%d\n",__FILE__,__LINE__);
 		  sprintf(errMsg,"\n   error in z-axis trapezoidal loads, load case: %d , element %d , load %d\n starting location = %f > ending location = %f \n",
 		  lc, n, i, W[lc][i][10], W[lc][i][11] );
 		  errorMsg(errMsg);
 		  exit(143);
 		}
-		if ( W[lc][i][11] > Ln ) {
+		if ( W[lc][i][11] > Ln ) {printf("%s:%d\n",__FILE__,__LINE__);
 		  sprintf(errMsg,"\n   error in z-axis trapezoidal loads, load case: %d , element %d , load %d\n ending location = %f > L (%f) \n",lc, n, i, W[lc][i][11], Ln );
 		  errorMsg(errMsg);
 		  exit(144);
 		}
 
-		if ( shear ) {
+		if ( shear ) {printf("%s:%d\n",__FILE__,__LINE__);
 			Ksy = (12.0*E[n]*Iz[n]) / (G[n]*Asy[n]*Le[n]*Le[n]);
 			Ksz = (12.0*E[n]*Iy[n]) / (G[n]*Asz[n]*Le[n]*Le[n]);
 		} else	Ksy = Ksz = 0.0;
@@ -1223,7 +1223,7 @@ void read_and_assemble_loads (
 		printf("t7=%5.2f t8=%5.2f t9=%5.2f \n", t7, t8, t9 );
 		*/
 
-		/* {F} = [T]'{Q} */
+		/* {printf("%s:%d\n",__FILE__,__LINE__);F} = [T]'{printf("%s:%d\n",__FILE__,__LINE__);Q} */
 		eqF_mech[lc][n][1]  += ( Nx1*t1 + Vy1*t4 + Vz1*t7 );
 		eqF_mech[lc][n][2]  += ( Nx1*t2 + Vy1*t5 + Vz1*t8 );
 		eqF_mech[lc][n][3]  += ( Nx1*t3 + Vy1*t6 + Vz1*t9 );
@@ -1253,11 +1253,11 @@ void read_and_assemble_loads (
 	  /* internal element point loads -------------------------------- */
 	  sfrv=fscanf(fp,"%d", &nP[lc] );
 	  if (sfrv != 1) sferr("nP value load data");
-	  if ( verbose ) {
+	  if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);
 	  	fprintf(stdout,"  number of concentrated frame element point loads ");
 	  	dots(stdout,2);	fprintf(stdout," nP = %3d\n", nP[lc]);
 	  }
-	  if ( nP[lc] < 0 || nP[lc] > 10*nE ) {
+	  if ( nP[lc] < 0 || nP[lc] > 10*nE ) {printf("%s:%d\n",__FILE__,__LINE__);
 	  	fprintf(stderr,"  number of concentrated frame element point loads ");
 	  	dots(stderr,3);
 	  	fprintf(stderr," nP = %3d\n", nP[lc]);
@@ -1265,29 +1265,29 @@ void read_and_assemble_loads (
 		errorMsg(errMsg);
 		exit(150);
 	  }
-	  for (i=1; i <= nP[lc]; i++) {	/* ! local element coordinates ! */
+	  for (i=1; i <= nP[lc]; i++) {printf("%s:%d\n",__FILE__,__LINE__);	/* ! local element coordinates ! */
 		sfrv=fscanf(fp,"%d", &n );
 		if (sfrv != 1) sferr("frame element number value point load data");
-		if ( n < 1 || n > nE ) {
+		if ( n < 1 || n > nE ) {printf("%s:%d\n",__FILE__,__LINE__);
 		    sprintf(errMsg,"\n   error in internal point loads: frame element number %d is out of range\n",n);
 		    errorMsg(errMsg);
 		    exit(151);
 		}
 		P[lc][i][1] = (double) n;
-		for (l=2; l<=5; l++) { 
+		for (l=2; l<=5; l++) {printf("%s:%d\n",__FILE__,__LINE__); 
 			sfrv=fscanf(fp,"%f", &P[lc][i][l] );
 			if (sfrv != 1) sferr("value in point load data");
 		}
 		a = P[lc][i][5];	b = L[n] - a;
 
-		if ( a < 0 || L[n] < a || b < 0 || L[n] < b ) {
+		if ( a < 0 || L[n] < a || b < 0 || L[n] < b ) {printf("%s:%d\n",__FILE__,__LINE__);
 		    sprintf(errMsg,"\n  error in point load data: Point load coord. out of range\n   Frame element number: %d  L: %lf  load coord.: %lf\n",
 		    n, L[n], P[lc][i][5] );
 		    errorMsg(errMsg);
 		    exit(152);
 		}
 
-		if ( shear ) {
+		if ( shear ) {printf("%s:%d\n",__FILE__,__LINE__);
 			Ksy = (12.0*E[n]*Iz[n]) / (G[n]*Asy[n]*Le[n]*Le[n]);
 			Ksz = (12.0*E[n]*Iy[n]) / (G[n]*Asz[n]*Le[n]*Le[n]);
 		} else	Ksy = Ksz = 0.0;
@@ -1343,11 +1343,11 @@ void read_and_assemble_loads (
 	  /* thermal loads ----------------------------------------------- */
 	  sfrv=fscanf(fp,"%d", &nT[lc] );
 	  if (sfrv != 1) sferr("nT value in load data");
-	  if ( verbose ) {
+	  if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);
 	  	fprintf(stdout,"  number of temperature changes ");
 	  	dots(stdout,21); fprintf(stdout," nT = %3d\n", nT[lc] );
 	  }
-	  if ( nT[lc] < 0 || nT[lc] > nE ) {
+	  if ( nT[lc] < 0 || nT[lc] > nE ) {printf("%s:%d\n",__FILE__,__LINE__);
 	  	fprintf(stderr,"  number of temperature changes ");
 	  	dots(stderr,21);
 	  	fprintf(stderr," nT = %3d\n", nT[lc] );
@@ -1355,16 +1355,16 @@ void read_and_assemble_loads (
 		errorMsg(errMsg);
 		exit(160);
 	  }
-	  for (i=1; i <= nT[lc]; i++) {	/* ! local element coordinates ! */
+	  for (i=1; i <= nT[lc]; i++) {printf("%s:%d\n",__FILE__,__LINE__);	/* ! local element coordinates ! */
 		sfrv=fscanf(fp,"%d", &n );
 		if (sfrv != 1) sferr("frame element number in temperature load data");
-		if ( n < 1 || n > nE ) {
+		if ( n < 1 || n > nE ) {printf("%s:%d\n",__FILE__,__LINE__);
 		    sprintf(errMsg,"\n  error in temperature loads: frame element number %d is out of range\n",n);
 		    errorMsg(errMsg);
 		    exit(161);
 		}
 		T[lc][i][1] = (double) n;
-		for (l=2; l<=8; l++) {
+		for (l=2; l<=8; l++) {printf("%s:%d\n",__FILE__,__LINE__);
 			sfrv=fscanf(fp,"%f", &T[lc][i][l] );
 			if (sfrv != 1) sferr("value in temperature load data");
 		}
@@ -1372,7 +1372,7 @@ void read_and_assemble_loads (
 		hy = T[lc][i][3];
 		hz = T[lc][i][4];
 
-		if ( hy < 0 || hz < 0 ) {
+		if ( hy < 0 || hz < 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		    sprintf(errMsg,"\n  error in thermal load data: section dimension < 0\n   Frame element number: %d  hy: %f  hz: %f\n", n,hy,hz);
 		    errorMsg(errMsg);
 		    exit(162);
@@ -1421,7 +1421,7 @@ void read_and_assemble_loads (
 
 	  // assemble all element equivalent loads into 
 	  // separate load vectors for mechanical and thermal loading
-	  for (n=1; n<=nE; n++) {
+	  for (n=1; n<=nE; n++) {printf("%s:%d\n",__FILE__,__LINE__);
 	     n1 = J1[n];	n2 = J2[n];
 	     for (i=1; i<= 6; i++) F_mech[lc][6*n1- 6+i] += eqF_mech[lc][n][i];
 	     for (i=7; i<=12; i++) F_mech[lc][6*n2-12+i] += eqF_mech[lc][n][i];
@@ -1432,17 +1432,17 @@ void read_and_assemble_loads (
 	  /* prescribed displacements ------------------------------------ */
 	  sfrv=fscanf(fp,"%d", &nD[lc] );
 	  if (sfrv != 1) sferr("nD value in load data");
-	  if ( verbose ) {
+	  if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);
 	  	fprintf(stdout,"  number of prescribed displacements ");
 	  	dots(stdout,16);	fprintf(stdout," nD = %3d\n", nD[lc] );
 	  }
-	  for (i=1; i <= nD[lc]; i++) {
+	  for (i=1; i <= nD[lc]; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		sfrv=fscanf(fp,"%d", &j);
 		if (sfrv != 1) sferr("node number value in prescribed displacement data");
-		for (l=5; l >=0; l--) {
+		for (l=5; l >=0; l--) {printf("%s:%d\n",__FILE__,__LINE__);
 			sfrv=fscanf(fp,"%f", &Dp[lc][6*j-l] );
 			if (sfrv != 1) sferr("prescribed displacement value");
-			if ( r[6*j-l] == 0 && Dp[lc][6*j-l] != 0.0 ) {
+			if ( r[6*j-l] == 0 && Dp[lc][6*j-l] != 0.0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 			    sprintf(errMsg," Initial displacements can be prescribed only at restrained coordinates\n  node: %d  dof: %d  r: %d\n",
 			    j, 6-l, r[6*j-l] );
 			    errorMsg(errMsg);
@@ -1475,7 +1475,7 @@ void read_mass_data (
 		char modepath[],
 		int anim[], float *pan, float pan_flag,
 		int verbose, int debug
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 /*	double	ms = 0.0; */
 	int	i,j, jnt, m, b, nA;
 	int	full_len=0, len=0;
@@ -1490,12 +1490,12 @@ void read_mass_data (
 	sfrv=fscanf ( fp, "%d", nM );
 	if (sfrv != 1) sferr("nM value in mass data");
 
-	if ( verbose ) {
+	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stdout," number of dynamic modes ");
 		dots(stdout,28);	fprintf(stdout," nM = %3d\n", *nM);
 	}
 
-	if ( *nM < 1 || sfrv != 1 ) {
+	if ( *nM < 1 || sfrv != 1 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		*nM = 0;
 		return;
 	}
@@ -1504,7 +1504,7 @@ void read_mass_data (
 	if (sfrv != 1) sferr("Mmethod value in mass data");
 	if ( modal_flag != -1 )	*Mmethod = modal_flag;
 
-	if ( verbose ) {
+	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stdout," modal analysis method ");
 		dots(stdout,30);	fprintf(stdout," %3d ",*Mmethod);
 		if ( *Mmethod == 1 ) fprintf(stdout," (Subspace-Jacobi)\n");
@@ -1515,7 +1515,7 @@ void read_mass_data (
 #ifdef MASSDATA_DEBUG
 	FILE	*mf;				// mass data file
 	mf = fopen("MassData.txt","w");		// open mass data file
-	if ((mf = fopen ("MassData.txt", "w")) == NULL) {
+	if ((mf = fopen ("MassData.txt", "w")) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 	  errorMsg("\n  error: cannot open mass data debug file: 'MassData.txt' \n");
 	  exit(29);
 	}
@@ -1540,14 +1540,14 @@ void read_mass_data (
 	/* number of nodes with extra inertias */
 	sfrv=fscanf(fp,"%d", nI );
 	if (sfrv != 1) sferr("nI value in mass data");
-	if ( verbose ) {
+	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stdout," number of nodes with extra lumped inertia ");
 		dots(stdout,10);	fprintf(stdout," nI = %3d\n",*nI);
 	}
-	for (j=1; j <= *nI; j++) {
+	for (j=1; j <= *nI; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 		sfrv=fscanf(fp, "%d", &jnt );
 		if (sfrv != 1) sferr("node value in extra node mass data");
-		if ( jnt < 1 || jnt > nN ) {
+		if ( jnt < 1 || jnt > nN ) {printf("%s:%d\n",__FILE__,__LINE__);
 	    		sprintf(errMsg,"\n  error in node mass data: node number out of range    Node : %d  \n   Perhaps you did not specify %d extra masses \n   or perhaps the Input Data file is missing expected data.\n",
 			jnt, *nI );
 			errorMsg(errMsg);
@@ -1565,15 +1565,15 @@ void read_mass_data (
 	/* number of frame elements with extra beam mass */
 	sfrv=fscanf(fp,"%d", nX );
 	if (sfrv != 1) sferr("nX value in mass data");
-	if ( verbose ) {
+	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stdout," number of frame elements with extra mass ");
 		dots(stdout,11);	fprintf(stdout," nX = %3d\n",*nX);
 		if (sfrv != 1) sferr("element value in extra element mass data");
 	}
-	for (m=1; m <= *nX; m++) {
+	for (m=1; m <= *nX; m++) {printf("%s:%d\n",__FILE__,__LINE__);
 		sfrv=fscanf(fp, "%d", &b );
 		if (sfrv != 1) sferr("element number in extra element mass data");
-		if ( b < 1 || b > nE ) {
+		if ( b < 1 || b > nE ) {printf("%s:%d\n",__FILE__,__LINE__);
 			sprintf(errMsg,"\n  error in element mass data: element number out of range   Element: %d  \n   Perhaps you did not specify %d extra masses \n   or perhaps the Input Data file is missing expected data.\n", 
 			b, *nX ); 
 			errorMsg(errMsg);
@@ -1585,7 +1585,7 @@ void read_mass_data (
 
 
 	/* calculate the total mass and the structural mass */
-	for (b=1; b <= nE; b++) {
+	for (b=1; b <= nE; b++) {printf("%s:%d\n",__FILE__,__LINE__);
 		*total_mass  += d[b]*Ax[b]*L[b] + EMs[b];
 		*struct_mass += d[b]*Ax[b]*L[b];
 #ifdef MASSDATA_DEBUG
@@ -1598,8 +1598,8 @@ void read_mass_data (
 	fclose(mf);
 #endif
 
-	for (m=1;m<=nE;m++) {			/* check inertia data	*/
-	    if ( d[m] < 0.0 || EMs[m] < 0.0 || d[m]+EMs[m] <= 0.0 ) {
+	for (m=1;m<=nE;m++) {printf("%s:%d\n",__FILE__,__LINE__);			/* check inertia data	*/
+	    if ( d[m] < 0.0 || EMs[m] < 0.0 || d[m]+EMs[m] <= 0.0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		sprintf(errMsg,"\n  error: Non-positive mass or density\n  d[%d]= %f  EMs[%d]= %f\n",m,d[m],m,EMs[m]);
 		errorMsg(errMsg);
 		exit(88);
@@ -1608,7 +1608,7 @@ void read_mass_data (
 /*	for (m=1;m<=nE;m++) ms += EMs[m]; // consistent mass doesn't agree  */
 /*	if ( ms > 0.0 )	    *lump = 1;    // with concentrated masses, EMs  */
 
-	if ( verbose ) {
+	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stdout," structural mass ");
 		dots(stdout,36);	fprintf(stdout,"  %12.4e\n",*struct_mass);
 		fprintf(stdout," total mass ");
@@ -1616,14 +1616,14 @@ void read_mass_data (
 	}
 	sfrv=fscanf ( fp, "%d", &nA );
 	if (sfrv != 1) sferr("nA value in mode animation data");
-	if ( verbose ) {
+	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stdout," number of modes to be animated ");
 		dots(stdout,21);	fprintf(stdout," nA = %3d\n",nA);
 	}
 	if (nA > 20)
 	  fprintf(stderr," nA = %d, only 100 or fewer modes may be animated\n", nA );
 	for ( m = 0; m < 20; m++ )	anim[m] = 0;
-	for ( m = 1; m <= nA; m++ ) {
+	for ( m = 1; m <= nA; m++ ) {printf("%s:%d\n",__FILE__,__LINE__);
 		sfrv=fscanf ( fp, "%d", &anim[m] );
 		if (sfrv != 1) sferr("mode number in mode animation data");
 	}
@@ -1632,7 +1632,7 @@ void read_mass_data (
 	if (sfrv != 1) sferr("pan value in mode animation data");
 	if ( pan_flag != -1.0 )	*pan = pan_flag;
 
-	if ( verbose ) {
+	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stdout," pan rate ");
 		dots(stdout,43); fprintf(stdout," %8.3f\n", *pan);
 	}
@@ -1668,14 +1668,14 @@ void read_condensation_data (
 		int nN, int nM,
 		int *nC, int *Cdof,
 		int *Cmethod, int condense_flag, int *c, int *m, int verbose
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	int	i,j,k,  **cm;
 	int	sfrv=0;		/* *scanf return value */
 	char	errMsg[MAXL];
 
 	*Cmethod = *nC = *Cdof = 0;
 
-	if ( (sfrv=fscanf ( fp, "%d", Cmethod )) != 1 )   {
+	if ( (sfrv=fscanf ( fp, "%d", Cmethod )) != 1 )   {printf("%s:%d\n",__FILE__,__LINE__);
 		*Cmethod = *nC = *Cdof = 0;
 		if ( verbose )
 			fprintf(stdout," missing matrix condensation data \n");
@@ -1684,7 +1684,7 @@ void read_condensation_data (
 
 	if ( condense_flag != -1 )	*Cmethod = condense_flag;
 
-	if ( *Cmethod <= 0 )  {
+	if ( *Cmethod <= 0 )  {printf("%s:%d\n",__FILE__,__LINE__);
 		if ( verbose )
 			fprintf(stdout," Cmethod = %d : no matrix condensation \n", *Cmethod );
 		*Cmethod = *nC = *Cdof = 0;
@@ -1692,7 +1692,7 @@ void read_condensation_data (
 	}
 
 	if ( *Cmethod > 3 ) *Cmethod = 1;	/* default */
-	if ( verbose ) {
+	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stdout," condensation method ");
 		dots(stdout,32);	fprintf(stdout," %d ", *Cmethod );
 		if ( *Cmethod == 1 )	fprintf(stdout," (static only) \n");
@@ -1700,19 +1700,19 @@ void read_condensation_data (
 		if ( *Cmethod == 3 )	fprintf(stdout," (dynamic) \n");
 	}
 
-	if ( (sfrv=fscanf ( fp, "%d", nC )) != 1 )  {
+	if ( (sfrv=fscanf ( fp, "%d", nC )) != 1 )  {printf("%s:%d\n",__FILE__,__LINE__);
 		*Cmethod = *nC = *Cdof = 0;
 		if ( verbose )
 			fprintf(stdout," missing matrix condensation data \n");
 		return;
 	}
 
-	if ( verbose ) {
+	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stdout," number of nodes with condensed DoF's ");
 		dots(stdout,15);	fprintf(stdout," nC = %3d\n", *nC );
 	}
 
-	if ( (*nC) > nN ) {
+	if ( (*nC) > nN ) {printf("%s:%d\n",__FILE__,__LINE__);
 	  sprintf(errMsg,"\n  error in matrix condensation data: \n error: nC > nN ... nC=%d; nN=%d;\n The number of nodes with condensed DoF's may not exceed the total number of nodes.\n", 
 	  *nC, nN );
 	  errorMsg(errMsg);
@@ -1721,12 +1721,12 @@ void read_condensation_data (
 
 	cm = imatrix( 1, *nC, 1,7 );
 
-	for ( i=1; i <= *nC; i++) {
+	for ( i=1; i <= *nC; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 	 sfrv=fscanf( fp, "%d %d %d %d %d %d %d",
 	 &cm[i][1],
 	 &cm[i][2], &cm[i][3], &cm[i][4], &cm[i][5], &cm[i][6], &cm[i][7]);
 	 if (sfrv != 7) sferr("DoF numbers in condensation data");
-	 if ( cm[i][1] < 1 || cm[i][1] > nN ) {		/* error check */
+	 if ( cm[i][1] < 1 || cm[i][1] > nN ) {printf("%s:%d\n",__FILE__,__LINE__);		/* error check */
 	  sprintf(errMsg,"\n  error in matrix condensation data: \n  condensed node number out of range\n  cj[%d] = %d  ... nN = %d  \n", i, cm[i][1], nN );
 	  errorMsg(errMsg);
 	  exit(91);
@@ -1736,23 +1736,23 @@ void read_condensation_data (
 	for (i=1; i <= *nC; i++)  for (j=2; j<=7; j++)  if (cm[i][j]) (*Cdof)++;
 
 	k=1;
-	for (i=1; i <= *nC; i++) {
-		for (j=2; j<=7; j++) {
-			if (cm[i][j]) {
+	for (i=1; i <= *nC; i++) {printf("%s:%d\n",__FILE__,__LINE__);
+		for (j=2; j<=7; j++) {printf("%s:%d\n",__FILE__,__LINE__);
+			if (cm[i][j]) {printf("%s:%d\n",__FILE__,__LINE__);
 				c[k] = 6*(cm[i][1]-1) + j-1;
 				++k;
 			}
 		}
 	}
 
-	for (i=1; i<= *Cdof; i++) {
+	for (i=1; i<= *Cdof; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 	 sfrv=fscanf( fp, "%d", &m[i] );
-	 if (sfrv != 1 && *Cmethod == 3) {
+	 if (sfrv != 1 && *Cmethod == 3) {printf("%s:%d\n",__FILE__,__LINE__);
 		sferr("mode number in condensation data");
 		sprintf(errMsg,"condensed mode %d = %d", i, m[i] );
 		errorMsg(errMsg);
 	 }
-	 if ( (m[i] < 0 || m[i] > nM) && *Cmethod == 3 ) {
+	 if ( (m[i] < 0 || m[i] > nM) && *Cmethod == 3 ) {printf("%s:%d\n",__FILE__,__LINE__);
 	  sprintf(errMsg,"\n  error in matrix condensation data: \n  m[%d] = %d \n The condensed mode number must be between   1 and %d (modes).\n", 
 	  i, m[i], nM );
 	  errorMsg(errMsg);
@@ -1782,7 +1782,7 @@ void write_input_data (
 	int *R,
 	float ***U, float ***W, float ***P, float ***T,
 	int shear, int anlyz, int geom
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	int	i,j,n, lc;
 	time_t  now;		/* modern time variable type	*/
 
@@ -1822,7 +1822,7 @@ void write_input_data (
 	fprintf(fp,"                                    R E S T R A I N T S\n");
 	fprintf(fp,"  Node       X              Y              Z");
 	fprintf(fp,"         radius  Fx Fy Fz Mx My Mz\n");
-	for (i=1; i<=nN; i++) {
+	for (i=1; i<=nN; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 	 j = 6*(i-1);
 	 fprintf(fp,"%5d %14.6f %14.6f %14.6f %8.3f  %2d %2d %2d %2d %2d %2d\n",
 		i, xyz[i].x, xyz[i].y, xyz[i].z, r[i],
@@ -1831,7 +1831,7 @@ void write_input_data (
 	fprintf(fp,"F R A M E   E L E M E N T   D A T A\t\t\t\t\t(local)\n");
 	fprintf(fp,"  Elmnt  J1    J2     Ax   Asy   Asz    ");
 	fprintf(fp,"Jxx     Iyy     Izz       E       G roll  density\n");
-	for (i=1; i<= nE; i++) {
+	for (i=1; i<= nE; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(fp,"%5d %5d %5d %6.1f %5.1f %5.1f",
 					i, J1[i],J2[i], Ax[i], Asy[i], Asz[i] );
 		fprintf(fp," %6.1f %7.1f %7.1f %8.1f %7.1f %3.0f %8.2e\n",
@@ -1842,7 +1842,7 @@ void write_input_data (
 	if ( geom )	fprintf(fp,"  Include geometric stiffness.\n");
 	else		fprintf(fp,"  Neglect geometric stiffness.\n");
 
-	for (lc = 1; lc <= nL; lc++) {		/* start load case loop */
+	for (lc = 1; lc <= nL; lc++) {printf("%s:%d\n",__FILE__,__LINE__);		/* start load case loop */
 
 	  fprintf(fp,"\nL O A D   C A S E   %d   O F   %d  ... \n\n", lc,nL);
 	  fprintf(fp,"   Gravity X = ");
@@ -1858,15 +1858,15 @@ void write_input_data (
 	  fprintf(fp," %3d concentrated point loads\n", nP[lc] );
 	  fprintf(fp," %3d temperature loads\n", nT[lc] );
 	  fprintf(fp," %3d prescribed displacements\n", nD[lc] );
-	  if ( nF[lc] > 0 || nU[lc] > 0 || nW[lc] > 0 || nP[lc] > 0 || nT[lc] > 0 ) {
+	  if ( nF[lc] > 0 || nU[lc] > 0 || nW[lc] > 0 || nP[lc] > 0 || nT[lc] > 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 	    fprintf(fp," N O D A L   L O A D S");
 	    fprintf(fp,"  +  E Q U I V A L E N T   N O D A L   L O A D S  (global)\n");
 	    fprintf(fp,"  Node        Fx          Fy          Fz");
 	    fprintf(fp,"          Mxx         Myy         Mzz\n");
-	    for (j=1; j<=nN; j++) {
+	    for (j=1; j<=nN; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 		i = 6*(j-1);
 		if ( Fm[lc][i+1]!=0.0 || Fm[lc][i+2]!=0.0 || Fm[lc][i+3]!=0.0 ||
-		     Fm[lc][i+4]!=0.0 || Fm[lc][i+5]!=0.0 || Fm[lc][i+6]!=0.0 ) {
+		     Fm[lc][i+4]!=0.0 || Fm[lc][i+5]!=0.0 || Fm[lc][i+6]!=0.0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 			fprintf(fp, " %5d", j);
 			for (i=5; i>=0; i--) fprintf(fp, " %11.3f", Fm[lc][6*j-i] );
 			fprintf(fp, "\n");
@@ -1874,22 +1874,22 @@ void write_input_data (
 	    }
 	  }
 
-	  if ( nU[lc] > 0 ) {
+	  if ( nU[lc] > 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 	    fprintf(fp," U N I F O R M   L O A D S");
 	    fprintf(fp,"\t\t\t\t\t\t(local)\n");
 	    fprintf(fp,"  Elmnt       Ux               Uy               Uz\n");
-	    for (n=1; n<=nU[lc]; n++) {
+	    for (n=1; n<=nU[lc]; n++) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(fp, " %5d", (int) (U[lc][n][1]) );
 		for (i=2; i<=4; i++) fprintf(fp, " %16.8f", U[lc][n][i] );
 		fprintf(fp, "\n");
 	    }
 	  }
 
-	  if ( nW[lc] > 0 ) {
+	  if ( nW[lc] > 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 	    fprintf(fp," T R A P E Z O I D A L   L O A D S");
 	    fprintf(fp,"\t\t\t\t\t(local)\n");
 	    fprintf(fp,"  Elmnt       x1               x2               W1               W2\n");
-	    for (n=1; n<=nW[lc]; n++) {
+	    for (n=1; n<=nW[lc]; n++) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(fp, " %5d", (int) (W[lc][n][1]) );
 		for (i=2; i<=5; i++) fprintf(fp, " %16.8f", W[lc][n][i] );
 		fprintf(fp, "  (x)\n");
@@ -1902,23 +1902,23 @@ void write_input_data (
 	    }
 	  }
 
-	  if ( nP[lc] > 0 ) {
+	  if ( nP[lc] > 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 	    fprintf(fp," C O N C E N T R A T E D   P O I N T   L O A D S");
 	    fprintf(fp,"\t\t\t\t(local)\n");
 	    fprintf(fp,"  Elmnt       Px          Py          Pz          x\n");
-	    for (n=1; n<=nP[lc]; n++) {
+	    for (n=1; n<=nP[lc]; n++) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(fp, " %5d", (int) (P[lc][n][1]) );
 		for (i=2; i<=5; i++) fprintf(fp, " %11.3f", P[lc][n][i] );
 		fprintf(fp, "\n");
 	    }
 	  }
 
-	  if ( nT[lc] > 0 ) {
+	  if ( nT[lc] > 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 	    fprintf(fp," T E M P E R A T U R E   C H A N G E S");
 	    fprintf(fp,"\t\t\t\t\t(local)\n");
 	    fprintf(fp,"  Elmnt     coef      hy        hz");
 	    fprintf(fp,"        Ty+       Ty-       Tz+       Tz-\n");
-	    for (n=1; n<=nT[lc]; n++) {
+	    for (n=1; n<=nT[lc]; n++) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(fp, " %5d", (int) (T[lc][n][1]) );
 		fprintf(fp, " %9.2e", T[lc][n][2] );
 		for (i=3; i<=8; i++) fprintf(fp, " %9.3f", T[lc][n][i] );
@@ -1926,15 +1926,15 @@ void write_input_data (
 	    }
 	  }
 
-	  if ( nD[lc] > 0 ) {
+	  if ( nD[lc] > 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 	    fprintf(fp,"\n P R E S C R I B E D   D I S P L A C E M E N T S");
 	    fprintf(fp,"                        (global)\n");
 	    fprintf(fp,"  Node        Dx          Dy          Dz");
 	    fprintf(fp,"          Dxx         Dyy         Dzz\n");
-	    for (j=1; j<=nN; j++) {
+	    for (j=1; j<=nN; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 		i = 6*(j-1);
 		if ( Dp[lc][i+1]!=0.0 || Dp[lc][i+2]!=0.0 || Dp[lc][i+3]!=0.0 ||
-		     Dp[lc][i+4]!=0.0 || Dp[lc][i+5]!=0.0 || Dp[lc][i+6]!=0.0 ){
+		     Dp[lc][i+4]!=0.0 || Dp[lc][i+5]!=0.0 || Dp[lc][i+6]!=0.0 ){printf("%s:%d\n",__FILE__,__LINE__);
 			fprintf(fp, " %5d", j);
 			for (i=5; i>=0; i--) fprintf(fp, " %11.3f",
 							Dp[lc][6*j-i] );
@@ -1945,7 +1945,7 @@ void write_input_data (
 
 	}					/* end load case loop	*/
 
-	if (anlyz) {
+	if (anlyz) {printf("%s:%d\n",__FILE__,__LINE__);
 	 fprintf(fp,"\nE L A S T I C   S T I F F N E S S   A N A L Y S I S");
 	 fprintf(fp,"   via  L D L'  decomposition\n\n");
 	}
@@ -1965,11 +1965,11 @@ void write_static_results (
 		int *J1, int *J2,
 		double *F, double *D, double *R, int *r, double **Q,
 		double err, int ok, int axial_sign
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double	disp;
 	int	i,j,n;
 
-	if ( ok < 0 ) {
+	if ( ok < 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 	 fprintf(fp,"  * The Stiffness Matrix is not positive-definite *\n");
 	 fprintf(fp,"    Check that all six rigid-body translations are restrained\n");
 	 fprintf(fp,"    If geometric stiffness is included, reduce the loads.\n");
@@ -1982,12 +1982,12 @@ void write_static_results (
 	fprintf(fp,"\t\t\t\t\t(global)\n");
 	fprintf(fp,"  Node    X-dsp       Y-dsp       Z-dsp");
 	fprintf(fp,"       X-rot       Y-rot       Z-rot\n");
-	for (j=1; j<= nN; j++) {
+	for (j=1; j<= nN; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 	    disp = 0.0;
 	    for ( i=5; i>=0; i-- ) disp += fabs( D[6*j-i] );
-	    if ( disp > 0.0 ) {
+	    if ( disp > 0.0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(fp," %5d", j);
-		for ( i=5; i>=0; i-- ) {
+		for ( i=5; i>=0; i-- ) {printf("%s:%d\n",__FILE__,__LINE__);
 			if ( fabs(D[6*j-i]) < 1.e-8 )
 				fprintf (fp, "    0.0     ");
 			else    fprintf (fp, " %11.6f",  D[6*j-i] );
@@ -1999,7 +1999,7 @@ void write_static_results (
 	fprintf(fp,"\t\t\t\t(local)\n");
 	fprintf(fp,"  Elmnt  Node       Nx          Vy         Vz");
 	fprintf(fp,"        Txx        Myy        Mzz\n");
-	for (n=1; n<= nE; n++) {
+	for (n=1; n<= nE; n++) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(fp," %5d  %5d", n, J1[n]);
 		if ( fabs(Q[n][1]) < 0.0001 )
 			fprintf (fp, "      0.0   ");
@@ -2007,7 +2007,7 @@ void write_static_results (
 		if ( Q[n][1] >=  0.0001 && axial_sign) fprintf(fp, "c");
 		if ( Q[n][1] <= -0.0001 && axial_sign) fprintf(fp, "t");
 		if (!axial_sign) fprintf(fp," ");
-		for (i=2; i<=6; i++) {
+		for (i=2; i<=6; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			if ( fabs(Q[n][i]) < 0.0001 )
 				fprintf (fp, "      0.0  ");
 			else    fprintf (fp, " %10.3f", Q[n][i] );
@@ -2020,7 +2020,7 @@ void write_static_results (
 		if ( Q[n][7] >=  0.0001 && axial_sign) fprintf(fp, "t");
 		if ( Q[n][7] <= -0.0001 && axial_sign) fprintf(fp, "c");
 		if (!axial_sign) fprintf(fp," ");
-		for (i=8; i<=12; i++) {
+		for (i=8; i<=12; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			if ( fabs(Q[n][i]) < 0.0001 )
 				fprintf (fp, "      0.0  ");
 			else    fprintf (fp, " %10.3f", Q[n][i] );
@@ -2030,12 +2030,12 @@ void write_static_results (
 	fprintf(fp,"R E A C T I O N S\t\t\t\t\t\t\t(global)\n");
 	fprintf(fp,"  Node        Fx          Fy          Fz");
 	fprintf(fp,"         Mxx         Myy         Mzz\n");
-	for (j=1; j<=nN; j++) {
+	for (j=1; j<=nN; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 		i = 6*(j-1);
 		if ( r[i+1] || r[i+2] || r[i+3] ||
-		     r[i+4] || r[i+5] || r[i+6] ) {
+		     r[i+4] || r[i+5] || r[i+6] ) {printf("%s:%d\n",__FILE__,__LINE__);
 			fprintf(fp, " %5d", j);
-			for (i=5; i>=0; i--) {
+			for (i=5; i>=0; i--) {printf("%s:%d\n",__FILE__,__LINE__);
 			    if ( r[6*j-i] ) fprintf (fp, " %11.3f", R[6*j-i] );
 			    else		fprintf (fp, "       0.0  ");
 			}
@@ -2054,19 +2054,19 @@ void write_static_results (
  * 1 Nov 2015
  */
 void CSV_filename( char CSV_file[], char wa[], char OUT_file[], int lc )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int i,j;
 
 	i=0;
 	j=0;
-	while (i<FILENMAX) {
+	while (i<FILENMAX) {printf("%s:%d\n",__FILE__,__LINE__);
 		CSV_file[j] = OUT_file[i];
 		if ( CSV_file[j] == '+' ||
 		     CSV_file[j] == '-' ||
 		     CSV_file[j] == '*' ||
 		     CSV_file[j] == '^' ||
 		     CSV_file[j] == '.' ||
-		     CSV_file[j] == '\0') {
+		     CSV_file[j] == '\0') {printf("%s:%d\n",__FILE__,__LINE__);
 			CSV_file[j] = '_';
 			break;
 		}
@@ -2095,7 +2095,7 @@ void write_static_csv (
 		int *J1, int *J2,
 		double *F, double *D, double *R, int *r, double **Q,
 		double err, int ok
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	FILE	*fpcsv;
 	int	i,j,n;
 	char	wa[4];
@@ -2107,14 +2107,14 @@ void write_static_csv (
 
 	CSV_filename( CSV_file, wa, OUT_file, lc );
 
-	if ((fpcsv = fopen (CSV_file, wa)) == NULL) {
+	if ((fpcsv = fopen (CSV_file, wa)) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 	  sprintf (errMsg,"\n  error: cannot open CSV output data file: %s \n", CSV_file);
 	  errorMsg(errMsg);
 	  exit(17);
 	}
 
 
-	if ( lc == 1 ) {
+	if ( lc == 1 ) {printf("%s:%d\n",__FILE__,__LINE__);
   	 fprintf(fpcsv,"\" Frame3DD version: %s ", VERSION );
 	 fprintf(fpcsv,"              http://frame3dd.sf.net/\"\n");
 	 fprintf(fpcsv,"\"GPL Copyright (C) 1992-2015, Henri P. Gavin \"\n");
@@ -2127,7 +2127,7 @@ void write_static_csv (
 
 	 fprintf(fpcsv,"\" .CSV formatted results of Frame3DD analysis \"\n");
 	 fprintf(fpcsv,"\n , Load Case , Displacements , End Forces , Reactions , Internal Forces \n");
-	 for (i = 1; i <= nL; i++) {
+	 for (i = 1; i <= nL; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 	 	fprintf(fpcsv," First Row , %d , %d , %d , %d  , %d  \n",
 			i,
 			15+(i-1)*(nN*2+nE*4+13) + 2*nL,
@@ -2145,7 +2145,7 @@ void write_static_csv (
 	}
 
 
-	if ( ok < 0 ) {
+	if ( ok < 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 	 fprintf(fpcsv,"\"  * The Stiffness Matrix is not positive-definite * \"\n");
 	 fprintf(fpcsv,"\" Check that all six rigid-body translations are restrained\"\n");
 	 fprintf(fpcsv,"\" If geometric stiffness is included, reduce the loads.\"\n");
@@ -2159,9 +2159,9 @@ void write_static_csv (
 	fprintf(fpcsv,"    (global)\"\n");
 	fprintf(fpcsv,"Node  ,  X-dsp   ,   Y-dsp  ,    Z-dsp");
 	fprintf(fpcsv," ,     X-rot  ,    Y-rot   ,   Z-rot\n");
-	for (j=1; j<= nN; j++) {
+	for (j=1; j<= nN; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(fpcsv," %5d,", j);
-		for ( i=5; i>=0; i-- ) {
+		for ( i=5; i>=0; i-- ) {printf("%s:%d\n",__FILE__,__LINE__);
 			if ( fabs(D[6*j-i]) < 1.e-8 )
 				fprintf (fpcsv, "    0.0,    ");
 			else    fprintf (fpcsv, " %12.5e,",  D[6*j-i] );
@@ -2172,12 +2172,12 @@ void write_static_csv (
 	fprintf(fpcsv,"  (local)\"\n");
 	fprintf(fpcsv,"Elmnt , Node  ,    Nx     ,    Vy   ,     Vz");
 	fprintf(fpcsv,"   ,     Txx   ,    Myy  ,     Mzz\n");
-	for (n=1; n<= nE; n++) {
+	for (n=1; n<= nE; n++) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(fpcsv," %5d, %5d,", n, J1[n]);
 		if ( fabs(Q[n][1]) < 0.0001 )
 			fprintf (fpcsv, "      0.0,  ");
 		else    fprintf (fpcsv, " %12.5e,", Q[n][1] );
-		for (i=2; i<=6; i++) {
+		for (i=2; i<=6; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			if ( fabs(Q[n][i]) < 0.0001 )
 				fprintf (fpcsv, "      0.0, ");
 			else    fprintf (fpcsv, " %12.5e,", Q[n][i] );
@@ -2187,7 +2187,7 @@ void write_static_csv (
 		if ( fabs(Q[n][7]) < 0.0001 )
 			fprintf (fpcsv, "      0.0,  ");
 		else    fprintf (fpcsv, " %12.5e,", Q[n][7] );
-		for (i=8; i<=12; i++) {
+		for (i=8; i<=12; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			if ( fabs(Q[n][i]) < 0.0001 )
 				fprintf (fpcsv, "      0.0, ");
 			else    fprintf (fpcsv, " %12.5e,", Q[n][i] );
@@ -2197,10 +2197,10 @@ void write_static_csv (
 	fprintf(fpcsv,"\"R E A C T I O N S  (global)\"\n");
 	fprintf(fpcsv," Node   ,    Fx      ,   Fy   ,      Fz");
 	fprintf(fpcsv,"   ,     Mxx    ,    Myy    ,    Mzz\n");
-	for (j=1; j<=nN; j++) {
+	for (j=1; j<=nN; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 		i = 6*(j-1);
 		fprintf(fpcsv, " %5d,", j);
-		for (i=5; i>=0; i--) {
+		for (i=5; i>=0; i--) {printf("%s:%d\n",__FILE__,__LINE__);
 			if ( r[6*j-i] ) fprintf (fpcsv, " %12.5e,", R[6*j-i] );
 			else	fprintf (fpcsv, "       0.0, ");
 		}
@@ -2249,7 +2249,7 @@ void write_static_mfile (
 		int *J1, int *J2,
 		double *F, double *D, double *R, int *r, double **Q,
 		double err, int ok
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	FILE	*fpm;
 	int	i,j,n;
 	char	*wa;
@@ -2261,14 +2261,14 @@ void write_static_mfile (
 
 	i=0;
 	j=0;
-	while (i<FILENMAX) {
+	while (i<FILENMAX) {printf("%s:%d\n",__FILE__,__LINE__);
 		M_file[j] = OUT_file[i];
 		if ( M_file[j] == '+' ||
 		     M_file[j] == '-' ||
 		     M_file[j] == '*' ||
 		     M_file[j] == '^' ||
 		     M_file[j] == '.' ||
-		     M_file[j] == '\0') {
+		     M_file[j] == '\0') {printf("%s:%d\n",__FILE__,__LINE__);
 			M_file[j] = '_';
 			break;
 		}
@@ -2281,13 +2281,13 @@ void write_static_mfile (
 	wa  = "a";
 	if (lc == 1) wa = "w";
 
-	if ((fpm = fopen (M_file, wa)) == NULL) {
+	if ((fpm = fopen (M_file, wa)) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 	  sprintf (errMsg,"\n  error: cannot open Matlab output data file: %s \n", M_file );
 	  errorMsg(errMsg);
 	  exit(18);
 	}
 
-	if ( lc == 1 ) {
+	if ( lc == 1 ) {printf("%s:%d\n",__FILE__,__LINE__);
   	 fprintf(fpm,"%% Frame3DD version: %s ", VERSION );
 	 fprintf(fpm,"              http://frame3dd.sf.net/\n");
 	 fprintf(fpm,"%%GPL Copyright (C) 1992-2015, Henri P. Gavin \n");
@@ -2303,7 +2303,7 @@ void write_static_mfile (
 	}
 
 
-	if ( ok < 0 ) {
+	if ( ok < 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 	 fprintf(fpm,"%%  The Stiffness Matrix is not positive-definite *\n");
 	 fprintf(fpm,"%%  Check that all six rigid-body translations are restrained\n");
 	 fprintf(fpm,"%%  If geometric stiffness is included, reduce the loads.\n");
@@ -2316,8 +2316,8 @@ void write_static_mfile (
 	fprintf(fpm,"\t\t(global)\n");
 	fprintf(fpm,"%%\tX-dsp\t\tY-dsp\t\tZ-dsp\t\tX-rot\t\tY-rot\t\tZ-rot\n");
 	fprintf(fpm,"D%d=[",lc);
-	for (j=1; j<= nN; j++) {
-		for ( i=5; i>=0; i-- ) {
+	for (j=1; j<= nN; j++) {printf("%s:%d\n",__FILE__,__LINE__);
+		for ( i=5; i>=0; i-- ) {printf("%s:%d\n",__FILE__,__LINE__);
 			if ( fabs(D[6*j-i]) < 1.e-8 )
 				fprintf (fpm, "\t0.0\t");
 			else    fprintf (fpm, "\t%13.6e",  D[6*j-i] );
@@ -2331,11 +2331,11 @@ void write_static_mfile (
 	fprintf(fpm,"%%\tNx_1\t\tVy_1\t\tVz_1\t\tTxx_1\t\tMyy_1\t\tMzz_1\t");
 	fprintf(fpm,"  \tNx_2\t\tVy_2\t\tVz_2\t\tTxx_2\t\tMyy_2\t\tMzz_2\n");
 	fprintf(fpm,"F%d=[",lc);
-	for (n=1; n<= nE; n++) {
+	for (n=1; n<= nE; n++) {printf("%s:%d\n",__FILE__,__LINE__);
 		if ( fabs(Q[n][1]) < 0.0001 )
 			fprintf (fpm, "\t0.0\t");
 		else    fprintf (fpm, "\t%13.6e", Q[n][1] );
-		for (i=2; i<=6; i++) {
+		for (i=2; i<=6; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			if ( fabs(Q[n][i]) < 0.0001 )
 				fprintf (fpm, "\t0.0\t");
 			else    fprintf (fpm, "\t%13.6e", Q[n][i] );
@@ -2343,7 +2343,7 @@ void write_static_mfile (
 		if ( fabs(Q[n][7]) < 0.0001 )
 			fprintf (fpm, "\t0.0\t");
 		else    fprintf (fpm, "\t%13.6e", Q[n][7] );
-		for (i=8; i<=12; i++) {
+		for (i=8; i<=12; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			if ( fabs(Q[n][i]) < 0.0001 )
 				fprintf (fpm, "\t0.0\t");
 			else    fprintf (fpm, "\t%13.6e", Q[n][i] );
@@ -2355,9 +2355,9 @@ void write_static_mfile (
 	fprintf(fpm,"%% R E A C T I O N S\t\t\t\t(global)\n");
 	fprintf(fpm,"%%\tFx\t\tFy\t\tFz\t\tMxx\t\tMyy\t\tMzz\n");
 	fprintf(fpm,"R%d=[",lc);
-	for (j=1; j<=nN; j++) {
+	for (j=1; j<=nN; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 		i = 6*(j-1);
-		for (i=5; i>=0; i--) {
+		for (i=5; i>=0; i--) {printf("%s:%d\n",__FILE__,__LINE__);
 			if ( !r[6*j-i] || fabs(R[6*j-i]) < 0.0001 )
 				fprintf (fpm, "\t0.0\t");
 			else    fprintf (fpm, "\t%13.6e", R[6*j-i] );
@@ -2400,9 +2400,9 @@ void peak_internal_forces (
 		double **pkTx, double **pkMy, double **pkMz,
 		double **pkDx, double **pkDy, double **pkDz,
 		double **pkRx, double **pkSy, double **pkSz
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double	t1, t2, t3, t4, t5, t6, t7, t8, t9, /* coord transformation */
-		u1, u2, u3, u4, u5, u6, u7, u8, u9, u10, u11, u12; /* displ. */
+		u1, u2, u3, u4, u5, u6/*, u7, u8, u9, u10, u11, u12*/; /* displ. */
 
 	double	xx1,xx2, wx1,wx2,	/* trapz load data, local x dir */
 		xy1,xy2, wy1,wy2,	/* trapz load data, local y dir */
@@ -2431,18 +2431,18 @@ void peak_internal_forces (
 		nx=1000,	// number of sections alont x axis
 		cU=0, cW=0, cP=0, // counters for U, W, and P loads
 		i,		// counter along x axis from node N1 to node N2
-		n1,n2,i1,i2;	// starting and stopping node numbers
+		n1,n2,i1/*,i2*/;	// starting and stopping node numbers
 
 	if (dx == -1.0)	return;	// skip calculation of internal forces and displ
 
-	for ( m=1; m <= nE; m++ ) {	// initialize peak values to zero
+	for ( m=1; m <= nE; m++ ) {printf("%s:%d\n",__FILE__,__LINE__);	// initialize peak values to zero
 		pkNx[lc][m] = pkVy[lc][m] = pkVz[lc][m] = 0.0; 
 		pkTx[lc][m] = pkMy[lc][m] = pkMz[lc][m] = 0.0;
 		pkDx[lc][m] = pkDy[lc][m] = pkDz[lc][m] = 0.0;
 		pkRx[lc][m] = pkSy[lc][m] = pkSz[lc][m] = 0.0;
 	}
 
-	for ( m=1; m <= nE; m++ ) {	// loop over all frame elements
+	for ( m=1; m <= nE; m++ ) {printf("%s:%d\n",__FILE__,__LINE__);	// loop over all frame elements
 
 		n1 = N1[m];	n2 = N2[m]; // node 1 and node 2 of elmnt m
 
@@ -2461,8 +2461,8 @@ void peak_internal_forces (
 		wzg = d[m]*Ax[m]*(t7*gX + t8*gY + t9*gZ);
 
 		// add uniformly-distributed loads to gravity load
-		for (n=1; n<=nE && cU<nU; n++) {
-			if ( (int) U[n][1] == m ) { // load n on element m
+		for (n=1; n<=nE && cU<nU; n++) {printf("%s:%d\n",__FILE__,__LINE__);
+			if ( (int) U[n][1] == m ) {printf("%s:%d\n",__FILE__,__LINE__); // load n on element m
 				wxg += U[n][2];
 				wyg += U[n][3];
 				wzg += U[n][4];
@@ -2478,7 +2478,7 @@ void peak_internal_forces (
 		My_ = My =  Q[m][5];	// positive My -> positive x-z curvature
 		Mz_ = Mz = -Q[m][6];	// positive Mz -> positive x-y curvature
 
-		i1 = 6*(n1-1);	i2 = 6*(n2-1);
+		i1 = 6*(n1-1);//	i2 = 6*(n2-1);
 
 		/* compute end deflections in local coordinates */
 
@@ -2490,13 +2490,13 @@ void peak_internal_forces (
 		u5  = t4*D[i1+4] + t5*D[i1+5] + t6*D[i1+6];
 		u6  = t7*D[i1+4] + t8*D[i1+5] + t9*D[i1+6];
 
-		u7  = t1*D[i2+1] + t2*D[i2+2] + t3*D[i2+3];
-		u8  = t4*D[i2+1] + t5*D[i2+2] + t6*D[i2+3];
-		u9  = t7*D[i2+1] + t8*D[i2+2] + t9*D[i2+3];
-
-		u10 = t1*D[i2+4] + t2*D[i2+5] + t3*D[i2+6];
-		u11 = t4*D[i2+4] + t5*D[i2+5] + t6*D[i2+6];
-		u12 = t7*D[i2+4] + t8*D[i2+5] + t9*D[i2+6];
+		/* u7  = t1*D[i2+1] + t2*D[i2+2] + t3*D[i2+3]; */
+		/* u8  = t4*D[i2+1] + t5*D[i2+2] + t6*D[i2+3]; */
+		/* u9  = t7*D[i2+1] + t8*D[i2+2] + t9*D[i2+3]; */
+        /*  */
+		/* u10 = t1*D[i2+4] + t2*D[i2+5] + t3*D[i2+6]; */
+		/* u11 = t4*D[i2+4] + t5*D[i2+5] + t6*D[i2+6]; */
+		/* u12 = t7*D[i2+4] + t8*D[i2+5] + t9*D[i2+6]; */
 
 		// rotations and displacements for frame element "m" at (x=0)
 		Dx =  u1;	// displacement in  local x dir  at node N1
@@ -2509,18 +2509,18 @@ void peak_internal_forces (
 		// accumulate interior span loads, forces, moments, slopes, and displacements
 		// all in a single loop  
 
-		for (i=1; i<=nx; i++) {
+		for (i=1; i<=nx; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 
 			x = i*dx;	// location from node N1 along the x-axis
 
 			// start with gravitational plus uniform loads
 			wx = wxg; wy = wyg; wz = wzg;
 
-			if (i==1) { wx_ = wxg; wy_ = wyg; wz_ = wzg; tx_ = tx; }
+			if (i==1) {printf("%s:%d\n",__FILE__,__LINE__); wx_ = wxg; wy_ = wyg; wz_ = wzg; tx_ = tx; }
 
 			// add trapezoidally-distributed loads
-			for (n=1; n<=10*nE && cW<nW; n++) {
-			    if ( (int) W[n][1] == m ) { // load n on element m
+			for (n=1; n<=10*nE && cW<nW; n++) {printf("%s:%d\n",__FILE__,__LINE__);
+			    if ( (int) W[n][1] == m ) {printf("%s:%d\n",__FILE__,__LINE__); // load n on element m
 				if (i==nx) ++cW;
 				xx1 = W[n][2];  xx2 = W[n][3];
 				wx1 = W[n][4];  wx2 = W[n][5];
@@ -2553,17 +2553,17 @@ void peak_internal_forces (
 			tx_ = tx;
 			
 			// add interior point loads 
-			for (n=1; n<=10*nE && cP<nP; n++) {
-			    if ( (int) P[n][1] == m ) { // load n on element m
+			for (n=1; n<=10*nE && cP<nP; n++) {printf("%s:%d\n",__FILE__,__LINE__);
+			    if ( (int) P[n][1] == m ) {printf("%s:%d\n",__FILE__,__LINE__); // load n on element m
 				if (i==nx) ++cP;
 				xp = P[n][5];
-				if ( x <= xp && xp < x+dx ) {
+				if ( x <= xp && xp < x+dx ) {printf("%s:%d\n",__FILE__,__LINE__);
 					Nx -= P[n][2] * 0.5 * (1.0 - (xp-x)/dx);
 					Vy -= P[n][3] * 0.5 * (1.0 - (xp-x)/dx);
 					Vz -= P[n][4] * 0.5 * (1.0 - (xp-x)/dx);
 					
 				}
-				if ( x-dx <= xp && xp < x ) {
+				if ( x-dx <= xp && xp < x ) {printf("%s:%d\n",__FILE__,__LINE__);
 					Nx -= P[n][2] * 0.5 * (1.0 - (x-dx-xp)/dx);
 					Vy -= P[n][3] * 0.5 * (1.0 - (x-dx-xp)/dx);
 					Vz -= P[n][4] * 0.5 * (1.0 - (x-dx-xp)/dx);
@@ -2585,7 +2585,7 @@ void peak_internal_forces (
 			Sy = Sy + 0.5*(Mz_ + Mz)/(E[m]*Iz[m])*dx;
 			Sz = Sz + 0.5*(My_ + My)/(E[m]*Iy[m])*dx;
 		
-			if ( shear ) {
+			if ( shear ) {printf("%s:%d\n",__FILE__,__LINE__);
 				Sy += Vy/(G[m]*Asy[m]);
 				Sz += Vz/(G[m]*Asz[m]);
 			}
@@ -2679,7 +2679,7 @@ void write_internal_forces (
 		float *d, float gX, float gY, float gZ,
 		int nU, float **U, int nW, float **W, int nP, float **P,
 		double *D, int shear, double error
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double	t1, t2, t3, t4, t5, t6, t7, t8, t9, /* coord transformation */
 		u1, u2, u3, u4, u5, u6, u7, u8, u9, u10, u11, u12; /* displ. */
 
@@ -2733,7 +2733,7 @@ void write_internal_forces (
  
 	CSV_filename( CSV_file, wa, OUT_file, lc );
 
-	if ((fpcsv = fopen (CSV_file, "a")) == NULL) {
+	if ((fpcsv = fopen (CSV_file, "a")) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 	  sprintf (errMsg,"\n  error: cannot open CSV output data file: %s \n", CSV_file);
 	  errorMsg(errMsg);
 	  exit(17);
@@ -2743,7 +2743,7 @@ void write_internal_forces (
 	sprintf(fnif,"%s%02d",infcpath,lc);
 	
 	/* open the interior force data file */
-	if ((fpif = fopen (fnif, "w")) == NULL) {
+	if ((fpif = fopen (fnif, "w")) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
          sprintf (errMsg,"\n  error: cannot open interior force data file: %s \n",fnif);
 	 errorMsg(errMsg);
          exit(19);
@@ -2776,7 +2776,7 @@ void write_internal_forces (
  * 	fprintf(fp,"  Elmnt  X-dsp       Y-dsp       Z-dsp       X-rot       Y-rot       Z-rot\n");
 */
 
-	for ( m=1; m <= nE; m++ ) {	// loop over all frame elements
+	for ( m=1; m <= nE; m++ ) {printf("%s:%d\n",__FILE__,__LINE__);	// loop over all frame elements
 
 		n1 = J1[m];	n2 = J2[m]; // node 1 and node 2 of elmnt m
 
@@ -2821,8 +2821,8 @@ void write_internal_forces (
 		wzg = d[m]*Ax[m]*(t7*gX + t8*gY + t9*gZ);
 
 		// add uniformly-distributed loads to gravity load
-		for (n=1; n<=nE && cU<nU; n++) {
-			if ( (int) U[n][1] == m ) { // load n on element m
+		for (n=1; n<=nE && cU<nU; n++) {printf("%s:%d\n",__FILE__,__LINE__);
+			if ( (int) U[n][1] == m ) {printf("%s:%d\n",__FILE__,__LINE__); // load n on element m
 				wxg += U[n][2];
 				wyg += U[n][3];
 				wzg += U[n][4];
@@ -2839,14 +2839,14 @@ void write_internal_forces (
 		Mz[0] = -Q[m][6];	// positive Mz -> positive x-y curvature
 
 		dx_ = dx;
-		for (i=1; i<=nx; i++) {	/*  accumulate interior span loads */
+		for (i=1; i<=nx; i++) {printf("%s:%d\n",__FILE__,__LINE__);	/*  accumulate interior span loads */
 
 			// start with gravitational plus uniform loads
 			wx = wxg;
 			wy = wyg;
 			wz = wzg;
 
-			if (i==1) {
+			if (i==1) {printf("%s:%d\n",__FILE__,__LINE__);
 				wx_ = wxg;
 				wy_ = wyg;
 				wz_ = wzg;
@@ -2854,8 +2854,8 @@ void write_internal_forces (
 			}
 
 			// add trapezoidally-distributed loads
-			for (n=1; n<=10*nE && cW<nW; n++) {
-			    if ( (int) W[n][1] == m ) { // load n on element m
+			for (n=1; n<=10*nE && cW<nW; n++) {printf("%s:%d\n",__FILE__,__LINE__);
+			    if ( (int) W[n][1] == m ) {printf("%s:%d\n",__FILE__,__LINE__); // load n on element m
 				if (i==nx) ++cW;
 				xx1 = W[n][2];  xx2 = W[n][3];
 				wx1 = W[n][4];  wx2 = W[n][5];
@@ -2888,17 +2888,17 @@ void write_internal_forces (
 			tx_ = tx;
 			
 			// add interior point loads 
-			for (n=1; n<=10*nE && cP<nP; n++) {
-			    if ( (int) P[n][1] == m ) { // load n on element m
+			for (n=1; n<=10*nE && cP<nP; n++) {printf("%s:%d\n",__FILE__,__LINE__);
+			    if ( (int) P[n][1] == m ) {printf("%s:%d\n",__FILE__,__LINE__); // load n on element m
 				if (i==nx) ++cP;
 				xp = P[n][5];
-				if ( x[i] <= xp && xp < x[i]+dx ) {
+				if ( x[i] <= xp && xp < x[i]+dx ) {printf("%s:%d\n",__FILE__,__LINE__);
 					Nx[i] -= P[n][2] * 0.5 * (1.0 - (xp-x[i])/dx);
 					Vy[i] -= P[n][3] * 0.5 * (1.0 - (xp-x[i])/dx);
 					Vz[i] -= P[n][4] * 0.5 * (1.0 - (xp-x[i])/dx);
 					
 				}
-				if ( x[i]-dx <= xp && xp < x[i] ) {
+				if ( x[i]-dx <= xp && xp < x[i] ) {printf("%s:%d\n",__FILE__,__LINE__);
 					Nx[i] -= P[n][2] * 0.5 * (1.0 - (x[i]-dx-xp)/dx);
 					Vy[i] -= P[n][3] * 0.5 * (1.0 - (x[i]-dx-xp)/dx);
 					Vz[i] -= P[n][4] * 0.5 * (1.0 - (x[i]-dx-xp)/dx);
@@ -2908,7 +2908,7 @@ void write_internal_forces (
 
 		}
 		// linear correction of forces for bias in trapezoidal integration
-		for (i=1; i<=nx; i++) {
+		for (i=1; i<=nx; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			Nx[i] -= (Nx[nx]-Q[m][7])  * i/nx;
 			Vy[i] -= (Vy[nx]-Q[m][8])  * i/nx;
 			Vz[i] -= (Vz[nx]-Q[m][9])  * i/nx;
@@ -2916,14 +2916,14 @@ void write_internal_forces (
 		}
 		// trapezoidal integration of shear force for bending momemnt
 		dx_ = dx;
-		for (i=1; i<=nx; i++) {
+		for (i=1; i<=nx; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			if (i==nx)	dx_ = dxnx;
 			My[i] = My[i-1] - 0.5*(Vz[i]+Vz[i-1])*dx_;
 			Mz[i] = Mz[i-1] - 0.5*(Vy[i]+Vy[i-1])*dx_;
 
 		}
 		// linear correction of moments for bias in trapezoidal integration
-		for (i=1; i<=nx; i++) {
+		for (i=1; i<=nx; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			My[i] -= (My[nx]+Q[m][11]) * i/nx;
 			Mz[i] -= (Mz[nx]-Q[m][12]) * i/nx;
 		}
@@ -2961,53 +2961,53 @@ void write_internal_forces (
 
 		// axial displacement along frame element "m"
 		dx_ = dx;
-		for (i=1; i<=nx; i++) {
+		for (i=1; i<=nx; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			if (i==nx)	dx_ = dxnx;
 			Dx[i] = Dx[i-1] + 0.5*(Nx[i-1]+Nx[i])/(E[m]*Ax[m])*dx_;
 		}
 		// linear correction of axial displacement for bias in trapezoidal integration
-		for (i=1; i<=nx; i++) {
+		for (i=1; i<=nx; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			Dx[i] -= (Dx[nx]-u7) * i/nx;
 		}
 		
 		// torsional rotation along frame element "m"
 		dx_ = dx;
-		for (i=1; i<=nx; i++) {
+		for (i=1; i<=nx; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			if (i==nx)	dx_ = dxnx;
 			Rx[i] = Rx[i-1] + 0.5*(Tx[i-1]+Tx[i])/(G[m]*Jx[m])*dx_;
 		}
 		// linear correction of torsional rot'n for bias in trapezoidal integration
-		for (i=1; i<=nx; i++) {
+		for (i=1; i<=nx; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			Rx[i] -= (Rx[nx]-u10) * i/nx;
 		}
 		
 		// transverse slope along frame element "m"
 		dx_ = dx;
-		for (i=1; i<=nx; i++) {
+		for (i=1; i<=nx; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			if (i==nx)	dx_ = dxnx;
 			Sy[i] = Sy[i-1] + 0.5*(Mz[i-1]+Mz[i])/(E[m]*Iz[m])*dx_;
 			Sz[i] = Sz[i-1] + 0.5*(My[i-1]+My[i])/(E[m]*Iy[m])*dx_;
 		}
 		// linear correction for bias in trapezoidal integration
-		for (i=1; i<=nx; i++) {
+		for (i=1; i<=nx; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			Sy[i] -= (Sy[nx]-u12) * i/nx;
 			Sz[i] -= (Sz[nx]+u11) * i/nx;
 		}
-		if ( shear ) {		// add-in slope due to shear deformation
-			for (i=0; i<=nx; i++) {
+		if ( shear ) {printf("%s:%d\n",__FILE__,__LINE__);		// add-in slope due to shear deformation
+			for (i=0; i<=nx; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 				Sy[i] += Vy[i]/(G[m]*Asy[m]);
 				Sz[i] += Vz[i]/(G[m]*Asz[m]);
 			}
 		}
 		// displacement along frame element "m"
 		dx_ = dx;
-		for (i=1; i<=nx; i++) {
+		for (i=1; i<=nx; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			if (i==nx)	dx_ = dxnx;
 			Dy[i] = Dy[i-1] + 0.5*(Sy[i-1]+Sy[i])*dx_;
 			Dz[i] = Dz[i-1] + 0.5*(Sz[i-1]+Sz[i])*dx_;
 		}
 		// linear correction for bias in trapezoidal integration
- 		for (i=1; i<=nx; i++) {
+ 		for (i=1; i<=nx; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			Dy[i] -= (Dy[nx]-u8) * i/nx;
 			Dz[i] -= (Dz[nx]-u9) * i/nx;
 		}
@@ -3019,7 +3019,7 @@ void write_internal_forces (
 		maxRx =	minRx = Rx[0]; maxSy = minSy = Sy[0]; maxSz = minSz = Sz[0];	//  maximum element rotations
 
 	// find maximum and minimum internal element forces
-		for (i=1; i<=nx; i++) {
+		for (i=1; i<=nx; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			maxNx = (Nx[i] > maxNx) ? Nx[i] : maxNx;
 			minNx = (Nx[i] < minNx) ? Nx[i] : minNx;
 			maxVy = (Vy[i] > maxVy) ? Vy[i] : maxVy;
@@ -3036,7 +3036,7 @@ void write_internal_forces (
 		}
 
 	// find maximum and minimum internal element displacements
-		for (i=1; i<=nx; i++) {
+		for (i=1; i<=nx; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			maxDx = (Dx[i] > maxDx) ? Dx[i] : maxDx;
 			minDx = (Dx[i] < minDx) ? Dx[i] : minDx;
 			maxDy = (Dy[i] > maxDy) ? Dy[i] : maxDy;
@@ -3059,7 +3059,7 @@ void write_internal_forces (
 
 	// write results to the internal frame element force output data file
 		fprintf(fpif,"#.x                \tNx        \tVy        \tVz        \tTx       \tMy        \tMz        \tDx        \tDy        \tDz        \tRx\t~\n");
-		for (i=0; i<=nx; i++) {
+		for (i=0; i<=nx; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			fprintf(fpif,"%14.6e\t", x[i] );
 			fprintf(fpif,"%14.6e\t%14.6e\t%14.6e\t",
 						Nx[i], Vy[i], Vz[i] );
@@ -3122,7 +3122,7 @@ void write_modal_results(
 		double total_mass, double struct_mass,
 		int iter, int sumR, int nM,
 		double shift, int lump, double tol, int ok
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	int	i, j, k, m, num_modes;
 	double	mpfX, mpfY, mpfZ,	/* mode participation factors	*/
 		*msX, *msY, *msZ;
@@ -3132,7 +3132,7 @@ void write_modal_results(
 	msY = dvector(1,DoF);
 	msZ = dvector(1,DoF);
 
-	for (i=1; i<=DoF; i++) {
+	for (i=1; i<=DoF; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		msX[i] = msY[i] = msZ[i] = 0.0;
 		for (j=1; j<=DoF; j+=6) msX[i] += M[i][j];
 		for (j=2; j<=DoF; j+=6) msY[i] += M[i][j];
@@ -3149,7 +3149,7 @@ void write_modal_results(
 	fprintf(fp,"\t(diagonal of the mass matrix)\t\t\t(global)\n");
 	fprintf(fp,"  Node  X-mass      Y-mass      Z-mass");
 	fprintf(fp,"      X-inrta     Y-inrta     Z-inrta\n");
-	for (j=1; j <= nN; j++) {
+	for (j=1; j <= nN; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 		k = 6*(j-1);
 		fprintf(fp," %5d", j);
 		for ( i=1; i<=6; i++ )
@@ -3161,7 +3161,7 @@ void write_modal_results(
 	fprintf(fp,"N A T U R A L   F R E Q U E N C I E S   & \n");
 	fprintf(fp,"M A S S   N O R M A L I Z E D   M O D E   S H A P E S \n");
 	fprintf(fp," convergence tolerance: %.3e \n", tol);
-	for (m=1; m<=num_modes; m++) {
+	for (m=1; m<=num_modes; m++) {printf("%s:%d\n",__FILE__,__LINE__);
 	    mpfX = 0.0;	for (i=1; i<=DoF; i++)    mpfX += V[i][m]*msX[i];
 	    mpfY = 0.0;	for (i=1; i<=DoF; i++)    mpfY += V[i][m]*msY[i];
 	    mpfZ = 0.0;	for (i=1; i<=DoF; i++)    mpfZ += V[i][m]*msZ[i];
@@ -3172,7 +3172,7 @@ void write_modal_results(
 
 	    fprintf(fp,"  Node    X-dsp       Y-dsp       Z-dsp");
 	    fprintf(fp,"       X-rot       Y-rot       Z-rot\n");
-	    for (j=1; j<= nN; j++) {
+	    for (j=1; j<= nN; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(fp," %5d", j);
 		for ( i=5; i>=0; i-- )	fprintf (fp, " %11.3e", V[6*j-i][m] );
 		fprintf(fp,"\n");
@@ -3184,7 +3184,7 @@ void write_modal_results(
 	fs = sqrt(4.0*PI*PI*f[nM]*f[nM] + tol) / (2.0*PI);
 
 	fprintf(fp,"There are %d modes below %f Hz.", -ok, fs );
-	if ( -ok > nM ) {
+	if ( -ok > nM ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(fp," ... %d modes were not found.\n", -ok-nM );
 		fprintf(fp," Try increasing the number of modes in \n");
 		fprintf(fp," order to get the missing modes below %f Hz.\n",fs);
@@ -3215,7 +3215,7 @@ void static_mesh(
 		vec3 *xyz, double *L,
 		int *N1, int *N2, float *p, double *D, 
 		double exagg_static, int D3_flag, int anlyz, float dx, float scale
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	FILE	*fpif=NULL, *fpm=NULL;
 	double	mx, my, mz; /* coordinates of the frame element number labels */
 	char	fnif[FILENMAX], meshfl[FILENMAX],
@@ -3236,25 +3236,25 @@ void static_mesh(
 
 	// write gnuplot plotting script commands
 
-	for ( j=1; j<=nN; j++ ) { // check for three-dimensional frame 
+	for ( j=1; j<=nN; j++ ) {printf("%s:%d\n",__FILE__,__LINE__); // check for three-dimensional frame 
 		if (xyz[j].x != 0.0) X=1;
 		if (xyz[j].y != 0.0) Y=1;
 		if (xyz[j].z != 0.0) Z=1;
 	}
-	if ( (X && Y && Z) || D3_flag ) {
+	if ( (X && Y && Z) || D3_flag ) {printf("%s:%d\n",__FILE__,__LINE__);
 		D3 = ' '; D2 = '#';
-	} else {
+	} else {printf("%s:%d\n",__FILE__,__LINE__);
 		D3 = '#'; D2 = ' ';
 	}
 
-	if (lc <= 1) {	// open plotting script file for writing
-	    if ((fpm = fopen (plotpath, "w")) == NULL) {
+	if (lc <= 1) {printf("%s:%d\n",__FILE__,__LINE__);	// open plotting script file for writing
+	    if ((fpm = fopen (plotpath, "w")) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 		sprintf (errMsg,"\n  error: cannot open gnuplot script file: %s \n", plotpath);
 		errorMsg(errMsg);
 		exit(23);
 	    }
-	} else {	// open plotting script file for appending
-	    if ((fpm = fopen (plotpath, "a")) == NULL) {
+	} else {printf("%s:%d\n",__FILE__,__LINE__);	// open plotting script file for appending
+	    if ((fpm = fopen (plotpath, "a")) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 		sprintf (errMsg,"\n  error: cannot open gnuplot script file: %s \n", plotpath);
 		errorMsg(errMsg);
 		exit(24);
@@ -3266,7 +3266,7 @@ void static_mesh(
 
 	// write header, plot-setup cmds, node label, and element label data
 
-	if (lc <= 1) {	// header & node number & element number labels
+	if (lc <= 1) {printf("%s:%d\n",__FILE__,__LINE__);	// header & node number & element number labels
 
 	 fprintf(fpm,"# FRAME3DD ANALYSIS RESULTS  http://frame3dd.sf.net/");
 	 fprintf(fpm," VERSION %s \n", VERSION);
@@ -3291,7 +3291,7 @@ void static_mesh(
 					j, xyz[j].x,xyz[j].y,xyz[j].z );
 
 	 fprintf(fpm,"# ELEMENT NUMBER LABELS\n");
-	 for (m=1; m<=nE; m++) {
+	 for (m=1; m<=nE; m++) {printf("%s:%d\n",__FILE__,__LINE__);
 		n1 = N1[m];	n2 = N2[m];
 		mx = 0.5 * ( xyz[n1].x + xyz[n2].x );
 		my = 0.5 * ( xyz[n1].y + xyz[n2].y );
@@ -3317,10 +3317,10 @@ void static_mesh(
 
 	fprintf(fpm,"set title \"%s\\n", title );
 	fprintf(fpm,"analysis file: %s ", IN_file );
-	if ( anlyz ) {
+	if ( anlyz ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(fpm,"  deflection exaggeration: %.1f ", exagg_static );
 		fprintf(fpm,"  load case %d of %d \"\n", lc, nL );
-	} else {
+	} else {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(fpm,"  data check only \"\n");
 	}
 	fprintf(fpm,"unset clip; \nset clip one; set clip two\n");
@@ -3346,9 +3346,9 @@ void static_mesh(
 
 	// write undeformed mesh data
 
-	if (lc <= 1) {
+	if (lc <= 1) {printf("%s:%d\n",__FILE__,__LINE__);
 	 // open the undeformed mesh data file for writing
-	 if ((fpm = fopen (meshpath, "w")) == NULL) {
+	 if ((fpm = fopen (meshpath, "w")) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 		sprintf (errMsg,"\n  error: cannot open gnuplot undeformed mesh data file: %s\n", meshpath );
 		errorMsg(errMsg);
 		exit(21);
@@ -3361,7 +3361,7 @@ void static_mesh(
 	 fprintf(fpm,"# U N D E F O R M E D   M E S H   D A T A   (global coordinates)\n");
 	 fprintf(fpm,"# Node        X            Y            Z \n");
 
-	 for (m=1; m<=nE; m++) {
+	 for (m=1; m<=nE; m++) {printf("%s:%d\n",__FILE__,__LINE__);
 		n = N1[m];	// i = 6*(n-1);
 		fprintf (fpm,"%5d %12.4e %12.4e %12.4e \n",
 					n , xyz[n].x , xyz[n].y , xyz[n].z );
@@ -3378,7 +3378,7 @@ void static_mesh(
 	// write deformed mesh data
 
 	// open the deformed mesh data file for writing 
-	if ((fpm = fopen (meshfl, "w")) == NULL) {
+	if ((fpm = fopen (meshfl, "w")) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 		sprintf (errMsg,"\n  error: cannot open gnuplot deformed mesh data file %s \n", meshfl );
 		errorMsg(errMsg);
 		exit(22);
@@ -3394,31 +3394,31 @@ void static_mesh(
 	fprintf(fpm,"#       X-dsp        Y-dsp        Z-dsp\n");
 	
 	// open the interior force data file for reading 
-	if ( dx > 0.0 && anlyz ) {
+	if ( dx > 0.0 && anlyz ) {printf("%s:%d\n",__FILE__,__LINE__);
 	 // file name for internal force data for load case "lc" 
 	 sprintf( fnif, "%s%02d", infcpath, lc );
-	 if ((fpif = fopen (fnif, "r")) == NULL) {
+	 if ((fpif = fopen (fnif, "r")) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
           sprintf (errMsg,"\n  error: cannot open interior force data file: %s \n",fnif);
 	  errorMsg(errMsg);
           exit(20);
 	 }
 	}
 
-	for (m=1; m<=nE; m++) {	// write deformed shape data for each element
+	for (m=1; m<=nE; m++) {printf("%s:%d\n",__FILE__,__LINE__);	// write deformed shape data for each element
 
 		ch = 'a'; 
 
 		fprintf( fpm, "\n# element %5d \n", m );
-		if ( dx < 0.0 && anlyz ) {
+		if ( dx < 0.0 && anlyz ) {printf("%s:%d\n",__FILE__,__LINE__);
 			cubic_bent_beam ( fpm,
 				N1[m],N2[m], xyz, L[m],p[m], D, exagg_static );
 		} 
-		if ( dx > 0.0 && anlyz ) {
+		if ( dx > 0.0 && anlyz ) {printf("%s:%d\n",__FILE__,__LINE__);
 			while ( ch != '@' )	ch = getc(fpif);
 			sfrv=fscanf(fpif,"%d %d %d %f %f %f %f %f %f %d",
 			 &frel, &n1, &n2, &x1, &y1, &z1, &x2, &y2, &z2, &nx);
 			if (sfrv != 10) sferr(fnif);
-			if ( frel != m || N1[m] != n1 || N2[m] != n2 ) {
+			if ( frel != m || N1[m] != n1 || N2[m] != n2 ) {printf("%s:%d\n",__FILE__,__LINE__);
 			 fprintf(stderr," error in static_mesh parsing\n");
 			 fprintf(stderr,"  frel = %d; m = %d; nx = %d \n", frel,m,nx );
 			}
@@ -3452,7 +3452,7 @@ void modal_mesh(
 		int *J1, int *J2, float *p,
 		double **M, double *f, double **V,
 		double exagg_modal, int D3_flag, int anlyz
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	FILE	*fpm;
 	double mpfX, mpfY, mpfZ;	/* mode participation factors	*/
 	double *msX, *msY, *msZ;
@@ -3470,7 +3470,7 @@ void modal_mesh(
 	msZ = dvector(1,DoF);
 	v   = dvector(1,DoF);
 
-	for (i=1; i<=DoF; i++) {	/* modal participation factors */
+	for (i=1; i<=DoF; i++) {printf("%s:%d\n",__FILE__,__LINE__);	/* modal participation factors */
 		msX[i] = msY[i] = msZ[i] = 0.0;
 		for (j=1; j<=DoF; j+=6) msX[i] += M[i][j];
 		for (j=2; j<=DoF; j+=6) msY[i] += M[i][j];
@@ -3479,11 +3479,11 @@ void modal_mesh(
 
 	if (!anlyz) exagg_modal = 0.0;
 
-	for (m=1; m<=nM; m++) {
+	for (m=1; m<=nM; m++) {printf("%s:%d\n",__FILE__,__LINE__);
 
 		sprintf( modefl,"%s-%02d-", modepath, m );
 
-		if ((fpm = fopen (modefl, "w")) == NULL) {
+		if ((fpm = fopen (modefl, "w")) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 			sprintf (errMsg,"\n  error: cannot open gnuplot modal mesh file: %s \n", modefl);
 			errorMsg(errMsg);
 			exit(27);
@@ -3507,27 +3507,27 @@ void modal_mesh(
 
 		fprintf(fpm,"#      X-dsp       Y-dsp       Z-dsp\n\n");
 
-		for(n=1; n<=nE; n++) {
+		for(n=1; n<=nE; n++) {printf("%s:%d\n",__FILE__,__LINE__);
 			fprintf( fpm, "\n# element %5d \n", n );
 			cubic_bent_beam ( fpm, J1[n], J2[n], xyz, L[n], p[n], v, exagg_modal );
 		}
 
 		fclose(fpm);
 
-		for ( j=1; j<=nN; j++ ) { // check for three-dimensional frame
+		for ( j=1; j<=nN; j++ ) {printf("%s:%d\n",__FILE__,__LINE__); // check for three-dimensional frame
 			if (xyz[j].x != 0.0) X=1;
 			if (xyz[j].y != 0.0) Y=1;
 			if (xyz[j].z != 0.0) Z=1;
 		}
 
-		if ( (X && Y && Z) || D3_flag ) {
+		if ( (X && Y && Z) || D3_flag ) {printf("%s:%d\n",__FILE__,__LINE__);
 			D3 = ' '; D2 = '#';
-		} else {
+		} else {printf("%s:%d\n",__FILE__,__LINE__);
 			D3 = '#'; D2 = ' ';
 		}
 
 
-		if ((fpm = fopen (plotpath, "a")) == NULL) {
+		if ((fpm = fopen (plotpath, "a")) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 			sprintf (errMsg,"\n  error: cannot append gnuplot script file: %s \n",plotpath);
 			errorMsg(errMsg);
 			exit(25);
@@ -3535,7 +3535,7 @@ void modal_mesh(
 
 		fprintf(fpm,"pause -1\n");
 
-		if (m==1) {
+		if (m==1) {printf("%s:%d\n",__FILE__,__LINE__);
 			fprintf(fpm,"unset label\n");
 			fprintf(fpm,"%c unset key\n", D3 );
 		}
@@ -3582,7 +3582,7 @@ void animate(
 	double exagg_modal, int D3_flag, 
 	float pan,		/* pan rate for animation	     */
 	float scale		/* inital zoom scale in 3D animation */
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	FILE	*fpm;
 
 	float	x_min = 0.0, x_max = 0.0,
@@ -3610,11 +3610,11 @@ void animate(
 		modefl[FILENMAX], framefl[FILENMAX];
 	char	errMsg[MAXL];
 
-	for (j=1; j<=nN; j++) {		// check for three-dimensional frame
+	for (j=1; j<=nN; j++) {printf("%s:%d\n",__FILE__,__LINE__);		// check for three-dimensional frame
 		if (xyz[j].x != 0.0) X=1;
 		if (xyz[j].y != 0.0) Y=1;
 		if (xyz[j].z != 0.0) Z=1;
-		if (j==1) {
+		if (j==1) {printf("%s:%d\n",__FILE__,__LINE__);
 			x_min = x_max = xyz[j].x;
 			y_min = y_max = xyz[j].y;
 			z_min = z_max = xyz[j].z;
@@ -3626,23 +3626,23 @@ void animate(
 		if ( y_max < xyz[j].y ) y_max = xyz[j].y;
 		if ( z_max < xyz[j].z ) z_max = xyz[j].z;
 	}
-	if ( (X && Y && Z) || D3_flag ) {
+	if ( (X && Y && Z) || D3_flag ) {printf("%s:%d\n",__FILE__,__LINE__);
 		D3 = ' '; D2 = '#';
-	} else {
+	} else {printf("%s:%d\n",__FILE__,__LINE__);
 		D3 = '#'; D2 = ' ';
 	}
 
 	Dxyz = sqrt( (x_max-x_min)*(x_max-x_min) + (y_max-y_min)*(y_max-y_min) + (z_max-z_min)*(z_max-z_min) );
 
 
-	if ((fpm = fopen (plotpath, "a")) == NULL) {
+	if ((fpm = fopen (plotpath, "a")) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 		sprintf (errMsg,"\n  error: cannot append gnuplot script file: %s \n",plotpath);
 		errorMsg(errMsg);
 		exit(26);
 	}
 	i = 1;
-	while ( (m = anim[i]) != 0 && i < 100) {
-	 if ( i==1 ) {
+	while ( (m = anim[i]) != 0 && i < 100) {printf("%s:%d\n",__FILE__,__LINE__);
+	 if ( i==1 ) {printf("%s:%d\n",__FILE__,__LINE__);
 
 	   fprintf(fpm,"\n# --- M O D E   S H A P E   A N I M A T I O N ---\n");
 	   fprintf(fpm,"# rot_x_init  = %7.2f\n", rot_x_init ); 
@@ -3703,9 +3703,9 @@ void animate(
 
 	 frame_number = 0;
 	 total_frames = 2*CYCLES*frames;
-	 for ( c=1; c <= CYCLES; c++ ) {
+	 for ( c=1; c <= CYCLES; c++ ) {printf("%s:%d\n",__FILE__,__LINE__);
 
-	  for ( fr=0; fr<=frames; fr++ ) {
+	  for ( fr=0; fr<=frames; fr++ ) {printf("%s:%d\n",__FILE__,__LINE__);
 
 	    ++frame_number;
 
@@ -3727,7 +3727,7 @@ void animate(
 	    fprintf(fpm,"%c  load 'saveplot';\n",Movie);
 	    fprintf(fpm,"%c  !mv my-plot.ps %s\n", Movie, framefl );
 	  }
-	  for ( fr = frames-1; fr > 0; fr-- ) {
+	  for ( fr = frames-1; fr > 0; fr-- ) {printf("%s:%d\n",__FILE__,__LINE__);
 
 	    ++frame_number;
 
@@ -3765,12 +3765,12 @@ void animate(
 	v = dvector(1,DoF);
 
 	i = 1;
-	while ( (m = anim[i]) != 0 ) {
-	  for ( fr=0; fr<=frames; fr++ ) {
+	while ( (m = anim[i]) != 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
+	  for ( fr=0; fr<=frames; fr++ ) {printf("%s:%d\n",__FILE__,__LINE__);
 
 	    sprintf(modefl,"%s-%02d.%03d", modepath, m, fr  );
 
-	    if ((fpm = fopen (modefl, "w")) == NULL) {
+	    if ((fpm = fopen (modefl, "w")) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 		sprintf (errMsg,"\n  error: cannot open gnuplot modal mesh data file: %s \n", modefl);
 		errorMsg(errMsg);
 		exit(28);
@@ -3789,7 +3789,7 @@ void animate(
 
 	    fprintf(fpm,"#      X-dsp       Y-dsp       Z-dsp\n\n");
 
-	    for (n=1; n<=nE; n++) {
+	    for (n=1; n<=nE; n++) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf( fpm, "\n# element %5d \n", n );
 		cubic_bent_beam ( fpm, J1[n], J2[n], xyz, L[n], p[n], v, ex );
 	    }
@@ -3814,9 +3814,9 @@ void animate(
 void cubic_bent_beam(
 	FILE *fpm, int n1, int n2, vec3 *xyz,
 	double L, float p, double *D, double exagg
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double	t1, t2, t3, t4, t5, t6, t7, t8, t9, 	/* coord xfmn	*/
-		u1, u2, u3, u4, u5, u6, u7, u8, u9, u10, u11, u12,
+		u1, u2, u3, /*u4,*/ u5, u6, u7, u8, u9,/* u10,*/ u11, u12,
 		*a, *b, **A,
 		s, v, w, dX, dY, dZ;
 	int	i1, i2, pd;
@@ -3837,7 +3837,7 @@ void cubic_bent_beam(
 	u2  = exagg*(t4*D[i1+1] + t5*D[i1+2] + t6*D[i1+3]);
 	u3  = exagg*(t7*D[i1+1] + t8*D[i1+2] + t9*D[i1+3]);
 
-	u4  = exagg*(t1*D[i1+4] + t2*D[i1+5] + t3*D[i1+6]);
+	/* u4  = exagg*(t1*D[i1+4] + t2*D[i1+5] + t3*D[i1+6]); */
 	u5  = exagg*(t4*D[i1+4] + t5*D[i1+5] + t6*D[i1+6]);
 	u6  = exagg*(t7*D[i1+4] + t8*D[i1+5] + t9*D[i1+6]);
 
@@ -3845,7 +3845,7 @@ void cubic_bent_beam(
 	u8  = exagg*(t4*D[i2+1] + t5*D[i2+2] + t6*D[i2+3]);
 	u9  = exagg*(t7*D[i2+1] + t8*D[i2+2] + t9*D[i2+3]);
 
-	u10 = exagg*(t1*D[i2+4] + t2*D[i2+5] + t3*D[i2+6]);
+	/* u10 = exagg*(t1*D[i2+4] + t2*D[i2+5] + t3*D[i2+6]); */
 	u11 = exagg*(t4*D[i2+4] + t5*D[i2+5] + t6*D[i2+6]);
 	u12 = exagg*(t7*D[i2+4] + t8*D[i2+5] + t9*D[i2+6]);
 
@@ -3865,7 +3865,7 @@ void cubic_bent_beam(
 
 	lu_dcmp ( A, 4, a, 1, 1, &pd );		/* solve for cubic coef's */
 
-	if (!pd) {
+	if (!pd) {printf("%s:%d\n",__FILE__,__LINE__);
 	 sprintf(errMsg," n1 = %d  n2 = %d  L = %e  u7 = %e \n", n1,n2,L,u7);
 	 errorMsg(errMsg);
 	 exit(30);
@@ -3877,7 +3877,7 @@ void cubic_bent_beam(
 	// may not be plotted.  
 	//fprintf( fpm, "# u1=%e  L+u7=%e, dx = %e \n",
 	//				u1, fabs(L+u7), fabs(L+u7-u1)/10.0); 
-	for ( s = u1; fabs(s) <= 1.01*fabs(L+u7); s += fabs(L+u7-u1) / 10.0 ) {
+	for ( s = u1; fabs(s) <= 1.01*fabs(L+u7); s += fabs(L+u7-u1) / 10.0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 
 			/* deformed shape in local coordinates */
 		v = a[1] + a[2]*s + a[3]*s*s + a[4]*s*s*s;
@@ -3912,7 +3912,7 @@ void cubic_bent_beam(
 void force_bent_beam(
 	FILE *fpm, FILE *fpif, char fnif[], int nx, int n1, int n2, vec3 *xyz,
 	double L, float p, double *D, double exagg
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double	t1, t2, t3, t4, t5, t6, t7, t8, t9; 	/* coord xfmn	*/
 	double	xi, dX, dY, dZ;
 	float	x, Nx, Vy, Vz, Tx, My, Mz, Dx, Dy, Dz, Rx;
@@ -3929,9 +3929,9 @@ void force_bent_beam(
 
 	x = -1.0;
 	n = 0;
-	for ( xi = 0; xi <= 1.01*L && n < nx; xi += 0.10*L ) {
+	for ( xi = 0; xi <= 1.01*L && n < nx; xi += 0.10*L ) {printf("%s:%d\n",__FILE__,__LINE__);
 
-		while ( x < xi && n < nx ) {
+		while ( x < xi && n < nx ) {printf("%s:%d\n",__FILE__,__LINE__);
 		    /* read the deformed shape in local coordinates */
 		    sfrv=fscanf(fpif,"%f %f %f %f %f %f %f %f %f %f %f",
 			&x, &Nx, &Vy, &Vz, &Tx, &My, &Mz, &Dx, &Dy, &Dz, &Rx );
@@ -3977,13 +3977,13 @@ void sferr ( char s[] ) {
  * MY_ITOA  -  Convert an integer n to charcters in s, from K&R, 1978,   p. 59-60
  * ... specialized for portability between GNU GCC and DJGPP GCC
  */
-void my_itoa ( int n, char s[], int k ) {
+void my_itoa ( int n, char s[], int k ) {printf("%s:%d\n",__FILE__,__LINE__);
 	int	c, i, j, sign;
 
 	if ((sign = n) < 0) 		/* record sign */
 		n = -n;			/* make n positive */
 	i = 0;
-	do {				/* generate digits in reverse order */
+	do {printf("%s:%d\n",__FILE__,__LINE__);				/* generate digits in reverse order */
 		s[i++] = n % 10 + '0';	/* get next digit */
 	} while ((n /= 10) > 0);	/* delete it */
 	for (;i<k;)	s[i++] = '0';	/* add leading '0' */
@@ -3995,7 +3995,7 @@ void my_itoa ( int n, char s[], int k ) {
 	while ( s[j] != '\0' )	j++;	/* j is length of s - 1 */
 	--j;
 
-	for (i = 0; i < j; i++, j--) {
+	for (i = 0; i < j; i++, j--) {printf("%s:%d\n",__FILE__,__LINE__);
 		c = s[i];
 		s[i] = s[j];
 		s[j] = c;
@@ -4011,7 +4011,7 @@ void my_itoa ( int n, char s[], int k ) {
  *		return 0 otherwise
  */
 int get_file_ext( char *filename, char *ext )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int	i=0, full_len=0, len=0;
 
 	while ( filename[len++] != '\0' ) /* the length of file filename */ ;
@@ -4037,7 +4037,7 @@ int get_file_ext( char *filename, char *ext )
 /*
  * DOTS  -  print a set of dots (periods)
  */
-void dots ( FILE *fp, int n ) {
+void dots ( FILE *fp, int n ) {printf("%s:%d\n",__FILE__,__LINE__);
 	int i;
 	for (i=1; i<=n; i++)	fprintf(fp,".");
 }
@@ -4047,19 +4047,19 @@ void dots ( FILE *fp, int n ) {
  * EVALUATE -  displays a randomly-generated goodbye message.  
  */
 void evaluate ( float error, float rms_resid, float tol, int geom ) 
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int r;
 
 	r = rand() % 10;
 
 	color(0);
 	fprintf(stdout,"  RMS relative equilibrium error  = %9.3e ", error );
-	if ( error < tol ) {
+	if ( error < tol ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stdout," < tol = %7.1e ", tol );
 		(void) fflush(stdout);
 		textColor('y','b','b','x');
 		fprintf(stdout," ** converged ** ");
-	} if ( error > tol ) {
+	} if ( error > tol ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stdout," > tol = %7.1e ", tol );
 		(void) fflush(stdout);
 		textColor('y','r','b','x');
@@ -4072,10 +4072,10 @@ void evaluate ( float error, float rms_resid, float tol, int geom )
 	dots(stdout,17);
 	(void) fflush(stdout);
 
-	if ( rms_resid < 1e-24 ) {
+	if ( rms_resid < 1e-24 ) {printf("%s:%d\n",__FILE__,__LINE__);
 
 	    textColor('y','b','b','x');
-	    switch ( r ) {
+	    switch ( r ) {printf("%s:%d\n",__FILE__,__LINE__);
 		case 0: fprintf(stdout," * brilliant!  * "); break; 
 		case 1: fprintf(stdout," *  chuffed!   * "); break; 
 		case 2: fprintf(stdout," *  woo-hoo!   * "); break; 
@@ -4093,10 +4093,10 @@ void evaluate ( float error, float rms_resid, float tol, int geom )
 	    return;
 	}
 
-	if ( rms_resid < 1e-16 ) {
+	if ( rms_resid < 1e-16 ) {printf("%s:%d\n",__FILE__,__LINE__);
 
 	    textColor('y','g','b','x');
-	    switch ( r ) {
+	    switch ( r ) {printf("%s:%d\n",__FILE__,__LINE__);
 		case 0: fprintf(stdout,"   acceptable!   "); break; 
 		case 1: fprintf(stdout,"      bling!     "); break; 
 		case 2: fprintf(stdout,"  that will do!  "); break; 
@@ -4114,10 +4114,10 @@ void evaluate ( float error, float rms_resid, float tol, int geom )
 	    return;
 	}
 	
-	if ( rms_resid < 1e-12 ) {
+	if ( rms_resid < 1e-12 ) {printf("%s:%d\n",__FILE__,__LINE__);
 
 	    textColor('y','c','b','x');
-	    switch ( r ) {
+	    switch ( r ) {printf("%s:%d\n",__FILE__,__LINE__);
 		case 0: fprintf(stdout," adequate. "); break; 
 		case 1: fprintf(stdout," passable. "); break; 
 		case 2: fprintf(stdout," all right. "); break; 
@@ -4135,10 +4135,10 @@ void evaluate ( float error, float rms_resid, float tol, int geom )
 	    return;
 	}
 
-	if ( rms_resid > 1e-12 ) {
+	if ( rms_resid > 1e-12 ) {printf("%s:%d\n",__FILE__,__LINE__);
 
 	    textColor('y','r','b','x');
-	    switch ( r ) {
+	    switch ( r ) {printf("%s:%d\n",__FILE__,__LINE__);
 		case 0: fprintf(stdout," abominable! "); break; 
 		case 1: fprintf(stdout," puckeroo! "); break; 
 		case 2: fprintf(stdout," atrocious! "); break; 

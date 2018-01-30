@@ -96,7 +96,7 @@ void assemble_K(
 ){
 	double	**k;		/* element stiffness matrix in global coord */
 	int	**ind,		/* member-structure DoF index table	*/
-		res=0,
+	//	res=0,
 		i, j, ii, jj, l, ll;
 	char	stiffness_fn[FILENMAX];
 
@@ -106,7 +106,7 @@ void assemble_K(
 	ind = imatrix(1,12,1,nE);
 
 
-	for ( i=1; i<= nE; i++ ) {
+	for ( i=1; i<= nE; i++ ) {printf("%s:%d\n",__FILE__,__LINE__);
 		ind[1][i] = 6*N1[i] - 5;	ind[7][i]  = 6*N2[i] - 5;
 		ind[2][i] = ind[1][i] + 1;	ind[8][i]  = ind[7][i] + 1;
 		ind[3][i] = ind[1][i] + 2;	ind[9][i]  = ind[7][i] + 2;
@@ -115,7 +115,7 @@ void assemble_K(
 		ind[6][i] = ind[1][i] + 5;	ind[12][i] = ind[7][i] + 5;
 	}
 
-	for ( i = 1; i <= nE; i++ ) {
+	for ( i = 1; i <= nE; i++ ) {printf("%s:%d\n",__FILE__,__LINE__);
 
 		elastic_K ( k, xyz, r, L[i], Le[i], N1[i], N2[i],
 		Ax[i],Asy[i],Asz[i], Jx[i],Iy[i],Iz[i], E[i],G[i], p[i], shear);
@@ -126,14 +126,14 @@ void assemble_K(
                            Jx[i], Iy[i], Iz[i], 
                            E[i],G[i], p[i], -Q[i][1], shear);
 
-		if (debug) {
-			res = sprintf(stiffness_fn,"k_%03d",i);
+		if (debug) {printf("%s:%d\n",__FILE__,__LINE__);
+	//		res = sprintf(stiffness_fn,"k_%03d",i);
 			save_dmatrix(stiffness_fn,k,1,12,1,12,0, "w");
 		}
 
-		for ( l=1; l <= 12; l++ ) {
+		for ( l=1; l <= 12; l++ ) {printf("%s:%d\n",__FILE__,__LINE__);
 			ii = ind[l][i];
-			for ( ll=1; ll <= 12; ll++ ) {
+			for ( ll=1; ll <= 12; ll++ ) {printf("%s:%d\n",__FILE__,__LINE__);
 				jj = ind[ll][i];
 				K[ii][jj] += k[l][ll];
 			}
@@ -155,7 +155,7 @@ void elastic_K(
 	float Ax, float Asy, float Asz,
 	float J, float Iy, float Iz, float E, float G, float p,
 	int shear
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double   t1, t2, t3, t4, t5, t6, t7, t8, t9,     /* coord Xformn */
 		Ksy, Ksz;		/* shear deformatn coefficients	*/
 	int     i, j;
@@ -165,7 +165,7 @@ void elastic_K(
 
 	for (i=1;i<=12;i++)	for (j=1;j<=12;j++)	k[i][j] = 0.0;
 
-	if ( shear ) {
+	if ( shear ) {printf("%s:%d\n",__FILE__,__LINE__);
 		Ksy = 12.*E*Iz / (G*Asy*Le*Le);
 		Ksz = 12.*E*Iy / (G*Asz*Le*Le);
 	} else	Ksy = Ksz = 0.0;
@@ -200,14 +200,14 @@ void elastic_K(
 
 	/* check and enforce symmetry of elastic element stiffness matrix */
 
-	for(i=1; i<=12; i++){
-	    for (j=i+1; j<=12; j++){
-			if( k[i][j] != k[j][i] ) {
+	for(i=1; i<=12; i++){printf("%s:%d\n",__FILE__,__LINE__);
+	    for (j=i+1; j<=12; j++){printf("%s:%d\n",__FILE__,__LINE__);
+			if( k[i][j] != k[j][i] ) {printf("%s:%d\n",__FILE__,__LINE__);
 				if(fabs(k[i][j]/k[j][i]-1.0) > 1.0e-6 
 					&&(fabs(k[i][j]/k[i][i]) > 1e-6 
 						|| fabs(k[j][i]/k[i][i]) > 1e-6
 					)
-				){
+				){printf("%s:%d\n",__FILE__,__LINE__);
 					fprintf(stderr,"elastic_K: element stiffness matrix not symetric ...\n" ); 
 					fprintf(stderr," ... k[%d][%d] = %15.6e \n",i,j,k[i][j] ); 
 					fprintf(stderr," ... k[%d][%d] = %15.6e   ",j,i,k[j][i] ); 
@@ -235,7 +235,7 @@ void geometric_K(
 	int n1, int n2, float Ax, float Asy, float Asz, float J,
 	float Iy, float Iz, float E, float G, float p, double T,
 	int shear
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double t1, t2, t3, t4, t5, t6, t7, t8, t9; /* coord Xformn */
 	double **kg;
 	double Ksy,Ksz,Dsy,Dsz; /* shear deformation coefficients	*/
@@ -248,12 +248,12 @@ void geometric_K(
 	kg = dmatrix(1,12,1,12);
 	for (i=1;i<=12;i++)	for (j=1;j<=12;j++)	kg[i][j] = 0.0;
 
-	if ( shear ) {
+	if ( shear ) {printf("%s:%d\n",__FILE__,__LINE__);
 		Ksy = 12.*E*Iz / (G*Asy*Le*Le);
 		Ksz = 12.*E*Iy / (G*Asz*Le*Le);
 		Dsy = (1+Ksy)*(1+Ksy);
 		Dsz = (1+Ksz)*(1+Ksz);
-	} else{
+	} else{printf("%s:%d\n",__FILE__,__LINE__);
 		Ksy = Ksz = 0.0;
 		Dsy = Dsz = 1.0;
 	}
@@ -290,14 +290,14 @@ void geometric_K(
 
 	/* check and enforce symmetry of geometric element stiffness matrix */ 
 
-	for(i=1; i<=12; i++){
-	    for (j=i+1; j<=12; j++){
-			if( kg[i][j] != kg[j][i] ) {
+	for(i=1; i<=12; i++){printf("%s:%d\n",__FILE__,__LINE__);
+	    for (j=i+1; j<=12; j++){printf("%s:%d\n",__FILE__,__LINE__);
+			if( kg[i][j] != kg[j][i] ) {printf("%s:%d\n",__FILE__,__LINE__);
 				if(fabs(kg[i][j]/kg[j][i]-1.0) > 1.0e-6 
 					&&(fabs(kg[i][j]/kg[i][i]) > 1e-6 
 						|| fabs(kg[j][i]/kg[i][i]) > 1e-6
 					)
-				){
+				){printf("%s:%d\n",__FILE__,__LINE__);
 					fprintf(stderr,"geometric_K element stiffness matrix not symetric ...\n" ); 
 					fprintf(stderr," ... kg[%d][%d] = %15.6e \n",i,j,kg[i][j] ); 
 					fprintf(stderr," ... kg[%d][%d] = %15.6e   ",j,i,kg[j][i] ); 
@@ -352,7 +352,7 @@ int	r;
 void solve_system(
 	double **K, double *D, double *F, double *R, int DoF, int *q, int *r,
 	int *ok, int verbose, double *rms_resid
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double	*diag;		/* diagonal vector of the L D L' decomp. */
 
 	verbose = 0;		/* suppress verbose output		*/
@@ -362,15 +362,15 @@ void solve_system(
 	/*  L D L' decomposition of K[q,q] into lower triangle of K[q,q] and diag[q] */
 	/*  vectors F and D are unchanged */
 	ldl_dcmp_pm ( K, DoF, diag, F, D, R, q,r, 1, 0, ok );
-	if ( *ok < 0 ) {
+	if ( *ok < 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 	 	fprintf(stderr," Make sure that all six");
 		fprintf(stderr," rigid body translations are restrained!\n");
 		/* exit(31); */
-	} else {	/* LDL'  back-substitution for D[q] and R[r] */
+	} else {printf("%s:%d\n",__FILE__,__LINE__);	/* LDL'  back-substitution for D[q] and R[r] */
 		ldl_dcmp_pm ( K, DoF, diag, F,D,R, q,r, 0, 1, ok );
 		if ( verbose ) fprintf(stdout,"    LDL' RMS residual:");
 		*rms_resid = *ok = 1;
-		do {	/* improve solution for D[q] and R[r] */
+		do {printf("%s:%d\n",__FILE__,__LINE__);	/* improve solution for D[q] and R[r] */
 			ldl_mprove_pm ( K, DoF, diag, F,D,R, q,r, rms_resid,ok);
 			if ( verbose ) fprintf(stdout,"%9.2e", *rms_resid );
 		} while ( *ok );
@@ -388,19 +388,19 @@ void solve_system(
  * 2014-05-16
  */
 double equilibrium_error( double *dF, double *F, double **K, double *D, int DoF, int *q, int *r )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	double	ss_dF = 0.0,	//  sum of squares of dF
 		ss_F  = 0.0,	//  sum of squares of F	
 		errF  = 0.0;
 	int	i,j;
 
 	// compute equilibrium error at free coord's (q)
-	for (i=1; i<=DoF; i++) {
+	for (i=1; i<=DoF; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		errF = 0.0;
-		if (q[i]) {
+		if (q[i]) {printf("%s:%d\n",__FILE__,__LINE__);
 			errF = F[i];
-			for (j=1; j<=DoF; j++) {
-				if ( q[j] ) {	// K_qq in upper triangle only
+			for (j=1; j<=DoF; j++) {printf("%s:%d\n",__FILE__,__LINE__);
+				if ( q[j] ) {printf("%s:%d\n",__FILE__,__LINE__);	// K_qq in upper triangle only
 					if ( i <= j )   errF -= K[i][j] * D[j];
 					else            errF -= K[j][i] * D[j];
 				}
@@ -431,14 +431,14 @@ void element_end_forces(
 	double **eqF_temp, // equivalent element end forces from temp loads
 	double **eqF_mech, // equivalent element end forces from mech loads
 	double *D, int shear, int geom, int *axial_strain_warning
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double	*s, axial_strain = 0;
 	int	m,j;
 
 	s = dvector(1,12);
 
 	*axial_strain_warning = 0;
-	for(m=1; m <= nE; m++) {
+	for(m=1; m <= nE; m++) {printf("%s:%d\n",__FILE__,__LINE__);
 
      	    frame_element_force ( s, xyz, L[m], Le[m], N1[m], N2[m],
 		Ax[m], Asy[m], Asz[m], Jx[m], Iy[m], Iz[m], E[m], G[m], p[m],
@@ -446,7 +446,7 @@ void element_end_forces(
 
 		for(j=1; j<=12; j++)	Q[m][j] = s[j];
 
-		if ( fabs(axial_strain) > 0.001 ) {
+		if ( fabs(axial_strain) > 0.001 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		 fprintf(stderr," Warning! Frame element %2d has an average axial strain of %8.6f\n", m, axial_strain ); 
 		 ++(*axial_strain_warning);
 		}
@@ -467,7 +467,7 @@ void frame_element_force(
 	float Iy, float Iz, float E, float G, float p,
 	double *f_t, double *f_m,
 	double *D, int shear, int geom, double *axial_strain
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double	t1, t2, t3, t4, t5, t6, t7, t8, t9, /* coord Xformn	*/
 		d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12,
 		// x1, y1, z1, x2, y2, z2,	/* node coordinates	*/
@@ -489,12 +489,12 @@ void frame_element_force(
 	d7  = D[n2+1];	d8  = D[n2+2];	d9  = D[n2+3];
 	d10 = D[n2+4];	d11 = D[n2+5];	d12 = D[n2+6];
 
-	if ( shear ) {
+	if ( shear ) {printf("%s:%d\n",__FILE__,__LINE__);
 		Ksy = 12.*E*Iz / (G*Asy*Le*Le);
 		Ksz = 12.*E*Iy / (G*Asz*Le*Le);
 		Dsy = (1+Ksy)*(1+Ksy);
 		Dsz = (1+Ksz)*(1+Ksz);
-	} else {
+	} else {printf("%s:%d\n",__FILE__,__LINE__);
 		Ksy = Ksz = 0.0;
 		Dsy = Dsz = 1.0;
 	}
@@ -657,12 +657,12 @@ int nE, int DoF,
  */
 void compute_reaction_forces(
 	 double *R, double *F, double **K, double *D, int DoF, int *r
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	int	i,j;
 
-	for (i=1; i<=DoF; i++) {
+	for (i=1; i<=DoF; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		R[i] = 0;
-		if (r[i]) {		// coordinate "i" is a reaction coord.
+		if (r[i]) {printf("%s:%d\n",__FILE__,__LINE__);		// coordinate "i" is a reaction coord.
 			R[i] = -F[i];	// negative of equiv loads at coord i
 			// reactions are relaxed through system deformations
 			for (j=1; j<=DoF; j++)  R[i] += K[i][j]*D[j];
@@ -682,12 +682,12 @@ void assemble_M(
 	float *d, float *EMs,
 	float *NMs, float *NMx, float *NMy, float *NMz,
 	int lump, int debug
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double  **m,	    /* element mass matrix in global coord */
 		**dmatrix();
 	int     **ind,	  /* member-structure DoF index table     */
 		**imatrix(),
-		res=0, 
+		//res=0, 
 		i, j, ii, jj, l, ll;
 	char	mass_fn[FILENMAX];
 
@@ -697,7 +697,7 @@ void assemble_M(
 	ind    = imatrix(1,12,1,nE);
 
 
-	for ( i=1; i<= nE; i++ ) {
+	for ( i=1; i<= nE; i++ ) {printf("%s:%d\n",__FILE__,__LINE__);
 		ind[1][i] = 6*N1[i] - 5;	ind[7][i]  = 6*N2[i] - 5;
 		ind[2][i] = ind[1][i] + 1;      ind[8][i]  = ind[7][i] + 1;
 		ind[3][i] = ind[1][i] + 2;      ind[9][i]  = ind[7][i] + 2;
@@ -706,28 +706,28 @@ void assemble_M(
 		ind[6][i] = ind[1][i] + 5;      ind[12][i] = ind[7][i] + 5;
 	}
 
-	for ( i = 1; i <= nE; i++ ) {
+	for ( i = 1; i <= nE; i++ ) {printf("%s:%d\n",__FILE__,__LINE__);
 
 		if ( lump )	lumped_M ( m, xyz, L[i], N1[i], N2[i],
 				Ax[i], Jx[i], Iy[i], Iz[i], p[i], d[i], EMs[i]);
 		else		consistent_M ( m, xyz,r,L[i], N1[i], N2[i],
 				Ax[i], Jx[i], Iy[i], Iz[i], p[i], d[i], EMs[i]);
 
-		if (debug) {
-			res = sprintf(mass_fn,"m_%03d",i);
+		if (debug) {printf("%s:%d\n",__FILE__,__LINE__);
+			//res = sprintf(mass_fn,"m_%03d",i);
 			save_dmatrix(mass_fn, m, 1,12, 1,12, 0, "w");
 		}
 
-		for ( l=1; l <= 12; l++ ) {
+		for ( l=1; l <= 12; l++ ) {printf("%s:%d\n",__FILE__,__LINE__);
 			ii = ind[l][i];
-			for ( ll=1; ll <= 12; ll++ ) {
+			for ( ll=1; ll <= 12; ll++ ) {printf("%s:%d\n",__FILE__,__LINE__);
 				jj = ind[ll][i];
 				M[ii][jj] += m[l][ll];
 			}
 		}
 	}
 
-	for ( j = 1; j <= nN; j++ ) {		// add extra node mass
+	for ( j = 1; j <= nN; j++ ) {printf("%s:%d\n",__FILE__,__LINE__);		// add extra node mass
 		i = 6*(j-1);
 		M[i+1][i+1] += NMs[j];
 		M[i+2][i+2] += NMs[j];
@@ -737,8 +737,8 @@ void assemble_M(
 		M[i+6][i+6] += NMz[j];
 	}
 
-	for (i=1; i<= DoF; i++) {
-		if ( M[i][i] <= 0.0 ) {
+	for (i=1; i<= DoF; i++) {printf("%s:%d\n",__FILE__,__LINE__);
+		if ( M[i][i] <= 0.0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 			fprintf(stderr,"  error: Non pos-def mass matrix\n");
 			fprintf(stderr,"  M[%d][%d] = %lf\n", i,i, M[i][i] );
 		}
@@ -755,7 +755,7 @@ static void lumped_M(
 	double **m, vec3 *xyz, double L,
 	int n1, int n2, float Ax, float J, float Iy, float Iz, float p,
 	float d, float EMs
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double   t1, t2, t3, t4, t5, t6, t7, t8, t9,     /* coord Xformn */
 		t, ry,rz, po;	/* translational, rotational & polar inertia */
 	int     i, j;
@@ -792,7 +792,7 @@ void consistent_M(
 	double **m, vec3 *xyz, float *r, double L,
 	int n1, int n2, float Ax, float J, float Iy, float Iz, float p, 
 	float d, float EMs
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double	t1, t2, t3, t4, t5, t6, t7, t8, t9,     /* coord Xformn */
 		t, ry, rz, po;	/* translational, rotational & polar inertia */
 	int     i, j;
@@ -846,14 +846,14 @@ void consistent_M(
 
 	/* check and enforce symmetry of consistent element mass matrix */ 
 
-	for(i=1; i<=12; i++){
-	    for (j=i+1; j<=12; j++){
-			if( m[i][j] != m[j][i] ) {
+	for(i=1; i<=12; i++){printf("%s:%d\n",__FILE__,__LINE__);
+	    for (j=i+1; j<=12; j++){printf("%s:%d\n",__FILE__,__LINE__);
+			if( m[i][j] != m[j][i] ) {printf("%s:%d\n",__FILE__,__LINE__);
 				if(fabs(m[i][j]/m[j][i]-1.0) > 1.0e-6 
 					&&(fabs(m[i][j]/m[i][i]) > 1e-6 
 						|| fabs(m[j][i]/m[i][i]) > 1e-6
 					)
-				){
+				){printf("%s:%d\n",__FILE__,__LINE__);
 					fprintf(stderr,"consistent_M: element mass matrix not symetric ...\n" ); 
 					fprintf(stderr," ... m[%d][%d] = %15.6e \n",i,j,m[i][j] ); 
 					fprintf(stderr," ... m[%d][%d] = %15.6e   ",j,i,m[j][i] ); 
@@ -878,7 +878,7 @@ void consistent_M(
  */
 void static_condensation(
 	double **A, int N, int *c, int n, double **Ac, int verbose
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double	**Arr, **Arc;
 	int	i,j,k, ri,rj,ci,cj, ok, 
 		*r;
@@ -888,10 +888,10 @@ void static_condensation(
 	Arc  = dmatrix(1,N-n,1,n);
 
 	k = 1;
-	for (i=1; i<=N; i++) {
+	for (i=1; i<=N; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		ok = 1;
-		for (j=1; j<=n; j++) {
-			if ( c[j] == i ) {
+		for (j=1; j<=n; j++) {printf("%s:%d\n",__FILE__,__LINE__);
+			if ( c[j] == i ) {printf("%s:%d\n",__FILE__,__LINE__);
 				ok = 0;
 				break;
 			}
@@ -899,16 +899,16 @@ void static_condensation(
 		if ( ok )	r[k++] = i;
 	}
 
-	for (i=1; i<=N-n; i++) {
-		for (j=i; j<=N-n; j++) { /* use only upper triangle of A */
+	for (i=1; i<=N-n; i++) {printf("%s:%d\n",__FILE__,__LINE__);
+		for (j=i; j<=N-n; j++) {printf("%s:%d\n",__FILE__,__LINE__); /* use only upper triangle of A */
 			ri = r[i];
 			rj = r[j];
 			if ( ri <= rj )	Arr[j][i] = Arr[i][j] = A[ri][rj];
 		}
 	}
 
-	for (i=1; i<=N-n; i++) {
-		for (j=1; j<=n; j++) {	/* use only upper triangle of A */
+	for (i=1; i<=N-n; i++) {printf("%s:%d\n",__FILE__,__LINE__);
+		for (j=1; j<=n; j++) {printf("%s:%d\n",__FILE__,__LINE__);	/* use only upper triangle of A */
 			ri = r[i];
 			cj = c[j];
 			if ( ri < cj )	Arc[i][j] = A[ri][cj];
@@ -918,8 +918,8 @@ void static_condensation(
 
 	xtinvAy( Arc, Arr, Arc, N-n, n, Ac, verbose );
 
-	for (i=1; i<=n; i++) {
-		for (j=i; j<=n; j++) { /* use only upper triangle of A */
+	for (i=1; i<=n; i++) {printf("%s:%d\n",__FILE__,__LINE__);
+		for (j=i; j<=n; j++) {printf("%s:%d\n",__FILE__,__LINE__); /* use only upper triangle of A */
 			ci = c[i];
 			cj = c[j];
 			if ( ci <= cj ) Ac[j][i]=Ac[i][j] = A[ci][cj]-Ac[i][j];
@@ -941,7 +941,7 @@ void paz_condensation(
 	int *c, int n,
 	double **Mc, double **Kc, double w2, 
 	int verbose
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double	**Drr, **Drc, **invDrrDrc, **T;
 	int	i,j,k, ri,rj,cj, ok, 
 		*r;
@@ -958,10 +958,10 @@ void paz_condensation(
 
 	/* find "remaining" (r) degrees of freedom, not "condensed" (c)	*/
 	k = 1;
-	for (i=1; i<=N; i++) {
+	for (i=1; i<=N; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		ok = 1;
-		for (j=1; j<=n; j++) {
-			if ( c[j] == i ) {
+		for (j=1; j<=n; j++) {printf("%s:%d\n",__FILE__,__LINE__);
+			if ( c[j] == i ) {printf("%s:%d\n",__FILE__,__LINE__);
 				ok = 0;
 				break;
 			}
@@ -969,8 +969,8 @@ void paz_condensation(
 		if ( ok )	r[k++] = i;
 	}
 
-	for (i=1; i<=N-n; i++) {
-		for (j=1; j<=N-n; j++) { /* use only upper triangle of K,M */
+	for (i=1; i<=N-n; i++) {printf("%s:%d\n",__FILE__,__LINE__);
+		for (j=1; j<=N-n; j++) {printf("%s:%d\n",__FILE__,__LINE__); /* use only upper triangle of K,M */
 			ri = r[i];
 			rj = r[j];
 			if ( ri <= rj )	
@@ -979,8 +979,8 @@ void paz_condensation(
 		}
 	}
 
-	for (i=1; i<=N-n; i++) {
-		for (j=1; j<=n; j++) {	/* use only upper triangle of K,M */
+	for (i=1; i<=N-n; i++) {printf("%s:%d\n",__FILE__,__LINE__);
+		for (j=1; j<=n; j++) {printf("%s:%d\n",__FILE__,__LINE__);	/* use only upper triangle of K,M */
 			ri = r[i];
 			cj = c[j];
 			if ( ri < cj )	Drc[i][j] = K[ri][cj] - w2*M[ri][cj];
@@ -991,7 +991,7 @@ void paz_condensation(
 	invAB(Drr, Drc, N-n, n, invDrrDrc, &ok, verbose ); /* inv(Drr) * Drc */
 
 	/* coordinate transformation matrix	*/	
-	for (i=1; i<=n; i++) {
+	for (i=1; i<=n; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		for (j=1; j<=n; j++)	T[c[i]][j] =  0.0;
 		T[c[i]][i] = 1.0;
 	}	
@@ -1020,7 +1020,7 @@ void modal_condensation(
 	double **M, double **K, int N, int *R, int *p, int n,
 	double **Mc, double **Kc, double **V, double *f, int *m,
 	int verbose
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double	**P, **invP,
 		traceM = 0, traceMc = 0, 
 		Aij;		/* temporary storage for matrix mult. */
@@ -1037,8 +1037,8 @@ void modal_condensation(
 
 	for (i=1; i<=N; i++) if ( !R[i] ) traceM += M[i][i];
 
-	for (i=1; i<=n; i++) { 		/* compute inv(P)' * I * inv(P)	*/
-	    for (j=1; j<=n; j++) {
+	for (i=1; i<=n; i++) {printf("%s:%d\n",__FILE__,__LINE__); 		/* compute inv(P)' * I * inv(P)	*/
+	    for (j=1; j<=n; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 		Aij = 0.0;
 	        for (k=1; k<=n; k++)
 			Aij += invP[k][i] * invP[k][j];
@@ -1048,8 +1048,8 @@ void modal_condensation(
 
 	for (i=1; i<=n; i++) traceMc += Mc[i][i];
 
-	for (i=1; i<=n; i++) { 		/* compute inv(P)' * W^2 * inv(P) */
-	    for (j=1; j<=n; j++) {
+	for (i=1; i<=n; i++) {printf("%s:%d\n",__FILE__,__LINE__); 		/* compute inv(P)' * W^2 * inv(P) */
+	    for (j=1; j<=n; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 		Aij = 0.0;
 	        for (k=1; k<=n; k++) 
 		    Aij += invP[k][i] * 4.0*PI*PI*f[m[k]]*f[m[k]] * invP[k][j];
@@ -1092,7 +1092,7 @@ void deallocate(
 	int *c, int *m, 
 	double **pkNx, double **pkVy, double **pkVz, double **pkTx, double **pkMy, double **pkMz, 
 	double **pkDx, double **pkDy, double **pkDz, double **pkRx, double **pkSy, double **pkSz 
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 
 	void	free();
 
@@ -1175,7 +1175,7 @@ void deallocate(
 	free_dmatrix(pkSz,1,nL,1,nE);
 
 // printf("..L.. M f V\n"); /* debug */
-	if ( nM > 0 ) {
+	if ( nM > 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		free_dmatrix(M,1,DoF,1,DoF);
 		free_dvector(f,1,nM);
 		free_dmatrix(V,1,DoF,1,DoF);

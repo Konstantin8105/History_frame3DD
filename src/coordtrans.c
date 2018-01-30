@@ -55,7 +55,7 @@ void coord_trans(
 		double *t1, double *t2, double *t3, double *t4, double *t5,
 		double *t6, double *t7, double *t8, double *t9,
 		float p			/**< the roll angle (radians) */
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double	Cx, Cy, Cz, den,		/* direction cosines	*/
 		Cp, Sp;			/* cosine and sine of roll angle */
 
@@ -70,13 +70,13 @@ void coord_trans(
 
 #if Zvert				// the global Z axis is vertical
 
-	if ( fabs(Cz) == 1.0 ) {
+	if ( fabs(Cz) == 1.0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		*t3 =  Cz;
 		*t4 = -Cz*Sp;
 		*t5 =  Cp;
 		*t7 = -Cz*Cp;
 		*t8 = -Sp;
-	} else {
+	} else {printf("%s:%d\n",__FILE__,__LINE__);
 
 		den = sqrt ( 1.0 - Cz*Cz );
 
@@ -95,13 +95,13 @@ void coord_trans(
 
 #else					// the global Y axis is vertical
 
-	if ( fabs(Cy) == 1.0 ) {
+	if ( fabs(Cy) == 1.0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		*t2 =  Cy;
 		*t4 = -Cy*Cp;
 		*t6 =  Sp;
 		*t7 =  Cy*Sp;
 		*t9 =  Cp;
-	} else {
+	} else {printf("%s:%d\n",__FILE__,__LINE__);
 
 		den = sqrt ( 1.0 - Cy*Cy );
 
@@ -133,7 +133,7 @@ void atma(
 	double t4, double t5, double t6,
 	double t7, double t8, double t9,
 	double **m, float r1, float r2
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double  **a, **ma, **dmatrix();
 	int     i,j,k;
 
@@ -144,7 +144,7 @@ void atma(
 	    for (j=i; j<=12; j++) 
 		ma[j][i] = ma[i][j] = a[j][i] = a[i][j] = 0.0;
 
-	for (i=0; i<=3; i++) {
+	for (i=0; i<=3; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		a[3*i+1][3*i+1] = t1;
 		a[3*i+1][3*i+2] = t2;
 		a[3*i+1][3*i+3] = t3;

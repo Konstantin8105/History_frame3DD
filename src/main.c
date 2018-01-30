@@ -57,12 +57,12 @@ For compilation/installation, see README.txt.
 
 // compile the Frame3DD analysis into another code, such as a GUI
 #ifdef WITH_GLOBALS	
- int run_kernel ( int argc, char *argv[] ) {
+ int run_kernel ( int argc, char *argv[] ) {printf("%s:%d\n",__FILE__,__LINE__);
 #endif
 
 // compile Frame3DD to run as a stand-alone code through the terminal
 #ifndef WITH_GLOBALS
- int main ( int argc, char *argv[] ) {
+ int main ( int argc, char *argv[] ) {printf("%s:%d\n",__FILE__,__LINE__);
 #endif
 
 	char	IN_file[FILENMAX],	// the input  data filename
@@ -200,7 +200,7 @@ For compilation/installation, see README.txt.
 			&pan_flag, &write_matrix, &axial_sign, &condense_flag,
 			&verbose, &debug);
 
-	if ( verbose ) { /*  display program name, version and license type */
+	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__); /*  display program name, version and license type */
 		textColor('w','b','b','x');
 		fprintf(stdout,"\n FRAME3DD version: %s\n", VERSION);
 		fprintf(stdout," Analysis of 2D and 3D structural frames with elastic and geometric stiffness.\n");
@@ -213,11 +213,11 @@ For compilation/installation, see README.txt.
 
 	/* open the input data file */
 
-	if ((fp = fopen (IN_file, "r")) == NULL) { /* open input data file */
+	if ((fp = fopen (IN_file, "r")) == NULL) {printf("%s:%d\n",__FILE__,__LINE__); /* open input data file */
 		sprintf (errMsg,"\n ERROR: cannot open input data file '%s'\n", IN_file);
 		errorMsg(errMsg); 
 		display_help();
-		if ( argc == 1 ) {
+		if ( argc == 1 ) {printf("%s:%d\n",__FILE__,__LINE__);
 			fprintf(stderr," Press the 'Enter' key to close.\n");
 			(void) getchar();	// clear the buffer ?? 
 			while( !getchar() ) ;	// wait for the Enter key 
@@ -233,14 +233,14 @@ For compilation/installation, see README.txt.
 	parse_input(fp, strippedInputFile);	/* strip comments from input data */
 	fclose(fp);
 
-	if ((fp = fopen (strippedInputFile, "r")) == NULL) { /* open stripped input file */
+	if ((fp = fopen (strippedInputFile, "r")) == NULL) {printf("%s:%d\n",__FILE__,__LINE__); /* open stripped input file */
 		sprintf(errMsg,"\n ERROR: cannot open stripped input data file '%s'\n", strippedInputFile);
 		errorMsg(errMsg); 
 		exit(13);
 	}
 
 	frame3dd_getline(fp, title, MAXL);
-	if ( verbose ) {	/*  display analysis title */
+	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);	/*  display analysis title */
 		textColor('w','g','b','x');
 		fprintf(stdout,"\n");
 		fprintf(stdout," ** %s ** \n", title );
@@ -250,7 +250,7 @@ For compilation/installation, see README.txt.
 
 	sfrv=fscanf(fp, "%d", &nN );		/* number of nodes	*/
 	if (sfrv != 1)	sferr("nN value for number of nodes");
-	if ( verbose ) {	/* display nN */
+	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);	/* display nN */
 		fprintf(stdout," number of nodes ");
 		dots(stdout,36);	fprintf(stdout," nN =%4d ",nN);
 	}
@@ -271,11 +271,11 @@ For compilation/installation, see README.txt.
 
 	sfrv=fscanf(fp, "%d", &nE );	/* number of frame elements	*/
 	if (sfrv != 1)	sferr("nE value for number of frame elements");
-	if ( verbose ) {	/* display nE */
+	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);	/* display nE */
 		fprintf(stdout," number of frame elements");
 		dots(stdout,28);	fprintf(stdout," nE =%4d ",nE);
 	}
-	if ( nN > nE + 1) {	/* not enough elements */
+	if ( nN > nE + 1) {printf("%s:%d\n",__FILE__,__LINE__);	/* not enough elements */
 		fprintf(stderr,"\n  warning: %d nodes and %d members...", nN, nE );
 		fprintf(stderr," not enough elements to connect all nodes.\n");
     	}
@@ -311,16 +311,16 @@ For compilation/installation, see README.txt.
 
 	sfrv=fscanf(fp, "%d", &nL );	/* number of load cases		*/
 	if (sfrv != 1)	sferr("nL value for number of load cases");
-	if ( verbose ) {	/* display nL */
+	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);	/* display nL */
 		fprintf(stdout," number of load cases ");
 		dots(stdout,31);	fprintf(stdout," nL = %3d \n",nL);
 	}
 
-	if ( nL < 1 ) {	/* not enough load cases */
+	if ( nL < 1 ) {printf("%s:%d\n",__FILE__,__LINE__);	/* not enough load cases */
 		errorMsg("\n ERROR: the number of load cases must be at least 1\n"); 
 		exit(101);
 	}
-	if ( nL >= _NL_ ) { /* too many load cases */
+	if ( nL >= _NL_ ) {printf("%s:%d\n",__FILE__,__LINE__); /* too many load cases */
 		sprintf(errMsg,"\n ERROR: maximum of %d load cases allowed\n", _NL_-1);
 		errorMsg(errMsg); 
 		exit(102);
@@ -380,7 +380,7 @@ For compilation/installation, see README.txt.
 			Q, F_temp, F_mech, F, U, W, P, T,
 			Dp, eqF_mech, eqF_temp, verbose );
 
-	if ( verbose ) {	/* display load data complete */
+	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);	/* display load data complete */
 		fprintf(stdout,"                                                     ");
 		fprintf(stdout," load data ... complete\n");
 	}
@@ -392,7 +392,7 @@ For compilation/installation, see README.txt.
 			&lump, lump_flag, &tol, tol_flag, &shift, shift_flag,
 			&exagg_modal, modepath, anim, &pan, pan_flag, 
 			verbose, debug );
-	if ( verbose ) {	/* display mass data complete */
+	if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);	/* display mass data complete */
 		fprintf(stdout,"                                                     ");
 		fprintf(stdout," mass data ... complete\n");
 	}
@@ -400,7 +400,7 @@ For compilation/installation, see README.txt.
 	read_condensation_data( fp, nN,nM, &nC, &Cdof, 
 			&Cmethod, condense_flag, c,m, verbose );
 
-	if( nC>0 && verbose ) {	/*  display condensation data complete */
+	if( nC>0 && verbose ) {printf("%s:%d\n",__FILE__,__LINE__);	/*  display condensation data complete */
 		fprintf(stdout,"                                      ");
 		fprintf(stdout," matrix condensation data ... complete\n");
 	}
@@ -409,7 +409,7 @@ For compilation/installation, see README.txt.
 
 	fp = fopen(OUT_file, "a"); /* open the output data file for appending */
 
-	if(fp==NULL) {	/* unable to append to output data file */
+	if(fp==NULL) {printf("%s:%d\n",__FILE__,__LINE__);	/* unable to append to output data file */
 		fprintf(stderr,"Unable to append to output data file '%s'!\n",
 								OUT_file);
 		exit(14);
@@ -422,11 +422,11 @@ For compilation/installation, see README.txt.
 			shear, anlyz, geom );
 
 
-	if ( anlyz ) {			/* solve the problem	*/
+	if ( anlyz ) {printf("%s:%d\n",__FILE__,__LINE__);			/* solve the problem	*/
 	 srand(time(NULL));
-	 for (lc=1; lc<=nL; lc++) {	/* begin load case analysis loop */
+	 for (lc=1; lc<=nL; lc++) {printf("%s:%d\n",__FILE__,__LINE__);	/* begin load case analysis loop */
 
-		if ( verbose ) {	/* display the load case number  */
+		if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);	/* display the load case number  */
 			fprintf(stdout,"\n");
 			textColor('y','g','b','x');
 			fprintf(stdout," Load Case %d of %d ... ", lc,nL );
@@ -454,7 +454,7 @@ For compilation/installation, see README.txt.
 #endif
 
 		/* first apply temperature loads only, if there are any ... */
-		if (nT[lc] > 0) {
+		if (nT[lc] > 0) {printf("%s:%d\n",__FILE__,__LINE__);
 			if ( verbose )
 				fprintf(stdout," Linear Elastic Analysis ... Temperature Loads\n");
 
@@ -466,7 +466,7 @@ For compilation/installation, see README.txt.
 			/* increment {R_t} = {0} + {R_t} temp.-induced react */
 			for (i=1; i<=DoF; i++)	if (r[i]) R[i] += dR[i];
 
-			if (geom) {	/* assemble K = Ke + Kg */
+			if (geom) {printf("%s:%d\n",__FILE__,__LINE__);	/* assemble K = Ke + Kg */
 			 /* compute   {Q}={Q_t} ... temp.-induced forces     */
 			 element_end_forces ( Q, nE, xyz, L, Le, N1,N2,
 				Ax, Asy,Asz, Jx,Iy,Iz, E,G, p,
@@ -482,7 +482,7 @@ For compilation/installation, see README.txt.
 
 		/* ... then apply mechanical loads only, if there are any ... */
 		if ( nF[lc]>0 || nU[lc]>0 || nW[lc]>0 || nP[lc]>0 || nD[lc]>0 || 
-		     gX[lc] != 0 || gY[lc] != 0 || gZ[lc] != 0 ) {
+		     gX[lc] != 0 || gY[lc] != 0 || gZ[lc] != 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 			if ( verbose )
 				fprintf(stdout," Linear Elastic Analysis ... Mechanical Loads\n");
 			/* incremental displ at react'ns = prescribed displ */
@@ -492,9 +492,9 @@ For compilation/installation, see README.txt.
 			solve_system(K,dD,F_mech[lc],dR,DoF,q,r,&ok,verbose,&rms_resid);
 
 			/* combine {D} = {D_t} + {D_m}	*/
-			for (i=1; i<=DoF; i++) {
+			for (i=1; i<=DoF; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 				if (q[i])	D[i] += dD[i];
-				else {		D[i]  = Dp[lc][i]; dD[i] = 0.0; }
+				else {printf("%s:%d\n",__FILE__,__LINE__);		D[i]  = Dp[lc][i]; dD[i] = 0.0; }
 			}
 			/* combine {R} = {R_t} + {R_m} --- for linear systems */
 			for (i=1; i<=DoF; i++)	if (r[i]) R[i] += dR[i];
@@ -528,8 +528,8 @@ For compilation/installation, see README.txt.
  */
 
 		/* quasi Newton-Raphson iteration for geometric nonlinearity  */
-		if (geom) { error = 1.0; ok = 0; iter = 0; } /* re-initialize */
-		while ( geom && error > tol && iter < 500 && ok >= 0) {
+		if (geom) {printf("%s:%d\n",__FILE__,__LINE__); error = 1.0; ok = 0; iter = 0; } /* re-initialize */
+		while ( geom && error > tol && iter < 500 && ok >= 0) {printf("%s:%d\n",__FILE__,__LINE__);
 
 			++iter;
 
@@ -549,7 +549,7 @@ For compilation/installation, see README.txt.
 			/*  solve {dF}^(i) = [K({D}^(i))] * {dD}^(i)	      */
 			solve_system(K,dD,dF,dR,DoF,q,r,&ok,verbose,&rms_resid);
 
-			if ( ok < 0 ) {	/*  K is not positive definite	      */
+			if ( ok < 0 ) {printf("%s:%d\n",__FILE__,__LINE__);	/*  K is not positive definite	      */
 				fprintf(stderr,"   The stiffness matrix is not pos-def. \n");
 				fprintf(stderr,"   Reduce loads and re-run the analysis.\n");
 				ExitCode = 181;
@@ -565,7 +565,7 @@ For compilation/installation, see README.txt.
 				eqF_temp[lc], eqF_mech[lc], D, shear, geom,
 				&axial_strain_warning );
 
-			if ( verbose ) { /*  display equilibrium error        */
+			if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__); /*  display equilibrium error        */
 			 fprintf(stdout,"   NR iteration %3d ---", iter);
 			 fprintf(stdout," RMS relative equilibrium error = %8.2e \n",error);
 			}
@@ -591,12 +591,12 @@ For compilation/installation, see README.txt.
  		write_static_results ( fp, nN,nE,nL, lc, DoF, N1,N2,
 				F,D,R, r,Q, rms_resid, ok, axial_sign );
 
-		if ( filetype == 1 ) {		// .CSV format output
+		if ( filetype == 1 ) {printf("%s:%d\n",__FILE__,__LINE__);		// .CSV format output
 			write_static_csv(OUT_file, title,
 			    nN,nE,nL,lc, DoF, N1,N2, F,D,R, r,Q, error, ok );
 		}
 
-		if ( filetype == 2 ) {		// .m matlab format output
+		if ( filetype == 2 ) {printf("%s:%d\n",__FILE__,__LINE__);		// .m matlab format output
 			write_static_mfile (OUT_file, title, nN,nE,nL,lc, DoF,
 					N1,N2, F,D,R, r,Q, error, ok );
 		}
@@ -623,9 +623,9 @@ For compilation/installation, see README.txt.
 					dx, scale );
 
 	 } /* end load case loop */
-	} else {		/*  data check only  */
+	} else {printf("%s:%d\n",__FILE__,__LINE__);		/*  data check only  */
 	
-	 if ( verbose ) {	/* display data check only */
+	 if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);	/* display data check only */
 	 	fprintf(stdout,"\n * %s *\n", title );
 	 	fprintf(stdout,"  DATA CHECK ONLY.\n");
 	 }
@@ -636,7 +636,7 @@ For compilation/installation, see README.txt.
 	}
 
 
-	if ( nM > 0 ) { /* carry out modal analysis */
+	if ( nM > 0 ) {printf("%s:%d\n",__FILE__,__LINE__); /* carry out modal analysis */
 
 		if(verbose & anlyz) fprintf(stdout,"\n\n Modal Analysis ...\n");
 
@@ -654,14 +654,14 @@ For compilation/installation, see README.txt.
 		save_dmatrix ( "Mf", M, 1,DoF, 1,DoF, 0, "w" ); /* free mass matrix */
 #endif
 
-		for (j=1; j<=DoF; j++) { /*  compute traceK and traceM */
-			if ( !r[j] ) {
+		for (j=1; j<=DoF; j++) {printf("%s:%d\n",__FILE__,__LINE__); /*  compute traceK and traceM */
+			if ( !r[j] ) {printf("%s:%d\n",__FILE__,__LINE__);
 				traceK += K[j][j];
 				traceM += M[j][j];
 			}
 		}
-		for (i=1; i<=DoF; i++) { /*  modify K and M for reactions    */
-			if ( r[i] ) {	/* apply reactions to upper triangle */
+		for (i=1; i<=DoF; i++) {printf("%s:%d\n",__FILE__,__LINE__); /*  modify K and M for reactions    */
+			if ( r[i] ) {printf("%s:%d\n",__FILE__,__LINE__);	/* apply reactions to upper triangle */
 				K[i][i] = traceK * 1e4;
 				M[i][i] = traceM;
 				for (j=i+1; j<=DoF; j++)
@@ -669,12 +669,12 @@ For compilation/installation, see README.txt.
 		    }
 		}
 
-		if ( write_matrix ) {	/* write Kd and Md matrices */
+		if ( write_matrix ) {printf("%s:%d\n",__FILE__,__LINE__);	/* write Kd and Md matrices */
 			save_ut_dmatrix ( "Kd", K, DoF, "w" );/* dynamic stff matx */
 			save_ut_dmatrix ( "Md", M, DoF, "w" );/* dynamic mass matx */
 		}
 
-		if ( anlyz ) {	/* subspace or stodola methods */
+		if ( anlyz ) {printf("%s:%d\n",__FILE__,__LINE__);	/* subspace or stodola methods */
 			if( Mmethod == 1 )
 				subspace( K, M, DoF, nM_calc, f, V, tol,shift,&iter,&ok, verbose );
 			if( Mmethod == 2 )
@@ -691,7 +691,7 @@ For compilation/installation, see README.txt.
 	fprintf(fp,"\n");
 	fclose (fp);
 
-	if ( nM > 0 && anlyz ) {	/* write modal analysis results */
+	if ( nM > 0 && anlyz ) {printf("%s:%d\n",__FILE__,__LINE__);	/* write modal analysis results */
 
 		modal_mesh ( IN_file, meshpath, modepath, plotpath, title,
 				nN,nE, DoF, nM, xyz, L, N1,N2, p,
@@ -702,11 +702,11 @@ For compilation/installation, see README.txt.
 				V, exagg_modal, D3_flag, pan, scale );
 	}
 
-	if ( nC > 0 ) {		/* matrix condensation of stiffness and mass */
+	if ( nC > 0 ) {printf("%s:%d\n",__FILE__,__LINE__);		/* matrix condensation of stiffness and mass */
 
 		if ( verbose ) fprintf(stdout,"\n Matrix Condensation ...\n");
 
-		if(Cdof > nM && Cmethod == 3){
+		if(Cdof > nM && Cmethod == 3){printf("%s:%d\n",__FILE__,__LINE__);
 			fprintf(stderr,"  Cdof > nM ... Cdof = %d  nM = %d \n",
 				 Cdof, nM );
 			fprintf(stderr,"  The number of condensed degrees of freedom");
@@ -720,19 +720,19 @@ For compilation/installation, see README.txt.
 
 		if ( m[1] > 0 && nM > 0 )	Cfreq = f[m[1]];
 
-		if ( Cmethod == 1 && anlyz) {	/* static condensation only */
+		if ( Cmethod == 1 && anlyz) {printf("%s:%d\n",__FILE__,__LINE__);	/* static condensation only */
 			static_condensation(K, DoF, c, Cdof, Kc, 0 );
 			if ( verbose )
 				fprintf(stdout,"   static condensation of K complete\n");
 		}
-		if ( Cmethod == 2 && anlyz ) {  /*  dynamic condensation  */
+		if ( Cmethod == 2 && anlyz ) {printf("%s:%d\n",__FILE__,__LINE__);  /*  dynamic condensation  */
 			paz_condensation(M, K, DoF, c, Cdof, Mc,Kc, Cfreq, 0 ); 
-			if ( verbose ) {
+			if ( verbose ) {printf("%s:%d\n",__FILE__,__LINE__);
 				fprintf(stdout,"   Paz condensation of K and M complete");
 				fprintf(stdout," ... dynamics matched at %f Hz.\n", Cfreq );
 			}
 		}
-		if ( Cmethod == 3 && nM > 0 && anlyz ) {
+		if ( Cmethod == 3 && nM > 0 && anlyz ) {printf("%s:%d\n",__FILE__,__LINE__);
 			modal_condensation(M,K, DoF, r, c, Cdof, Mc,Kc, V,f, m, 0 );
 			if ( verbose ) 
 				fprintf(stdout,"   modal condensation of K and M complete\n");
@@ -759,7 +759,7 @@ For compilation/installation, see README.txt.
 
 	if ( verbose ) fprintf(stdout,"\n");
 
-	if ( argc == 1 ) { /* wait for keyboard entry to close the terminal */
+	if ( argc == 1 ) {printf("%s:%d\n",__FILE__,__LINE__); /* wait for keyboard entry to close the terminal */
 	   fprintf(stderr," The Output Data was appended to %s \n", OUT_file );
 	   fprintf(stderr," A Gnuplot script was written to %s \n", plotpath );
 	   fprintf(stderr," Press the 'Enter' key to close.\n");

@@ -19,7 +19,7 @@
 
 void NRerror(char error_text[])
 /* Numerical Recipes standard error handler */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	fprintf(stderr,"Numerical Recipes run-time error...\n");
 	fprintf(stderr,"%s\n",error_text);
 	fprintf(stderr,"...now exiting to system...\n");
@@ -28,7 +28,7 @@ void NRerror(char error_text[])
 
 float *vector(long nl, long nh)
 /* allocate a float vector with subscript range v[nl..nh] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	float *v;
 
 	v=(float *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(float)));
@@ -38,7 +38,7 @@ float *vector(long nl, long nh)
 
 int *ivector(long nl, long nh)
 /* allocate an int vector with subscript range v[nl..nh] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int *v;
 
 	v=(int *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(int)));
@@ -48,7 +48,7 @@ int *ivector(long nl, long nh)
 
 unsigned char *cvector(long nl, long nh)
 /* allocate an unsigned char vector with subscript range v[nl..nh] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	unsigned char *v;
 
 	v=(unsigned char *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(unsigned char)));
@@ -58,7 +58,7 @@ unsigned char *cvector(long nl, long nh)
 
 unsigned long *lvector(long nl, long nh)
 /* allocate an unsigned long vector with subscript range v[nl..nh] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	unsigned long *v;
 
 	v=(unsigned long *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(long)));
@@ -68,7 +68,7 @@ unsigned long *lvector(long nl, long nh)
 
 double *dvector(long nl, long nh)
 /* allocate a double vector with subscript range v[nl..nh] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	double *v;
 
 	v=(double *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(double)));
@@ -78,7 +78,7 @@ double *dvector(long nl, long nh)
 
 float **matrix(long nrl, long nrh, long ncl, long nch)
 /* allocate a float matrix with subscript range m[nrl..nrh][ncl..nch] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	long i, nrow=nrh-nrl+1,ncol=nch-ncl+1;
 	float **m;
 
@@ -102,7 +102,7 @@ float **matrix(long nrl, long nrh, long ncl, long nch)
 
 double **dmatrix(long nrl, long nrh, long ncl, long nch)
 /* allocate a double matrix with subscript range m[nrl..nrh][ncl..nch] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	long i, nrow=nrh-nrl+1,ncol=nch-ncl+1;
 	double **m;
 
@@ -126,7 +126,7 @@ double **dmatrix(long nrl, long nrh, long ncl, long nch)
 
 int **imatrix(long nrl, long nrh, long ncl, long nch)
 /* allocate a int matrix with subscript range m[nrl..nrh][ncl..nch] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	long i, nrow=nrh-nrl+1,ncol=nch-ncl+1;
 	int **m;
 
@@ -152,7 +152,7 @@ int **imatrix(long nrl, long nrh, long ncl, long nch)
 float **subMatrix(float **a, long oldrl, long oldrh, long oldcl, long oldch,
 	long newrl, long newcl)
 /* point a subMatrix [newrl..][newcl..] to a[oldrl..oldrh][oldcl..oldch] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	long i,j,nrow=oldrh-oldrl+1,ncol=oldcl-newcl;
 	float **m;
 
@@ -174,7 +174,7 @@ float **convert_matrix(float *a, long nrl, long nrh, long ncl, long nch)
 declared in the standard C manner as a[nrow][ncol], where nrow=nrh-nrl+1
 and ncol=nch-ncl+1. The routine should be called with the address
 &a[0][0] as the first argument. */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	long i,j,nrow=nrh-nrl+1,ncol=nch-ncl+1;
 	float **m;
 
@@ -193,7 +193,7 @@ and ncol=nch-ncl+1. The routine should be called with the address
 
 float ***f3tensor(long nrl, long nrh, long ncl, long nch, long ndl, long ndh)
 /* allocate a float 3tensor with range t[nrl..nrh][ncl..nch][ndl..ndh] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	long i,j,nrow=nrh-nrl+1,ncol=nch-ncl+1,ndep=ndh-ndl+1;
 	float ***t;
 
@@ -216,7 +216,7 @@ float ***f3tensor(long nrl, long nrh, long ncl, long nch, long ndl, long ndh)
 	t[nrl][ncl] -= ndl;
 
 	for(j=ncl+1;j<=nch;j++) t[nrl][j]=t[nrl][j-1]+ndep;
-	for(i=nrl+1;i<=nrh;i++) {
+	for(i=nrl+1;i<=nrh;i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		t[i]=t[i-1]+ncol;
 		t[i][ncl]=t[i-1][ncl]+ncol*ndep;
 		for(j=ncl+1;j<=nch;j++) t[i][j]=t[i][j-1]+ndep;
@@ -228,78 +228,78 @@ float ***f3tensor(long nrl, long nrh, long ncl, long nch, long ndl, long ndh)
 
 void free_vector(float *v, long nl, long nh)
 /* free a float vector allocated with vector() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (v+nl-NR_END));
 }
 
 void free_ivector(int *v, long nl, long nh)
 /* free an int vector allocated with ivector() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (v+nl-NR_END));
 }
 
 void free_cvector(unsigned char *v, long nl, long nh)
 /* free an unsigned char vector allocated with cvector() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (v+nl-NR_END));
 }
 
 void free_lvector(unsigned long *v, long nl, long nh)
 /* free an unsigned long vector allocated with lvector() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (v+nl-NR_END));
 }
 
 void free_dvector(double *v, long nl, long nh)
 /* free a double vector allocated with dvector() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (v+nl-NR_END));
 }
 
 void free_matrix(float **m, long nrl, long nrh, long ncl, long nch)
 /* free a float matrix allocated by matrix() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (m[nrl]+ncl-NR_END));
 	free((FREE_ARG) (m+nrl-NR_END));
 }
 
 void free_dmatrix(double **m, long nrl, long nrh, long ncl, long nch)
 /* free a double matrix allocated by dmatrix() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (m[nrl]+ncl-NR_END));
 	free((FREE_ARG) (m+nrl-NR_END));
 }
 
 void free_imatrix(int **m, long nrl, long nrh, long ncl, long nch)
 /* free an int matrix allocated by imatrix() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (m[nrl]+ncl-NR_END));
 	free((FREE_ARG) (m+nrl-NR_END));
 }
 
 void free_subMatrix(float **b, long nrl, long nrh, long ncl, long nch)
 /* free a subMatrix allocated by subMatrix() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (b+nrl-NR_END));
 }
 
 void free_convert_matrix(float **b, long nrl, long nrh, long ncl, long nch)
 /* free a matrix allocated by convert_matrix() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (b+nrl-NR_END));
 }
 
 void free_f3tensor(float ***t, long nrl, long nrh, long ncl, long nch,
 	long ndl, long ndh)
 /* free a float f3tensor allocated by f3tensor() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (t[nrl][ncl]+ndl-NR_END));
 	free((FREE_ARG) (t[nrl]+ncl-NR_END));
 	free((FREE_ARG) (t+nrl-NR_END));
 }
 fcomplex *Cvector(int nl, int nh)
 /* allocate storage for a complex vector	*/
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	fcomplex *v;
 
 	v=(fcomplex *)malloc((unsigned) (nh-nl+1)*sizeof(fcomplex));
@@ -310,14 +310,14 @@ fcomplex *Cvector(int nl, int nh)
 
 fcomplex **Cmatrix(int nrl, int nrh, int ncl, int nch)	
 /* allocate storage for a Complex matrix	*/
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int	i;
 	fcomplex **m;
 
 	m=(fcomplex **)malloc((unsigned) (nrh-nrl+1)*sizeof(fcomplex*));
 	if (!m) NRerror("allocation failure 1 in Cmatrix()");
 	m -= nrl;
-	for (i=nrl;i<=nrh;i++) {
+	for (i=nrl;i<=nrh;i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		m[i]=(fcomplex *)malloc((unsigned)(nch-ncl+1)*sizeof(fcomplex));
 		if (!m[i]) NRerror("allocation failure 2 in Cmatrix()");
 		m[i] -= ncl;
@@ -328,18 +328,18 @@ fcomplex **Cmatrix(int nrl, int nrh, int ncl, int nch)
 
 float ***D3matrix(int nrl, int nrh, int ncl, int nch, int nzl, int nzh)
  /* storage for a 3-D matrix */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int     i,j;
 	float   ***m;
 
 	m=(float ***) malloc((unsigned) (nrh-nrl+1)*sizeof(float*));
 	if (!m) NRerror("alloc failure 1 in 3Dmatrix()");
 	m -= nrl;
-	for (i=nrl;i<=nrh;i++) {
+	for (i=nrl;i<=nrh;i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		m[i]=(float **) malloc((unsigned) (nch-ncl+1)*sizeof(float*));
 		if (!m[i]) NRerror("alloc failure 2 in 3Dmatrix()");
 		m[i] -= ncl;
-		for (j=ncl;j<=nch;j++) {
+		for (j=ncl;j<=nch;j++) {printf("%s:%d\n",__FILE__,__LINE__);
 			m[i][j]=(float *)
 				malloc((unsigned) (nzh-nzl+1)*sizeof(float));
 			if (!m[i][j]) NRerror("alloc failure 3 in 3Dmatrix()");
@@ -351,18 +351,18 @@ float ***D3matrix(int nrl, int nrh, int ncl, int nch, int nzl, int nzh)
 
 double ***D3dmatrix(int nrl, int nrh, int ncl, int nch, int nzl, int nzh)
 /* storage for a 3-D matrix */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int     i,j;
 	double   ***m;
 
 	m=(double ***) malloc((unsigned) (nrh-nrl+1)*sizeof(double*));
 	if (!m) NRerror("alloc failure 1 in 3Ddmatrix()");
 	m -= nrl;
-	for (i=nrl;i<=nrh;i++) {
+	for (i=nrl;i<=nrh;i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		m[i]=(double **) malloc((unsigned) (nch-ncl+1)*sizeof(double*));
 		if (!m[i]) NRerror("alloc failure 2 in 3Dmatrix()");
 		m[i] -= ncl;
-		for (j=ncl;j<=nch;j++) {
+		for (j=ncl;j<=nch;j++) {printf("%s:%d\n",__FILE__,__LINE__);
 			m[i][j]=(double *)
 				malloc((unsigned) (nzh-nzl+1)*sizeof(double));
 			if (!m[i][j]) NRerror("alloc failure 3 in 3Ddmatrix()");
@@ -375,12 +375,12 @@ double ***D3dmatrix(int nrl, int nrh, int ncl, int nch, int nzl, int nzh)
 
 
 void free_Cvector(fcomplex *v, int nl, int nh)
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((void*)/*(char*)*/ (v+nl));
 }
 
 void free_Cmatrix(fcomplex **m, int nrl, int nrh, int ncl, int nch)
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int	i;
 
 	for(i=nrh;i>=nrl;i--) free((void*)/*(char*)*/ (m[i]+ncl));
@@ -388,22 +388,22 @@ void free_Cmatrix(fcomplex **m, int nrl, int nrh, int ncl, int nch)
 }
 
 void free_D3matrix(float ***m, int nrl, int nrh, int ncl, int nch, int nzl, int nzh)
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int     i,j;
 
-	for(i=nrh;i>=nrl;i--) {
-		for(j=nch;j>=ncl;j--) {
+	for(i=nrh;i>=nrl;i--) {printf("%s:%d\n",__FILE__,__LINE__);
+		for(j=nch;j>=ncl;j--) {printf("%s:%d\n",__FILE__,__LINE__);
 			free((void*)/*(char*)*/ (m[i][j]+nzl));
 		}
 	}
 }
 
 void free_D3dmatrix(double ***m, int nrl, int nrh, int ncl, int nch, int nzl, int nzh)
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int     i,j;
 
-	for(i=nrh;i>=nrl;i--) {
-		for(j=nch;j>=ncl;j--) {
+	for(i=nrh;i>=nrl;i--) {printf("%s:%d\n",__FILE__,__LINE__);
+		for(j=nch;j>=ncl;j--) {printf("%s:%d\n",__FILE__,__LINE__);
 			free((void*)/*(char*)*/ (m[i][j]+nzl));
 		}
 	}
@@ -422,7 +422,7 @@ void free_D3dmatrix(double ***m, int nrl, int nrh, int ncl, int nch, int nzl, in
 void NRerror(error_text)
 char error_text[];
 /* Numerical Recipes standard error handler */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	void exit();
 
 	fprintf(stderr,"Numerical Recipes run-time error...\n");
@@ -434,7 +434,7 @@ char error_text[];
 float *vector(nl,nh)
 long nh,nl;
 /* allocate a float vector with subscript range v[nl..nh] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	float *v;
 
 	v=(float *)malloc((unsigned int) ((nh-nl+1+NR_END)*sizeof(float)));
@@ -445,7 +445,7 @@ long nh,nl;
 int *ivector(nl,nh)
 long nh,nl;
 /* allocate an int vector with subscript range v[nl..nh] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int *v;
 
 	v=(int *)malloc((unsigned int) ((nh-nl+1+NR_END)*sizeof(int)));
@@ -456,7 +456,7 @@ long nh,nl;
 unsigned char *cvector(nl,nh)
 long nh,nl;
 /* allocate an unsigned char vector with subscript range v[nl..nh] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	unsigned char *v;
 
 	v=(unsigned char *)malloc((unsigned int) ((nh-nl+1+NR_END)*sizeof(unsigned char)));
@@ -467,7 +467,7 @@ long nh,nl;
 unsigned long *lvector(nl,nh)
 long nh,nl;
 /* allocate an unsigned long vector with subscript range v[nl..nh] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	unsigned long *v;
 
 	v=(unsigned long *)malloc((unsigned int) ((nh-nl+1+NR_END)*sizeof(long)));
@@ -478,7 +478,7 @@ long nh,nl;
 double *dvector(nl,nh)
 long nh,nl;
 /* allocate a double vector with subscript range v[nl..nh] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	double *v;
 
 	v=(double *)malloc((unsigned int) ((nh-nl+1+NR_END)*sizeof(double)));
@@ -489,7 +489,7 @@ long nh,nl;
 float **matrix(nrl,nrh,ncl,nch)
 long nch,ncl,nrh,nrl;
 /* allocate a float matrix with subscript range m[nrl..nrh][ncl..nch] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	long i, nrow=nrh-nrl+1,ncol=nch-ncl+1;
 	float **m;
 
@@ -514,7 +514,7 @@ long nch,ncl,nrh,nrl;
 double **dmatrix(nrl,nrh,ncl,nch)
 long nch,ncl,nrh,nrl;
 /* allocate a double matrix with subscript range m[nrl..nrh][ncl..nch] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	long i, nrow=nrh-nrl+1,ncol=nch-ncl+1;
 	double **m;
 
@@ -539,7 +539,7 @@ long nch,ncl,nrh,nrl;
 int **imatrix(nrl,nrh,ncl,nch)
 long nch,ncl,nrh,nrl;
 /* allocate a int matrix with subscript range m[nrl..nrh][ncl..nch] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	long i, nrow=nrh-nrl+1,ncol=nch-ncl+1;
 	int **m;
 
@@ -566,7 +566,7 @@ float **subMatrix(a,oldrl,oldrh,oldcl,oldch,newrl,newcl)
 float **a;
 long newcl,newrl,oldch,oldcl,oldrh,oldrl;
 /* point a subMatrix [newrl..][newcl..] to a[oldrl..oldrh][oldcl..oldch] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	long i,j,nrow=oldrh-oldrl+1,ncol=oldcl-newcl;
 	float **m;
 
@@ -590,7 +590,7 @@ long nch,ncl,nrh,nrl;
 declared in the standard C manner as a[nrow][ncol], where nrow=nrh-nrl+1
 and ncol=nch-ncl+1. The routine should be called with the address
 &a[0][0] as the first argument. */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	long i,j,nrow=nrh-nrl+1,ncol=nch-ncl+1;
 	float **m;
 
@@ -610,7 +610,7 @@ and ncol=nch-ncl+1. The routine should be called with the address
 float ***f3tensor(nrl,nrh,ncl,nch,ndl,ndh)
 long nch,ncl,ndh,ndl,nrh,nrl;
 /* allocate a float 3tensor with range t[nrl..nrh][ncl..nch][ndl..ndh] */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	long i,j,nrow=nrh-nrl+1,ncol=nch-ncl+1,ndep=ndh-ndl+1;
 	float ***t;
 
@@ -633,7 +633,7 @@ long nch,ncl,ndh,ndl,nrh,nrl;
 	t[nrl][ncl] -= ndl;
 
 	for(j=ncl+1;j<=nch;j++) t[nrl][j]=t[nrl][j-1]+ndep;
-	for(i=nrl+1;i<=nrh;i++) {
+	for(i=nrl+1;i<=nrh;i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		t[i]=t[i-1]+ncol;
 		t[i][ncl]=t[i-1][ncl]+ncol*ndep;
 		for(j=ncl+1;j<=nch;j++) t[i][j]=t[i][j-1]+ndep;
@@ -647,7 +647,7 @@ void free_vector(v,nl,nh)
 float *v;
 long nh,nl;
 /* free a float vector allocated with vector() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (v+nl-NR_END));
 }
 
@@ -655,7 +655,7 @@ void free_ivector(v,nl,nh)
 int *v;
 long nh,nl;
 /* free an int vector allocated with ivector() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (v+nl-NR_END));
 }
 
@@ -663,7 +663,7 @@ void free_cvector(v,nl,nh)
 long nh,nl;
 unsigned char *v;
 /* free an unsigned char vector allocated with cvector() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (v+nl-NR_END));
 }
 
@@ -671,7 +671,7 @@ void free_lvector(v,nl,nh)
 long nh,nl;
 unsigned long *v;
 /* free an unsigned long vector allocated with lvector() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (v+nl-NR_END));
 }
 
@@ -679,7 +679,7 @@ void free_dvector(v,nl,nh)
 double *v;
 long nh,nl;
 /* free a double vector allocated with dvector() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (v+nl-NR_END));
 }
 
@@ -687,7 +687,7 @@ void free_matrix(m,nrl,nrh,ncl,nch)
 float **m;
 long nch,ncl,nrh,nrl;
 /* free a float matrix allocated by matrix() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (m[nrl]+ncl-NR_END));
 	free((FREE_ARG) (m+nrl-NR_END));
 }
@@ -696,7 +696,7 @@ void free_dmatrix(m,nrl,nrh,ncl,nch)
 double **m;
 long nch,ncl,nrh,nrl;
 /* free a double matrix allocated by dmatrix() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (m[nrl]+ncl-NR_END));
 	free((FREE_ARG) (m+nrl-NR_END));
 }
@@ -705,7 +705,7 @@ void free_imatrix(m,nrl,nrh,ncl,nch)
 int **m;
 long nch,ncl,nrh,nrl;
 /* free an int matrix allocated by imatrix() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (m[nrl]+ncl-NR_END));
 	free((FREE_ARG) (m+nrl-NR_END));
 }
@@ -714,7 +714,7 @@ void free_subMatrix(b,nrl,nrh,ncl,nch)
 float **b;
 long nch,ncl,nrh,nrl;
 /* free a subMatrix allocated by subMatrix() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (b+nrl-NR_END));
 }
 
@@ -722,7 +722,7 @@ void free_convert_matrix(b,nrl,nrh,ncl,nch)
 float **b;
 long nch,ncl,nrh,nrl;
 /* free a matrix allocated by convert_matrix() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (b+nrl-NR_END));
 }
 
@@ -730,7 +730,7 @@ void free_f3tensor(t,nrl,nrh,ncl,nch,ndl,ndh)
 float ***t;
 long nch,ncl,ndh,ndl,nrh,nrl;
 /* free a float f3tensor allocated by f3tensor() */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	free((FREE_ARG) (t[nrl][ncl]+ndl-NR_END));
 	free((FREE_ARG) (t[nrl]+ncl-NR_END));
 	free((FREE_ARG) (t+nrl-NR_END));
@@ -742,10 +742,10 @@ long nch,ncl,ndh,ndl,nrh,nrl;
  * SHOW_VECTOR  -  display a vector of dimension [1..n]
  */
 void show_vector ( float *A, int n )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int     j;
 
-	for (j=1; j <= n; j++) {
+	for (j=1; j <= n; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 		if (A[j] != 0)	fprintf(stdout,"%14.6e", A[j] );
 		else		fprintf(stdout,"   0       ");
 	}
@@ -757,10 +757,10 @@ void show_vector ( float *A, int n )
  * SHOW_DVECTOR  -  display a vector of dimension [1..n]
  */
 void show_dvector ( double *A, int n )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int     j;
 
-	for (j=1; j <= n; j++) {
+	for (j=1; j <= n; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 		if ( fabs(A[j]) >= 1.e-99)
 			fprintf(stdout,"%14.6e", A[j] );
 		else	fprintf(stdout,"   0       ");
@@ -773,10 +773,10 @@ void show_dvector ( double *A, int n )
  * SHOW_IVECTOR  -  display a vector of integers of dimension [1..n]
  */
 void show_ivector ( int *A, int n )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int     j;
 
-	for (j=1; j <= n; j++) {
+	for (j=1; j <= n; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 		if (A[j] != 0)	fprintf(stdout,"%11d", A[j] );
 		else	 	fprintf(stdout,"   0       ");
 	}
@@ -789,11 +789,11 @@ void show_ivector ( int *A, int n )
  * SHOW_MATRIX  -  display a matrix of dimension [1..m][1..n]
  */
 void show_matrix ( float **A, int m, int n )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int     i,j;
 
-	for (i=1; i <= m; i++) {
-		for (j=1; j <= n; j++) {
+	for (i=1; i <= m; i++) {printf("%s:%d\n",__FILE__,__LINE__);
+		for (j=1; j <= n; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 			if (A[i][j] != 0) fprintf(stdout,"%14.6e", A[i][j] );
 			else		  fprintf(stdout,"   0       ");
 		}
@@ -807,11 +807,11 @@ void show_matrix ( float **A, int m, int n )
  * SHOW_DMATRIX  - display a matrix of dimension [1..m][1..n] 
  */
 void show_dmatrix ( double **A, int m, int n )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int     i,j;
 
-	for (i=1; i <= m; i++) {
-		for (j=1; j <= n; j++) {
+	for (i=1; i <= m; i++) {printf("%s:%d\n",__FILE__,__LINE__);
+		for (j=1; j <= n; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 			if (fabs(A[i][j]) > 1.e-99) fprintf(stdout,"%11.3e", A[i][j] );
 			else		  fprintf(stdout,"   0       ");
 		}
@@ -826,13 +826,13 @@ void show_dmatrix ( double **A, int m, int n )
  * SAVE_VECTOR  -  save a vector of dimension [1..n] to the named file 
  */
 void save_vector( char filename[], float *V, int nl, int nh, const char *mode )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	FILE    *fp_v;
 	int     i;
 	void	exit();
 	time_t	now;
 
-	if ((fp_v = fopen (filename, mode)) == NULL) {
+	if ((fp_v = fopen (filename, mode)) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 		printf (" error: cannot open file: '%s' \n", filename );
 		exit(1011);
 	}
@@ -841,7 +841,7 @@ void save_vector( char filename[], float *V, int nl, int nh, const char *mode )
 	fprintf(fp_v,"%% type: vector\n");
 	fprintf(fp_v,"%% rows: %d\n", 1 );
 	fprintf(fp_v,"%% columns: %d\n", nh-nl+1 );
-	for (i=nl; i <= nh; i++) {
+	for (i=nl; i <= nh; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		if (V[i] != 0)	fprintf(fp_v,"%15.6e", V[i] );
 		else		fprintf(fp_v,"    0         ");         
 		fprintf(fp_v,"\n");
@@ -854,13 +854,13 @@ void save_vector( char filename[], float *V, int nl, int nh, const char *mode )
  * SAVE_DVECTOR  -  save a vector of dimension [1..n] to the named file 
  */
 void save_dvector( char filename[], double *V, int nl, int nh, const char *mode )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	FILE    *fp_v;
 	int     i;
 	void	exit();
 	time_t	now;
 
-	if ((fp_v = fopen (filename, mode)) == NULL) {
+	if ((fp_v = fopen (filename, mode)) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 		printf (" error: cannot open file: '%s' \n", filename );
 		exit(1011);
 	}
@@ -869,7 +869,7 @@ void save_dvector( char filename[], double *V, int nl, int nh, const char *mode 
 	fprintf(fp_v,"%% type: vector\n");
 	fprintf(fp_v,"%% rows: %d\n", 1 );
 	fprintf(fp_v,"%% columns: %d\n", nh-nl+1 );
-	for (i=nl; i <= nh; i++) {
+	for (i=nl; i <= nh; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		if (V[i] != 0)	fprintf(fp_v,"%21.12e", V[i] );
 		else	        fprintf(fp_v,"    0                ");
 		fprintf(fp_v,"\n");
@@ -882,13 +882,13 @@ void save_dvector( char filename[], double *V, int nl, int nh, const char *mode 
  * SAVE_IVECTOR  -  save an integer vector of dimension [1..n] to the named file 
  */
 void save_ivector( char filename[], int *V, int nl, int nh, const char *mode )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	FILE    *fp_v;
 	int     i;
 	void	exit();
 	time_t	now;
 
-	if ((fp_v = fopen (filename, mode)) == NULL) {
+	if ((fp_v = fopen (filename, mode)) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 		printf (" error: cannot open file: '%s' \n", filename );
 		exit(1012);
 	}
@@ -897,7 +897,7 @@ void save_ivector( char filename[], int *V, int nl, int nh, const char *mode )
 	fprintf(fp_v,"%% type: vector\n");
 	fprintf(fp_v,"%% rows: %d\n", 1 );
 	fprintf(fp_v,"%% columns: %d\n", nh-nl+1 );
-	for (i=nl; i <= nh; i++) {
+	for (i=nl; i <= nh; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		if (V[i] != 0)	fprintf(fp_v,"%15d", V[i] );
 		else		fprintf(fp_v,"   0         ");         
 		fprintf(fp_v,"\n");
@@ -910,7 +910,7 @@ void save_ivector( char filename[], int *V, int nl, int nh, const char *mode )
  * SAVE_MATRIX  -  save a matrix of dimension [ml..mh][nl..nh] to the named file
  */
 void save_matrix ( char filename[], float **A, int ml, int mh, int nl, int nh, int transpose, const char *mode )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	FILE    *fp_m;
 	int     i,j, rows, cols;
 	void	exit();
@@ -919,7 +919,7 @@ void save_matrix ( char filename[], float **A, int ml, int mh, int nl, int nh, i
 	if ( transpose ) rows = nh-nl+1; else rows = mh-ml+1;
 	if ( transpose ) cols = mh-ml+1; else cols = nh-nl+1;
 
-	if ((fp_m = fopen (filename, mode)) == NULL) {
+	if ((fp_m = fopen (filename, mode)) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 		printf (" error: cannot open file: %s \n", filename );
 		exit(1013);
 	}
@@ -928,17 +928,17 @@ void save_matrix ( char filename[], float **A, int ml, int mh, int nl, int nh, i
 	fprintf(fp_m,"%% type: matrix \n");
 	fprintf(fp_m,"%% rows: %d\n", rows );
 	fprintf(fp_m,"%% columns: %d\n", cols );
-	if ( transpose ) {
-	    for (j=nl; j <= nh; j++) {
-		for (i=ml; i <= mh; i++) {
+	if ( transpose ) {printf("%s:%d\n",__FILE__,__LINE__);
+	    for (j=nl; j <= nh; j++) {printf("%s:%d\n",__FILE__,__LINE__);
+		for (i=ml; i <= mh; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			if (A[i][j] != 0) fprintf(fp_m,"%15.6e", A[i][j] );
 			else		  fprintf(fp_m,"    0          ");
 		}
 		fprintf(fp_m,"\n");
 	    }
-	} else {
-	    for (i=ml; i <= mh; i++) {
-		for (j=nl; j <= nh; j++) {
+	} else {printf("%s:%d\n",__FILE__,__LINE__);
+	    for (i=ml; i <= mh; i++) {printf("%s:%d\n",__FILE__,__LINE__);
+		for (j=nl; j <= nh; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 			if (A[i][j] != 0) fprintf(fp_m,"%15.6e", A[i][j] );
 			else		  fprintf(fp_m,"    0          ");
 		}
@@ -953,7 +953,7 @@ void save_matrix ( char filename[], float **A, int ml, int mh, int nl, int nh, i
  * SAVE_DMATRIX  - save a matrix of dimension [ml..mh][nl..nh] to the named file
  */
 void save_dmatrix ( char filename[], double **A, int ml, int mh, int nl, int nh, int transpose, const char *mode )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	FILE    *fp_m;
 	int     i,j, rows, cols;
 	void	exit();
@@ -962,7 +962,7 @@ void save_dmatrix ( char filename[], double **A, int ml, int mh, int nl, int nh,
 	if ( transpose ) rows = nh-nl+1; else rows = mh-ml+1;
 	if ( transpose ) cols = mh-ml+1; else cols = nh-nl+1;
 
-	if ((fp_m = fopen (filename, mode)) == NULL) {
+	if ((fp_m = fopen (filename, mode)) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 		printf (" error: cannot open file: %s \n", filename );
 		exit(1014);
 	}
@@ -971,17 +971,17 @@ void save_dmatrix ( char filename[], double **A, int ml, int mh, int nl, int nh,
 	fprintf(fp_m,"%% type: matrix \n");
 	fprintf(fp_m,"%% rows: %d\n", rows );
 	fprintf(fp_m,"%% columns: %d\n", cols );
-	if ( transpose ) {
-	    for (j=nl; j <= nh; j++) {
-		for (i=ml; i <= mh; i++) {
+	if ( transpose ) {printf("%s:%d\n",__FILE__,__LINE__);
+	    for (j=nl; j <= nh; j++) {printf("%s:%d\n",__FILE__,__LINE__);
+		for (i=ml; i <= mh; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			if (fabs(A[i][j]) > 1.e-99) fprintf(fp_m,"%21.12e", A[i][j] );
 			else		            fprintf(fp_m,"    0                ");
 		}
 		fprintf(fp_m,"\n");
 	    }
-	} else { 
-	    for (i=ml; i <= mh; i++) {
-		for (j=nl; j <= nh; j++) {
+	} else {printf("%s:%d\n",__FILE__,__LINE__); 
+	    for (i=ml; i <= mh; i++) {printf("%s:%d\n",__FILE__,__LINE__);
+		for (j=nl; j <= nh; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 			if (fabs(A[i][j]) > 1.e-99) fprintf(fp_m,"%21.12e", A[i][j] );
 			else		            fprintf(fp_m,"    0                ");
 		}
@@ -998,13 +998,13 @@ void save_dmatrix ( char filename[], double **A, int ml, int mh, int nl, int nh,
  *  use only upper-triangular part
  */
 void save_ut_matrix ( char filename[], float **A, int n, const char *mode )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	FILE    *fp_m;
 	int     i,j;
         void	exit();
 	time_t	now;
 
-	if ((fp_m = fopen (filename, mode)) == NULL) {
+	if ((fp_m = fopen (filename, mode)) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 		printf (" error: cannot open file: %s \n", filename );
 		exit(1015);
 	}
@@ -1013,12 +1013,12 @@ void save_ut_matrix ( char filename[], float **A, int n, const char *mode )
 	fprintf(fp_m,"%% type: matrix \n");
 	fprintf(fp_m,"%% rows: %d\n", n );
 	fprintf(fp_m,"%% columns: %d\n", n );
-	for (i=1; i <= n; i++) {
-	  for (j=1; j <= n; j++) {
-		if ( i > j ) {
+	for (i=1; i <= n; i++) {printf("%s:%d\n",__FILE__,__LINE__);
+	  for (j=1; j <= n; j++) {printf("%s:%d\n",__FILE__,__LINE__);
+		if ( i > j ) {printf("%s:%d\n",__FILE__,__LINE__);
 			if (fabs(A[j][i]) > 1.e-99) fprintf(fp_m,"%15.6e", A[j][i] );
 			else		            fprintf(fp_m,"    0          ");
-		} else {
+		} else {printf("%s:%d\n",__FILE__,__LINE__);
 			if (fabs(A[i][j]) > 1.e-99) fprintf(fp_m,"%15.6e", A[i][j] );
 			else		            fprintf(fp_m,"    0          ");
 		}
@@ -1035,13 +1035,13 @@ void save_ut_matrix ( char filename[], float **A, int n, const char *mode )
  * use only upper-triangular part
  */
 void save_ut_dmatrix ( char filename[], double **A, int n, const char *mode )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	FILE    *fp_m;
 	int     i,j;
         void	exit();
 	time_t	now;
 
-	if ((fp_m = fopen (filename, mode)) == NULL) {
+	if ((fp_m = fopen (filename, mode)) == NULL) {printf("%s:%d\n",__FILE__,__LINE__);
 		printf (" error: cannot open file: %s \n", filename );
 		exit(1016);
 	}
@@ -1050,12 +1050,12 @@ void save_ut_dmatrix ( char filename[], double **A, int n, const char *mode )
 	fprintf(fp_m,"%% type: matrix \n");
 	fprintf(fp_m,"%% rows: %d\n", n );
 	fprintf(fp_m,"%% columns: %d\n", n );
-	for (i=1; i <= n; i++) {
-	  for (j=1; j <= n; j++) {
-		if ( i > j ) {
+	for (i=1; i <= n; i++) {printf("%s:%d\n",__FILE__,__LINE__);
+	  for (j=1; j <= n; j++) {printf("%s:%d\n",__FILE__,__LINE__);
+		if ( i > j ) {printf("%s:%d\n",__FILE__,__LINE__);
 			if (fabs(A[j][i]) > 1.e-99) fprintf(fp_m,"%21.12e", A[j][i] );
 			else		            fprintf(fp_m,"    0                ");
-		} else {
+		} else {printf("%s:%d\n",__FILE__,__LINE__);
 			if (fabs(A[i][j]) > 1.e-99) fprintf(fp_m,"%21.12e", A[i][j] );
 			else		            fprintf(fp_m,"    0                ");
 		}

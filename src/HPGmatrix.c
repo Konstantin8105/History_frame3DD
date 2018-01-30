@@ -53,7 +53,7 @@
  * vectors.
  */
 void gaussj(float **A, int n, float **B, int m)
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int *indxc,*indxr,*ipiv;
 	int i,icol=1,irow=1,j,k,l,ll;
 	float big,dum,pivinv,temp;
@@ -67,16 +67,16 @@ void gaussj(float **A, int n, float **B, int m)
 
 /*  This is the main loop over the columns to be reduced. */
 
-	for (i=1;i<=n;i++) {
+	for (i=1;i<=n;i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		big=0.0;
 
 /*  This is the outer loop for the search for a pivot element. */
 
 		for (j=1;j<=n;j++)
 			if (ipiv[j] != 1)
-				for (k=1;k<=n;k++) {
-					if (ipiv[k] == 0) {
-						if (fabs(A[j][k]) >= big) {
+				for (k=1;k<=n;k++) {printf("%s:%d\n",__FILE__,__LINE__);
+					if (ipiv[k] == 0) {printf("%s:%d\n",__FILE__,__LINE__);
+						if (fabs(A[j][k]) >= big) {printf("%s:%d\n",__FILE__,__LINE__);
 							big=fabs(A[j][k]);
 							irow=j;
 							icol=k;
@@ -94,7 +94,7 @@ void gaussj(float **A, int n, float **B, int m)
  * by columns.
  */
 
-		if (irow != icol) {
+		if (irow != icol) {printf("%s:%d\n",__FILE__,__LINE__);
 			for (l=1;l<=n;l++) SWAP(A[irow][l],A[icol][l])
 			for (l=1;l<=m;l++) SWAP(B[irow][l],B[icol][l])
 		}
@@ -112,7 +112,7 @@ void gaussj(float **A, int n, float **B, int m)
 /*  Next, we reduce the rows ... except for the pivot one, of course. */
 
 		for (ll=1;ll<=n;ll++)
-			if (ll != icol) {
+			if (ll != icol) {printf("%s:%d\n",__FILE__,__LINE__);
 				dum=A[ll][icol];
 				A[ll][icol]=0.0;
 				for (l=1;l<=n;l++) A[ll][l] -= A[icol][l]*dum;
@@ -125,7 +125,7 @@ void gaussj(float **A, int n, float **B, int m)
  * columns in the reverse order that the permutation was built up.
  */
 
-	for (l=n;l>=1;l--) {
+	for (l=n;l>=1;l--) {printf("%s:%d\n",__FILE__,__LINE__);
 		if (indxr[l] != indxc[l])
 			for (k=1;k<=n;k++)
 				SWAP(A[k][indxr[l]],A[k][indxc[l]]);
@@ -158,28 +158,28 @@ void lu_dcmp (
 	int reduce,	// 1: do a forward reduction; 0: don't do the reduction 
 	int solve,	// 1: do a back substitution for {x};  0: do no bk-sub'n
 	int *pd		// 1: positive diagonal  and  successful LU decomp'n	
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double	pivot;		/* a diagonal element of [A]		*/
 	int	i, j, k;
 
 	*pd = 1;
-	if ( reduce ) {			/* forward reduction of [A]	*/
+	if ( reduce ) {printf("%s:%d\n",__FILE__,__LINE__);			/* forward reduction of [A]	*/
 
-	    for (k=1; k <= n; k++) {
-		if ( 0.0 == (pivot = A[k][k]) ) {
+	    for (k=1; k <= n; k++) {printf("%s:%d\n",__FILE__,__LINE__);
+		if ( 0.0 == (pivot = A[k][k]) ) {printf("%s:%d\n",__FILE__,__LINE__);
 		    fprintf(stderr," lu_dcmp: zero found on the diagonal\n");
 		    fprintf(stderr," A[%d][%d] = %11.4e\n", k, k, A[k][k] );
 		    *pd = 0;
 		    return;
 		}
-		for (i = k+1; i <= n; i++) {
+		for (i = k+1; i <= n; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		    A[i][k] /= pivot;
 		    for (j=k+1; j <= n; j++)	A[i][j] -= A[i][k]*A[k][j];
 		}
 	    }
 	}		/* the forward reduction of [A] is now complete	*/
 
-	if ( solve ) {		/* back substitution to solve for {x}	*/
+	if ( solve ) {printf("%s:%d\n",__FILE__,__LINE__);		/* back substitution to solve for {x}	*/
 
 	    /* {b} is run through the same forward reduction as was [A]	*/
 
@@ -228,18 +228,18 @@ void ldl_dcmp (
 	int reduce,	// 1: do a forward reduction of A; 0: don't
 	int solve,	// 1: do a back substitution for {x}; 0: don't
 	int *pd		// 1: definite matrix and successful L D L' decomp'n
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	int	i, j, k, m;
 	*pd = 0;	/* number of negative elements on the diagonal of D */
 
-	if ( reduce ) {		/* forward column-wise reduction of [A]	*/
+	if ( reduce ) {printf("%s:%d\n",__FILE__,__LINE__);		/* forward column-wise reduction of [A]	*/
 
-	    for (j=1; j<=n; j++) {
+	    for (j=1; j<=n; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 
 	    	for (m=1, i=1; i < j; i++) 	/* scan the sky-line	*/
 			if ( A[i][j] == 0.0 ) ++m; else	break;
 		
-		for (i=m; i < j; i++) {
+		for (i=m; i < j; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			A[j][i] = A[i][j];
 			for (k=m; k < i; k++) A[j][i] -= A[j][k]*A[i][k];
 		}
@@ -248,7 +248,7 @@ void ldl_dcmp (
 	    	for (i=m; i < j; i++)	d[j] -= A[j][i]*A[j][i]/d[i];
 
 	    	for (i=m; i < j; i++)	A[j][i] /= d[i];
-		if ( d[j] == 0.0 ) {
+		if ( d[j] == 0.0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		    fprintf(stderr," ldl_dcmp(): zero found on diagonal ...\n");
 		    fprintf(stderr," d[%d] = %11.4e\n", j, d[j] );
 		    return;
@@ -257,7 +257,7 @@ void ldl_dcmp (
 	    }
 	}		/* the forward reduction of [A] is now complete	*/
 
-	if ( solve ) {		/* back substitution to solve for {x}   */
+	if ( solve ) {printf("%s:%d\n",__FILE__,__LINE__);		/* back substitution to solve for {printf("%s:%d\n",__FILE__,__LINE__);x}   */
 
 		/* {x} is run through the same forward reduction as was [A] */
 
@@ -295,7 +295,7 @@ void ldl_dcmp (
 void ldl_mprove(
 	double **A, int n, double *d, double *b, double *x, 
 	double *rms_resid, int *ok
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double  sdp;		/* accumulate the r.h.s. in double precision */
 	double  *resid,		/* the residual error		  	*/
 		rms_resid_new=0, /* the RMS error of the mprvd solution	*/
@@ -306,9 +306,9 @@ void ldl_mprove(
 
 	resid = dvector(1,n);
 
-	for (i=1;i<=n;i++) {		/* calculate the r.h.s. of      */
+	for (i=1;i<=n;i++) {printf("%s:%d\n",__FILE__,__LINE__);		/* calculate the r.h.s. of      */
 		sdp = b[i];		/* [A]{r} = {b} - [A]{x+r}      */
-		for (j=1;j<=n;j++) {	/* A in upper triangle only     */
+		for (j=1;j<=n;j++) {printf("%s:%d\n",__FILE__,__LINE__);	/* A in upper triangle only     */
 			if ( i <= j )   sdp -= A[i][j] * x[j];
 			else		sdp -= A[j][i] * x[j];
 		}
@@ -324,7 +324,7 @@ void ldl_mprove(
 	rms_resid_new = sqrt ( rms_resid_new / (double) n );
 
 	*ok = 0;
-	if ( rms_resid_new / *rms_resid < 0.90 ) { 	/* good improvement */
+	if ( rms_resid_new / *rms_resid < 0.90 ) {printf("%s:%d\n",__FILE__,__LINE__); 	/* good improvement */
 				/* subtract the error from the old solution */
 		for (i=1;i<=n;i++)	x[i] += resid[i];
 		*rms_resid = rms_resid_new;
@@ -375,23 +375,23 @@ void ldl_dcmp_pm (
 	int reduce,	/**< 1: do a forward reduction of A; 0: don't   */
 	int solve,	/**< 1: do a back substitution for {x}; 0: don't */
 	int *pd		/**< 1: definite matrix and successful L D L' decomp'n*/
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	int	i, j, k, m;
 	*pd = 0;	/* number of negative elements on the diagonal of D */
 
-	if ( reduce ) {		/* forward column-wise reduction of [A]	*/
+	if ( reduce ) {printf("%s:%d\n",__FILE__,__LINE__);		/* forward column-wise reduction of [A]	*/
 
-	    for (j=1; j<=n; j++) {
+	    for (j=1; j<=n; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 
 	      d[j] = 0.0;
 
-	      if ( q[j] ) { /* reduce column j, except where q[i]==0	*/	
+	      if ( q[j] ) {printf("%s:%d\n",__FILE__,__LINE__); /* reduce column j, except where q[i]==0	*/	
 
 		for (m=1, i=1; i < j; i++) 	/* scan the sky-line	*/
 			if ( A[i][j] == 0.0 ) ++m; else	break;
 		
-		for (i=m; i < j; i++) {
-		    if ( q[i] ) {
+		for (i=m; i < j; i++) {printf("%s:%d\n",__FILE__,__LINE__);
+		    if ( q[i] ) {printf("%s:%d\n",__FILE__,__LINE__);
 			A[j][i] = A[i][j];
 			for (k=m; k < i; k++)
 				if ( q[k] )
@@ -403,7 +403,7 @@ void ldl_dcmp_pm (
 	    	for (i=m; i < j; i++) if ( q[i] ) d[j] -= A[j][i]*A[j][i]/d[i];
 	    	for (i=m; i < j; i++) if ( q[i] ) A[j][i] /= d[i];
 
-		if ( d[j] == 0.0 ) {
+		if ( d[j] == 0.0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		 fprintf(stderr," ldl_dcmp_pm(): zero found on diagonal ...\n");
 		 fprintf(stderr," d[%d] = %11.4e\n", j, d[j] );
 		 return;
@@ -416,8 +416,8 @@ void ldl_dcmp_pm (
 
 	if ( solve ) {		/* back substitution to solve for {x}   */
 
-	    for (i=1; i <= n; i++) {
-		if ( q[i] ) {
+	    for (i=1; i <= n; i++) {printf("%s:%d\n",__FILE__,__LINE__);
+		if ( q[i] ) {printf("%s:%d\n",__FILE__,__LINE__);
 			x[i] = b[i];
 			for (j=1; j<= n; j++) if ( r[j] ) x[i] -= A[i][j]*x[j];
 		}
@@ -439,9 +439,9 @@ void ldl_dcmp_pm (
 	
 	    /* finally, evaluate c_r	*/
 
-	    for (i=1; i<=n; i++) {
+	    for (i=1; i<=n; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		c[i] = 0.0;
-		if ( r[i] ) {
+		if ( r[i] ) {printf("%s:%d\n",__FILE__,__LINE__);
 			c[i] = -b[i]; // changed from 0.0 to -b[i]; 2014-05-14
 			for (j=1; j<=n; j++)	c[i] += A[i][j]*x[j];
 		}
@@ -487,7 +487,7 @@ void ldl_mprove_pm (
 	int *r,		/**< r[j]=1 if  x[j] is known; r[j]=0 otherwise	*/
 	double *rms_resid, /**< root-mean-square of residual error	*/
 	int *ok		/**< 1: >10% reduction in rms_resid; 0: not	*/
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double  sdp;		// accumulate the r.h.s. in double precision
 	double  *dx,		// the residual error
 		*dc,		// update to partial r.h.s. vector, c
@@ -506,10 +506,10 @@ void ldl_mprove_pm (
 	//  [A_qq]{dx_q} = {b_q} - [A_qq]*{x_q} - [A_qr]*{x_r}      
 	//  {dx_r} is left unchanged at 0.0;
 	for (i=1;i<=n;i++) {	
-	    if ( q[i] ) {
+	    if ( q[i] ) {printf("%s:%d\n",__FILE__,__LINE__);
 		sdp = b[i];	
-		for (j=1;j<=n;j++) {
-			if ( q[j] ) {	// A_qq in upper triangle only
+		for (j=1;j<=n;j++) {printf("%s:%d\n",__FILE__,__LINE__);
+			if ( q[j] ) {printf("%s:%d\n",__FILE__,__LINE__);	// A_qq in upper triangle only
 				if ( i <= j )   sdp -= A[i][j] * x[j];
 				else		sdp -= A[j][i] * x[j];
 			}
@@ -527,8 +527,8 @@ void ldl_mprove_pm (
 	rms_resid_new = sqrt ( rms_resid_new / (double) n );
 
 	*ok = 0;
-	if ( rms_resid_new / *rms_resid < 0.90 ) { /*  enough improvement    */
-		for (i=1;i<=n;i++) {	/*  update the solution 2014-05-14   */
+	if ( rms_resid_new / *rms_resid < 0.90 ) {printf("%s:%d\n",__FILE__,__LINE__); /*  enough improvement    */
+		for (i=1;i<=n;i++) {printf("%s:%d\n",__FILE__,__LINE__);	/*  update the solution 2014-05-14   */
 		    	if ( q[i] )	x[i] += dx[i];
 			if ( r[i] )	c[i] += dc[i];
 		}
@@ -555,7 +555,7 @@ void PSB_update (
 	double *f,	/**< out-of-balance force vector        */
 	double *d,	/**< incremental displacement vector    */
 	int n )		/**< matrix dimension is n-by-n         */
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int	i, j;
 	double	dtd = 0.0, ftd = 0.0, dtd2 = 0.0;
 
@@ -579,7 +579,7 @@ void PSB_update (
  */
 void pseudo_inv(
 	double **A, double **Ai, int n, int m, double beta, int verbose
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double	*diag, *b, *x, **AtA, **AtAi, tmp, tr_AtA=0.0,
 		*dvector(), **dmatrix(), error;
 	int     i,j,k, ok; 
@@ -593,13 +593,13 @@ void pseudo_inv(
 
 	if (beta>1) fprintf(stderr," pseudo_inv: warning beta = %lf\n", beta);
 
-	for (i=1; i<=n; i++) {
+	for (i=1; i<=n; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		diag[i] = x[i] = b[i] = 0.0;
 		for (j=i; j<=n; j++)    AtA[i][j] = AtA[j][i] = 0.0;
 	}
 
-	for (i=1; i<=n; i++) {			/* compute A' * A */
-		for (j=1; j<=n; j++) {
+	for (i=1; i<=n; i++) {printf("%s:%d\n",__FILE__,__LINE__);			/* compute A' * A */
+		for (j=1; j<=n; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 			tmp = 0.0;
 			for (k=1; k<=m; k++) tmp += A[k][i] * A[k][j];
 			AtA[i][j] = tmp;
@@ -615,7 +615,7 @@ void pseudo_inv(
 
 	ldl_dcmp ( AtA, n, diag, b, x, 1, 0, &ok );	/*  L D L'  decomp */
 
-	for (j=1; j<=n; j++) {				/* compute inv(AtA) */
+	for (j=1; j<=n; j++) {printf("%s:%d\n",__FILE__,__LINE__);				/* compute inv(AtA) */
 
 		for (k=1; k<=n; k++)  b[k] = 0.0;
 		b[j] = 1.0;
@@ -624,7 +624,7 @@ void pseudo_inv(
 		if ( verbose )
 		 fprintf(stdout,"  RMS matrix error:"); /*improve the solution*/
 		error = 1.0; ok = 1;
-		do {
+		do {printf("%s:%d\n",__FILE__,__LINE__);
 			ldl_mprove ( AtA, n, diag, b, x, &error, &ok );
 			if ( verbose ) fprintf(stdout,"%9.2e", error );
 		} while ( ok );
@@ -637,8 +637,8 @@ void pseudo_inv(
 		for (j=i; j<=n; j++)
 			AtAi[i][j]=AtAi[j][i] = 0.5*(AtAi[i][j] + AtAi[j][i]);
 
-	for (i=1; i<=n; i++) {			/* compute inv(A'*A)*A'	*/
-		for (j=1; j<=m; j++) {
+	for (i=1; i<=n; i++) {printf("%s:%d\n",__FILE__,__LINE__);			/* compute inv(A'*A)*A'	*/
+		for (j=1; j<=m; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 			tmp = 0.0;
 			for (k=1; k<=n; k++)    tmp += AtAi[i][k]*A[j][k];
 			Ai[i][j] = tmp;
@@ -660,13 +660,13 @@ void pseudo_inv(
  *		 u = A * B(:,j)
  */
 void prodABj ( double **A, double **B, double *u, int n, int j )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int     i, k;
 
 	for (i=1; i<=n; i++)    u[i] = 0.0;
 
-	for (i=1; i<=n; i++) {
-		for (k=1; k<=n; k++) {
+	for (i=1; i<=n; i++) {printf("%s:%d\n",__FILE__,__LINE__);
+		for (k=1; k<=n; k++) {printf("%s:%d\n",__FILE__,__LINE__);
 			if ( i <= k )   u[i] += A[i][k]*B[k][j];
 			else	    u[i] += A[k][i]*B[k][j];
 		}
@@ -679,7 +679,7 @@ void prodABj ( double **A, double **B, double *u, int n, int j )
  * prodAB - matrix-matrix multiplication      C = A * B			27apr01
  */
 void prodAB ( double **A, double **B, double **C, int I, int J, int K )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int     i, j, k;
 
 	for (i=1; i<=I; i++)
@@ -699,7 +699,7 @@ void prodAB ( double **A, double **B, double **C, int I, int J, int K )
  *	 A is n by n      B is n by m				    6jun07
  */
 void invAB( double **A, double **B, int n, int m, double **AiB, int *ok, int verbose)
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	double  *diag, *b, *x, error;
 	int     i,j,k;
 
@@ -710,19 +710,19 @@ void invAB( double **A, double **B, int n, int m, double **AiB, int *ok, int ver
 	for (i=1; i<=n; i++) diag[i] = x[i] = 0.0;
 
 	ldl_dcmp( A, n, diag, b, x, 1, 0, ok );	 /*   L D L'  decomp */
-	if ( *ok < 0 ) {
+	if ( *ok < 0 ) {printf("%s:%d\n",__FILE__,__LINE__);
 		fprintf(stderr," Make sure that all six");
 		fprintf(stderr," rigid body translations are restrained!\n");
 	}
 
-	for (j=1; j<=m; j++) {
+	for (j=1; j<=m; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 
 		for (k=1; k<=n; k++)  b[k] = B[k][j];
 		ldl_dcmp( A, n, diag, b, x, 0, 1, ok ); /*   L D L'  bksbtn */
 
 		if ( verbose ) fprintf(stdout,"    LDL' RMS matrix precision:");
 		error = *ok = 1;
-		do {				    /* improve the solution*/
+		do {printf("%s:%d\n",__FILE__,__LINE__);				    /* improve the solution*/
 			ldl_mprove ( A, n, diag, b, x, &error, ok );
 			if ( verbose ) fprintf(stdout,"%9.2e", error );
 		} while ( *ok );
@@ -743,7 +743,7 @@ void invAB( double **A, double **B, int n, int m, double **AiB, int *ok, int ver
  */
 void xtinvAy(
 	double **X, double **A, double **Y, int n, int m, double **Ac, int verbose
-){
+){printf("%s:%d\n",__FILE__,__LINE__);
 	double  *diag, *x, *y, error;
 	int     i,j,k, ok;
 
@@ -755,20 +755,20 @@ void xtinvAy(
 
 	ldl_dcmp( A, n, diag, y, x, 1, 0, &ok );	/*   L D L'  decomp */
 
-	for (j=1; j<=m; j++) {
+	for (j=1; j<=m; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 
 		for (k=1; k<=n; k++)  y[k] = Y[k][j];
 		ldl_dcmp( A, n, diag, y, x, 0, 1, &ok ); /*   L D L'  bksbtn */
 
 		if ( verbose ) fprintf(stdout,"    LDL' RMS matrix precision:");
 		error = ok = 1;
-		do {				    /* improve the solution*/
+		do {printf("%s:%d\n",__FILE__,__LINE__);				    /* improve the solution*/
 			ldl_mprove ( A, n, diag, y, x, &error, &ok );
 			if ( verbose ) fprintf(stdout,"%9.2e", error );
 		} while ( ok );
 		if ( verbose ) fprintf(stdout,"\n");
 
-		for (i=1; i<=m; i++) {
+		for (i=1; i<=m; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 			Ac[i][j] = 0.0;
 			for (k=1; k<=n; k++) Ac[i][j] += X[k][i] * x[k];
 		}
@@ -785,11 +785,11 @@ void xtinvAy(
  * Rr  = [ cosd(theta) -sind(theta) ; sind(theta) cosd(theta) ]*[ Rx ; Ry ];
  */
 void coord_xfrm ( float **Rr, float **R, float theta, int n )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	float	R1, R2;
 	int	i;
 
-	for ( i = 1; i<=n; i++ ) {
+	for ( i = 1; i<=n; i++ ) {printf("%s:%d\n",__FILE__,__LINE__);
 		R1 =  cosd(theta)*R[1][i] - sind(theta)*R[2][i];
 		R2 =  sind(theta)*R[1][i] + cosd(theta)*R[2][i];
 		Rr[1][i] = R1;
@@ -804,7 +804,7 @@ void coord_xfrm ( float **Rr, float **R, float theta, int n )
  *	 C = X' A X     C is J by J      X is N by J     A is N by N      
  */ 
 void xtAx(double **A, double **X, double **C, int N, int J)
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 
 	double  **AX;
 	int     i,j,k;
@@ -814,9 +814,9 @@ void xtAx(double **A, double **X, double **C, int N, int J)
 	for (i=1; i<=J; i++)    for (j=1; j<=J; j++)     C[i][j] = 0.0;
 	for (i=1; i<=N; i++)    for (j=1; j<=J; j++)    AX[i][j] = 0.0;
 		
-	for (i=1; i<=N; i++) {	  /*  use upper triangle of A */
-		for (j=1; j<=J; j++) {
-			for (k=1; k<=N; k++) {
+	for (i=1; i<=N; i++) {printf("%s:%d\n",__FILE__,__LINE__);	  /*  use upper triangle of A */
+		for (j=1; j<=J; j++) {printf("%s:%d\n",__FILE__,__LINE__);
+			for (k=1; k<=N; k++) {printf("%s:%d\n",__FILE__,__LINE__);
 				if ( i <= k )   AX[i][j] += A[i][k] * X[k][j];
 				else	    AX[i][j] += A[k][i] * X[k][j];
 			}
@@ -841,14 +841,14 @@ void xtAx(double **A, double **X, double **C, int N, int J)
  * xtAy - carry out vector-matrix-vector multiplication for symmetric A  7apr94
  */
 double xtAy(double *x, double **A, double *y, int n, double *d)
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 
 	double  xtAy = 0.0;
 	int     i,j;
 
-	for (i=1; i<=n; i++) {				/*  d = A y  */
+	for (i=1; i<=n; i++) {printf("%s:%d\n",__FILE__,__LINE__);				/*  d = A y  */
 		d[i]  = 0.0;    
-		for (j=1; j<=n; j++) {	  //  A in upper triangle only 
+		for (j=1; j<=n; j++) {printf("%s:%d\n",__FILE__,__LINE__);	  //  A in upper triangle only 
 			if ( i <= j )   d[i] += A[i][j] * y[j];
 			else	    d[i] += A[j][i] * y[j];
 		}
@@ -864,7 +864,7 @@ double xtAy(double *x, double **A, double *y, int n, double *d)
  *	   A is n by n and symmetric   X is n by n and symmetric    15sep01
  */ 
 void invAXinvA ( double **A, double **X, int n, int verbose )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	double  *diag, *b, *x, **Ai, **XAi, Aij, error;
 	int     i,j,k, ok;
 
@@ -874,14 +874,14 @@ void invAXinvA ( double **A, double **X, int n, int verbose )
 	Ai   = dmatrix(1,n,1,n);
 	XAi  = dmatrix(1,n,1,n);
 
-	for (i=1; i<=n; i++) {
+	for (i=1; i<=n; i++) {printf("%s:%d\n",__FILE__,__LINE__);
 		diag[i] = x[i] = b[i] = 0.0;
 		for (j=1; j<=n; j++)    XAi[i][j] = Ai[i][j] = 0.0;
 	}
 
 	ldl_dcmp ( A, n, diag, b, x, 1, 0, &ok );       /*   L D L'  decomp */
 
-	for (j=1; j<=n; j++) {			  /*  compute inv(A)  */
+	for (j=1; j<=n; j++) {printf("%s:%d\n",__FILE__,__LINE__);			  /*  compute inv(A)  */
 
 		for (k=1; k<=n; k++)  b[k] = 0.0;
 		b[j] = 1.0;
@@ -889,7 +889,7 @@ void invAXinvA ( double **A, double **X, int n, int verbose )
 
 		if ( verbose ) fprintf(stdout,"    LDL' RMS matrix precision:");
 		error = ok = 1;
-		do {				    /* improve the solution*/
+		do {printf("%s:%d\n",__FILE__,__LINE__);				    /* improve the solution*/
 			ldl_mprove ( A, n, diag, b, x, &error, &ok );
 			if ( verbose ) fprintf(stdout,"%9.2e", error );
 		} while ( ok );
@@ -902,16 +902,16 @@ void invAXinvA ( double **A, double **X, int n, int verbose )
 		for (j=i; j<=n; j++)
 			Ai[i][j] = Ai[j][i] = 0.5 * ( Ai[i][j] + Ai[j][i] );
 
-	for (i=1; i<=n; i++) {		  /*  compute X * inv(A)   */
-		for (j=1; j<=n; j++) {
+	for (i=1; i<=n; i++) {printf("%s:%d\n",__FILE__,__LINE__);		  /*  compute X * inv(A)   */
+		for (j=1; j<=n; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 			Aij = 0.0;
 			for (k=1; k<=n; k++)    Aij += X[i][k]*Ai[k][j];
 			XAi[i][j] = Aij;
 		}
 	}
 
-	for (i=1; i<=n; i++) {	  /*  compute inv(A) * X * inv(A)  */
-		for (j=1; j<=n; j++) {
+	for (i=1; i<=n; i++) {printf("%s:%d\n",__FILE__,__LINE__);	  /*  compute inv(A) * X * inv(A)  */
+		for (j=1; j<=n; j++) {printf("%s:%d\n",__FILE__,__LINE__);
 			Aij = 0.0;
 			for (k=1; k<=n; k++)    Aij += Ai[i][k] * XAi[k][j];
 			X[i][j] = Aij;
@@ -937,7 +937,7 @@ void invAXinvA ( double **A, double **X, int n, int verbose )
  *
  */
 double relative_norm( double *N, double *D, int n )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	double  nN = 0.0, nD = 0.0;
 	int     i;
 
@@ -953,12 +953,12 @@ double relative_norm( double *N, double *D, int n )
  *  compute matrix of the Legendre polynomials and its first two derivitives
  */
 void Legendre( int order, float *t, int n, float **P, float **Pp, float **Ppp )
-{
+{printf("%s:%d\n",__FILE__,__LINE__);
 	int k,p;
 
 // save_vector( n, t, "t.dat");
 
-	for (p=1; p <= n; p++) {
+	for (p=1; p <= n; p++) {printf("%s:%d\n",__FILE__,__LINE__);
 
 	 P[0][p]   =  1.00;
 	 P[1][p]   =  t[p];
@@ -975,7 +975,7 @@ void Legendre( int order, float *t, int n, float **P, float **Pp, float **Ppp )
 	 Ppp[2][p] =  3.00; 
 	 Ppp[3][p] = 15.00 * t[p]; 
 
-	 for ( k=4; k <= order; k++) {
+	 for ( k=4; k <= order; k++) {printf("%s:%d\n",__FILE__,__LINE__);
 
 	  P[k][p]   = (2.0-1.0/k)*t[p]*P[k-1][p] - (1.0-1.0/k)*P[k-2][p];
 
