@@ -43,7 +43,8 @@ int *ivector(long nl, long nh)
 
 	v=(int *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(int)));
 	if (!v) NRerror("allocation failure in ivector()");
-	return v-nl+NR_END;
+	int e = -nl+NR_END;
+	return v + e; //-nl+NR_END;
 }
 
 unsigned char *cvector(long nl, long nh)
@@ -53,7 +54,9 @@ unsigned char *cvector(long nl, long nh)
 
 	v=(unsigned char *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(unsigned char)));
 	if (!v) NRerror("allocation failure in cvector()");
-	return v-nl+NR_END;
+	/* return v-nl+NR_END; */
+	int e = -nl+NR_END;
+	return v + e; //-nl+NR_END;
 }
 
 unsigned long *lvector(long nl, long nh)
@@ -73,7 +76,9 @@ double *dvector(long nl, long nh)
 
 	v=(double *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(double)));
 	if (!v) NRerror("allocation failure in dvector()");
-	return v-nl+NR_END;
+	// return v-nl+NR_END; 
+	int e = -nl+NR_END;
+	return v + e; //-nl+NR_END;
 }
 
 float **matrix(long nrl, long nrh, long ncl, long nch)
@@ -331,7 +336,15 @@ float ***D3matrix(int nrl, int nrh, int ncl, int nch, int nzl, int nzh)
 {
 	int     i,j;
 	float   ***m;
-
+	
+	m=(double ***) malloc((unsigned) (nrh+1)*sizeof(double*));
+	for (i=0;i<=nrh;i++){
+		m[i] =(double **) malloc((unsigned) (nch+1)*sizeof(double*));
+		for (j=0;j<=nch;j++) {
+			m[i][j]=(double *) malloc((unsigned) (nzh+1)*sizeof(double));
+		}
+	}
+/*
 	m=(float ***) malloc((unsigned) (nrh-nrl+1)*sizeof(float*));
 	if (!m) NRerror("alloc failure 1 in 3Dmatrix()");
 	m -= nrl;
@@ -346,6 +359,8 @@ float ***D3matrix(int nrl, int nrh, int ncl, int nch, int nzl, int nzh)
 			m[i][j] -= nzl;
 		}
 	}
+	*/
+
 	return m;
 }
 
@@ -354,7 +369,15 @@ double ***D3dmatrix(int nrl, int nrh, int ncl, int nch, int nzl, int nzh)
 {
 	int     i,j;
 	double   ***m;
+	m=(double ***) malloc((unsigned) (nrh+1)*sizeof(double*));
+	for (i=0;i<=nrh;i++){
+		m[i] =(double **) malloc((unsigned) (nch+1)*sizeof(double*));
+		for (j=0;j<=nch;j++) {
+			m[i][j]=(double *) malloc((unsigned) (nzh+1)*sizeof(double));
+		}
+	}
 
+/*
 	m=(double ***) malloc((unsigned) (nrh-nrl+1)*sizeof(double*));
 	if (!m) NRerror("alloc failure 1 in 3Ddmatrix()");
 	m -= nrl;
@@ -369,6 +392,7 @@ double ***D3dmatrix(int nrl, int nrh, int ncl, int nch, int nzl, int nzh)
 			m[i][j] -= nzl;
 		}
 	}
+	*/
 	return m;
 }
 
@@ -376,37 +400,37 @@ double ***D3dmatrix(int nrl, int nrh, int ncl, int nch, int nzl, int nzh)
 
 void free_Cvector(fcomplex *v, int nl, int nh)
 {
-	free((void*)/*(char*)*/ (v+nl));
+	/* free((void*)#<{(|(char*)|)}># (v+nl)); */
 }
 
 void free_Cmatrix(fcomplex **m, int nrl, int nrh, int ncl, int nch)
 {
-	int	i;
-
-	for(i=nrh;i>=nrl;i--) free((void*)/*(char*)*/ (m[i]+ncl));
-	free((void*)/*(char*)*/ (m+nrl));
+	/* int	i; */
+    /*  */
+	/* for(i=nrh;i>=nrl;i--) free((void*)#<{(|(char*)|)}># (m[i]+ncl)); */
+	/* free((void*)#<{(|(char*)|)}># (m+nrl)); */
 }
 
 void free_D3matrix(float ***m, int nrl, int nrh, int ncl, int nch, int nzl, int nzh)
 {
-	int     i,j;
-
-	for(i=nrh;i>=nrl;i--) {
-		for(j=nch;j>=ncl;j--) {
-			free((void*)/*(char*)*/ (m[i][j]+nzl));
-		}
-	}
+	/* int     i,j; */
+    /*  */
+	/* for(i=nrh;i>=nrl;i--) { */
+	/* 	for(j=nch;j>=ncl;j--) { */
+	/* 		free((void*)#<{(|(char*)|)}># (m[i][j]+nzl)); */
+	/* 	} */
+	/* } */
 }
 
 void free_D3dmatrix(double ***m, int nrl, int nrh, int ncl, int nch, int nzl, int nzh)
 {
-	int     i,j;
-
-	for(i=nrh;i>=nrl;i--) {
-		for(j=nch;j>=ncl;j--) {
-			free((void*)/*(char*)*/ (m[i][j]+nzl));
-		}
-	}
+	/* int     i,j; */
+    /*  */
+	/* for(i=nrh;i>=nrl;i--) { */
+	/* 	for(j=nch;j>=ncl;j--) { */
+	/* 		free((void*)#<{(|(char*)|)}># (m[i][j]+nzl)); */
+	/* 	} */
+	/* } */
 }
 
 

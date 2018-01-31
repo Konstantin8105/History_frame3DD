@@ -200,8 +200,8 @@ For compilation/installation, see README.txt.
 			&pan_flag, &write_matrix, &axial_sign, &condense_flag,
 			&verbose, &debug);
 */
-	strcpy(IN_file,"exA.3dd\0");
-	strcpy(OUT_file,"exA.3dd.out\0");
+	strcpy(IN_file, "exJ.3dd\0");
+	strcpy(OUT_file,"exJ.3dd.out\0");
 
 	if ( verbose ) { /*  display program name, version and license type */
 		textColor('w','b','b','x');
@@ -235,25 +235,16 @@ For compilation/installation, see README.txt.
 //	temp_file_location("frame3dd.3dd",strippedInputFile,FRAME3DD_PATHMAX);
 	output_path("frame3dd.3dd",strippedInputFile,FRAME3DD_PATHMAX,NULL);
 
-	printf("C001\n");
-	
 	parse_input(fp, strippedInputFile);	/* strip comments from input data */
-	printf("C002\n");
 	fclose(fp);
-	printf("C003\n");
 
 	if ((fp = fopen (strippedInputFile, "r")) == NULL) { /* open stripped input file */
-	printf("C004\n");
 		sprintf(errMsg,"\n ERROR: cannot open stripped input data file '%s'\n", strippedInputFile);
 		errorMsg(errMsg); 
 		exit(13);
 	}
 
-	printf("before getline");
-
 	frame3dd_getline(fp, title, MAXL);
-
-	printf("title = %s\n",title);
 
 	if ( verbose ) {	/*  display analysis title */
 		textColor('w','g','b','x');
@@ -263,10 +254,7 @@ For compilation/installation, see README.txt.
 		fprintf(stdout,"\n");
 	}
 
-	printf("START OF nN \n");
 	sfrv=fscanf(fp, "%d", &nN );		/* number of nodes	*/
-	printf("nN = %d\n",nN);
-	printf("END   OF nN \n");
 	if (sfrv != 1)	sferr("nN value for number of nodes");
 	if ( verbose ) {	/* display nN */
 		fprintf(stdout," number of nodes ");
@@ -484,30 +472,51 @@ For compilation/installation, see README.txt.
 			/* increment {R_t} = {0} + {R_t} temp.-induced react */
 			for (i=1; i<=DoF; i++)	if (r[i]) R[i] += dR[i];
 
+			printf("STEP 1");
+
 			if (geom) {	/* assemble K = Ke + Kg */
 			 /* compute   {Q}={Q_t} ... temp.-induced forces     */
+
+				printf("GEOM\n");
+		
 			 element_end_forces ( Q, nE, xyz, L, Le, N1,N2,
 				Ax, Asy,Asz, Jx,Iy,Iz, E,G, p,
 				eqF_temp[lc], eqF_mech[lc], D, shear, geom,
 				&axial_strain_warning );
+
+			printf("STEP 2");
 
 			 /* assemble temp.-stressed stiffness [K({D_t})]     */
 			 assemble_K ( K, DoF, nE, xyz, rj, L, Le, N1, N2,
 						Ax,Asy,Asz, Jx,Iy,Iz, E, G, p,
 						shear,geom, Q, debug );
 			}
+
+			printf("STEP 3");
 		}
+
+			printf("STEP 4\n");
 
 		/* ... then apply mechanical loads only, if there are any ... */
 		if ( nF[lc]>0 || nU[lc]>0 || nW[lc]>0 || nP[lc]>0 || nD[lc]>0 || 
 		     gX[lc] != 0 || gY[lc] != 0 || gZ[lc] != 0 ) {
-			if ( verbose )
+			if ( verbose ){
 				fprintf(stdout," Linear Elastic Analysis ... Mechanical Loads\n");
+			}
+
+			printf("STEP 5\n");
+
 			/* incremental displ at react'ns = prescribed displ */
 			for (i=1; i<=DoF; i++)	if (r[i]) dD[i] = Dp[lc][i];
 
+			printf("STEP 6\n");
+
+
 			/*  solve {F_m} = [K({D_t})] * {D_m}	*/
 			solve_system(K,dD,F_mech[lc],dR,DoF,q,r,&ok,verbose,&rms_resid);
+
+			printf("STEP 7\n");
+
 
 			/* combine {D} = {D_t} + {D_m}	*/
 			for (i=1; i<=DoF; i++) {
@@ -516,6 +525,9 @@ For compilation/installation, see README.txt.
 			}
 			/* combine {R} = {R_t} + {R_m} --- for linear systems */
 			for (i=1; i<=DoF; i++)	if (r[i]) R[i] += dR[i];
+
+			printf("STEP 8\n");
+
 		}
 
 
@@ -528,11 +540,21 @@ For compilation/installation, see README.txt.
 				eqF_temp[lc], eqF_mech[lc], D, shear, geom,
 				&axial_strain_warning );
 
+			printf("STEP 10\n");
+
+
 		/*  check the equilibrium error	*/
 		error = equilibrium_error ( dF, F, K, D, DoF, q,r );
 
-		if ( geom && verbose )
+			printf("STEP 11\n");
+
+
+		if ( geom && verbose ) {
 			fprintf(stdout,"\n Non-Linear Elastic Analysis ...\n");
+		}
+
+			printf("STEP 12\n");
+
 
 /*
  * 		if ( geom ) { // initialize Broyden secant stiffness matrix, Ks 
@@ -781,8 +803,8 @@ For compilation/installation, see README.txt.
 	   fprintf(stderr," The Output Data was appended to %s \n", OUT_file );
 	   fprintf(stderr," A Gnuplot script was written to %s \n", plotpath );
 	   fprintf(stderr," Press the 'Enter' key to close.\n");
-	   (void) getchar();	// clear the buffer ?? 
-	   while( !getchar() ) ;	// wait for the Enter key to be hit 
+	   /* (void) getchar();	// clear the buffer ??  */
+	   /* while( !getchar() ) ;	// wait for the Enter key to be hit  */
 	}
 	color(0);
 
