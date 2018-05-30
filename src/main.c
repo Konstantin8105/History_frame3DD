@@ -200,8 +200,8 @@ For compilation/installation, see README.txt.
 			&pan_flag, &write_matrix, &axial_sign, &condense_flag,
 			&verbose, &debug);
 */
-	strcpy(IN_file, "exJ.3dd\0");
-	strcpy(OUT_file,"exJ.3dd.out\0");
+	strcpy(IN_file, "exB.3dd\0");
+	strcpy(OUT_file,"exB.3dd.out\0");
 
 	if ( verbose ) { /*  display program name, version and license type */
 		textColor('w','b','b','x');
