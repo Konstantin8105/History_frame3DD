@@ -1,3 +1,12 @@
+* Mon Oct 17 10:18:00 AEDT 2022 John Pye <john.pye@anu.edu.au> 0.20221017+
+- update build process for SCons 4.3 with Python 3.6, works in Ubuntu 18.04 at least.
+
+* Sat May 11 08:10:00 EST 2019 Henri Gavin <hpgavin> 0.20140514+
+- NRutil.c - fix memory leaks in free_D3matrix and free_D3dmatrix
+
+* Sat Jun 30 14:06:00 EST 2018 Henri Gavin <hpgavin> 0.20140514+
+- fix typo in Frame3DD-manual.html ...  EMs to NMs ... etc
+
 * Wed Nov 25 14:06:00 EST 2015 Henri Gavin <hpgavin> 0.20140514+
 - changed Matlab interface function frame_3dd.m so that 
 floating point values in the .FMM file have aligned decimal points.

@@ -21,13 +21,13 @@ version = '0.20130318'
 import platform
 deftools = ['default']
 if platform.system()=="Windows":
-	deftools = ['mingw']
+	deftools = ['mingw','default']
 	default_itoa=1
 else:
 	default_itoa=0
 
 env = Environment(
-	tools=deftools + ['disttar','substinfile','soqt','nsis']
+	tools=deftools + ['disttar','soqt']#,'nsis']
 	,toolpath=['scons']
 )
 
@@ -87,7 +87,7 @@ env['CCFLAGS']=['-O', '-Wall']
 env['VERSION'] = version
 
 if env.get('DEBUG'):
-	print "DEBUGGING TURNED ON"
+	print("DEBUGGING TURNED ON")
 	env.Append(CCFLAGS=['-g'])
 
 #====================
@@ -130,7 +130,7 @@ int main(void){
 
 def CheckGccVisibility(context):
 	context.Message("Checking for GCC 'visibility' capability... ")
-	if not context.env.has_key('WITH_GCCVISIBILITY') or not env['WITH_GCCVISIBILITY']:
+	if 'WITH_GCCVISIBILITY' not in context.env or not env['WITH_GCCVISIBILITY']:
 		context.Result("disabled")
 		return 0
 	is_ok = context.TryCompile(gccvisibility_test_text,".c")
@@ -222,7 +222,7 @@ env['HAVE_SOQT'] = conf.CheckSoQt()
 
 env.Append(SUBST_DICT= {
 	'@VERSION@':version
-	,'@CHANGELOG@':file("ChangeLog.txt").read()
+	,'@CHANGELOG@':open("ChangeLog.txt",'r').read()
 })
 
 env.SConscript('doc/SConscript',['env'])
@@ -233,13 +233,13 @@ env.SConscript('doc/SConscript',['env'])
 env['installdirs'] = []
 env['PROGS'] = []
 
-env.BuildDir('build','src')
+VariantDir('build','src')
 env.SConscript('build/SConscript',['env'])
 
 #------------
 # test suite
 
-env.BuildDir('build/test','test')
+env.VariantDir('build/test','test')
 env.SConscript('build/test/SConscript',['env'])
 
 #------------
@@ -261,7 +261,7 @@ env.Install(exampledir,['test/truss.arc','test/bent-cantilever.arc'])
 # install documentation
 
 docdir = Dir(env.subst("$INSTALL_ROOT$INSTALL_DOC"))
-env.Install(docdir,['doc/user-manual.html','doc/version.html'])
+env.Install(docdir,['doc/Frame3DD-manual.html','doc/version.html'])
 docimgdir = Dir(env.subst("$INSTALL_ROOT$INSTALL_DOC/img"))
 env.Install(docimgdir,Glob("doc/img/*.jpg"))
 env.Install(docimgdir,Glob("doc/img/*.png"))
@@ -277,7 +277,7 @@ env.Alias("install",env['installdirs'])
 #------------
 # create the RPM .spec file
 
-specfile = env.SubstInFile('frame3dd.spec.in')
+specfile = env.Substfile('frame3dd.spec.in')
 Depends(specfile,"ChangeLog.txt")
 
 #------------
@@ -304,9 +304,9 @@ if platform.system()=="Windows":
 		,'VERSION':version
 	})
 	
-	installer = env.Installer('installer.nsi')
-	Depends(installer,env['PROGS'])
-	env.Alias('installer',installer)
+	#installer = env.Installer('installer.nsi')
+	#Depends(installer,env['PROGS'])
+	#env.Alias('installer',installer)
 
 #-------------
 # debian.tar.gz for Debian packaging (Ubuntu,...)
